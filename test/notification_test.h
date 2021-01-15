@@ -61,7 +61,6 @@ inline Object::Ref<StatefulWidget::State> _BubbleNotification::createState()
 
 inline Object::Ref<Widget> NotificationTest::build(Object::Ref<BuildContext> context)
 {
-
     return Object::create<NotificationListener>(
         Object::create<_BubbleNotification>(),
         _onNotification);

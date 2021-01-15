@@ -12,7 +12,7 @@ public:
 class _ChildWidget : public StatelessWidget
 {
 public:
-    _ChildWidget(const int &count_) : count(count_) {}
+    _ChildWidget(const int count_) : count(count_) {}
     const int count;
 
     Object::Ref<Widget> build(Object::Ref<BuildContext>) override

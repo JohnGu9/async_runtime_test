@@ -1,6 +1,6 @@
 #include "async_runtime.h"
 
-struct MyWidget : public StatelessWidget
+class MyWidget : public StatelessWidget
 {
     Object::Ref<Widget> build(Object::Ref<BuildContext> context) override
     {

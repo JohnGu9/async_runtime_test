@@ -1,11 +1,11 @@
 #include "async_runtime.h"
 
-struct MyWidget : public StatefulWidget
+class MyWidget : public StatefulWidget
 {
     Object::Ref<StatefulWidget::State> createState() override;
 };
 
-struct _MyWidgetState : public State<MyWidget>
+class _MyWidgetState : public State<MyWidget>
 {
     using super = StatefulWidget::State;
 
@@ -22,8 +22,7 @@ struct _MyWidgetState : public State<MyWidget>
         super::initState();
         this->children = {
             Object::create<Builder>(onChildBuild),
-            Object::create<Builder>(onChildBuild)
-        };
+            Object::create<Builder>(onChildBuild)};
     }
 
     void dispose() override
@@ -35,9 +34,7 @@ struct _MyWidgetState : public State<MyWidget>
     void addChild()
     {
         auto self = Object::self(this);
-        this->setState([self]() {
-            self->children.push_back(Object::create<Builder>(onChildBuild));
-        });
+        this->setState([self] { self->children.push_back(Object::create<Builder>(onChildBuild)); });
     }
 
     Object::Ref<Widget> build(Object::Ref<BuildContext> context) override
