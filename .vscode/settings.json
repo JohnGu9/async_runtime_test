@@ -1,3 +1,7 @@
 {
-    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "files.associations": {
+        "future": "cpp",
+        "__functional_03": "cpp"
+    }
 }

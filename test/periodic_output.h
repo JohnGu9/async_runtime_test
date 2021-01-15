@@ -22,17 +22,19 @@ class _PeriodicOutputState : public State<PeriodicOutput>
     {
         super::initState();
         debug_print("initState");
+        auto self = Object::self(this);
         _timer = Timer::periodic(
-            this, [this] {
-                Logger::of(this->getContext())->writeLine("Timer callback");
+            this, [self] {
+                if (self->getMounted())
+                    Logger::of(self->getContext())->writeLine("Timer callback");
             },
             Duration(5000));
     }
 
     void dispose() override
     {
-        debug_print("dispose");
         _timer->dispose();
+        debug_print("dispose");
         super::dispose();
     }
 
