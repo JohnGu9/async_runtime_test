@@ -21,12 +21,12 @@ class _PeriodicOutputState : public State<PeriodicOutput>
     void initState() override
     {
         super::initState();
-        debug_print("initState");
         auto self = Object::cast<>(this);
+        self->getWidget()->handler->writeLine("initState");
         _timer = Timer::periodic(
             this, [self] {
                 if (self->getMounted())
-                    Logger::of(self->getContext())->writeLine("Timer callback");
+                    self->getWidget()->handler->writeLine("Timer callback");
             },
             Duration(5000));
     }
