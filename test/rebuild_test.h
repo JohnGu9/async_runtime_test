@@ -8,9 +8,9 @@ public:
     _ChildWidget(const int count) : count(count) {}
     const int count;
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    Object::Ref<Widget> build(Object::Ref<BuildContext> context) override
     {
-        debug_print("Child build on count: " << count);
+        Logger::of(context)->writeLine("_ChildWidget::build on " + std::to_string(count));
         return LeafWidget::factory();
     }
 };
@@ -43,7 +43,7 @@ class _RebuildTestState : public State<RebuildTest>
                         if (self->_count > 5)
                         {
                             self->_timer->cancel();
-                            debug_print("RebuildTest timer cancel");
+                            Logger::of(self->getContext())->writeLine("RebuildTest timer cancel");
                         }
                     });
             },

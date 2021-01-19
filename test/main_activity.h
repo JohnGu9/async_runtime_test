@@ -13,6 +13,6 @@ class MainActivity : public StatelessWidget
             Object::create<NotificationTest>(),                                         // NotificationTest
             Object::create<RebuildTest>(),                                              // RebuildTest
         };
-        return Object::create<MultiChildWidget>(children);
+        return Object::create<LoggerBlocker>(Object::create<MultiChildWidget>(children));
     }
 };

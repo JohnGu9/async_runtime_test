@@ -12,7 +12,6 @@ public:
 class NotificationTest : public StatelessWidget
 {
 public:
-    static bool _onNotification(Object::Ref<Notification> notification);
     NotificationTest(Object::Ref<Key> key = nullptr) : StatelessWidget(key) {}
     Object::Ref<Widget> build(Object::Ref<BuildContext> context) override;
 };
@@ -63,15 +62,12 @@ inline Object::Ref<Widget> NotificationTest::build(Object::Ref<BuildContext> con
 {
     return Object::create<NotificationListener>(
         Object::create<_BubbleNotification>(),
-        _onNotification);
-}
-
-inline bool NotificationTest::_onNotification(Object::Ref<Notification> notification)
-{
-    if (Object::Ref<MessageNotification> messageNotification = notification->cast<MessageNotification>())
-    {
-        debug_print(messageNotification->message);
-        return true;
-    }
-    return false;
+        [context](Object::Ref<Notification> notification) {
+            if (Object::Ref<MessageNotification> messageNotification = notification->cast<MessageNotification>())
+            {
+                Logger::of(context)->writeLine(messageNotification->message);
+                return true;
+            }
+            return false;
+        });
 }
