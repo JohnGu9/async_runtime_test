@@ -32,7 +32,7 @@ class __BubbleNotificationState : public State<_BubbleNotification>
     void initState() override
     {
         super::initState();
-        auto self = Object::self(this);
+        auto self = Object::cast<>(this);
         _timer = Timer::periodic(
             this,
             [self] {

@@ -27,8 +27,8 @@ class _MyWidgetState : public State<MyWidget>
     void initState() override
     {
         super::initState();
+        auto self = Object::cast<>(this);
         _count = 0;
-        auto self = Object::self(this);
         _timer = Timer::periodic(
             this, [self] {
                 if (!self->getMounted())

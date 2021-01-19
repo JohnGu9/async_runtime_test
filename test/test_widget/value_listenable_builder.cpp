@@ -14,7 +14,7 @@ struct _MyWidgetState : State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = Object::self(this);
+        auto self = Object::cast<>(this);
         _notifier = Object::create<ValueNotifier<bool>>(false);
         _timer = Timer::periodic(
             this,

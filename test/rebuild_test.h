@@ -2,17 +2,10 @@
 
 #include "async_runtime.h"
 
-class RebuildTest : public StatefulWidget
-{
-public:
-    RebuildTest(Object::Ref<Key> key = nullptr) : StatefulWidget(key) {}
-    Object::Ref<State> createState() override;
-};
-
 class _ChildWidget : public StatelessWidget
 {
 public:
-    _ChildWidget(const int count_) : count(count_) {}
+    _ChildWidget(const int count) : count(count) {}
     const int count;
 
     Object::Ref<Widget> build(Object::Ref<BuildContext>) override
@@ -20,6 +13,13 @@ public:
         debug_print("Child build on count: " << count);
         return LeafWidget::factory();
     }
+};
+
+class RebuildTest : public StatefulWidget
+{
+public:
+    RebuildTest(Object::Ref<Key> key = nullptr) : StatefulWidget(key) {}
+    Object::Ref<State> createState() override;
 };
 
 class _RebuildTestState : public State<RebuildTest>
@@ -33,7 +33,7 @@ class _RebuildTestState : public State<RebuildTest>
         super::initState();
         _count = 0;
 
-        auto self = Object::self(this);
+        auto self = Object::cast<>(this);
         _timer = Timer::periodic(
             this,
             [self] {

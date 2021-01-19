@@ -13,7 +13,7 @@ class _MainActivityState : public State<MainActivity>
     void initState() override
     {
         super::initState();
-        Object::Ref<_MainActivityState> self = Object::self(this);
+        Object::Ref<_MainActivityState> self = Object::cast<>(this);
         this->_timer = Timer::periodic(
             this,
             [self] {
