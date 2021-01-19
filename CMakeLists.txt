@@ -21,6 +21,10 @@ target_link_libraries(test async_runtime)
 add_executable(test_basic_callback test/test_basic/test_callback.cpp)
 target_link_libraries(test_basic_callback async_runtime)
 
+add_executable(test_timer test/test_fundamental/timer.cpp)
+target_link_libraries(test_timer async_runtime)
+
+
 add_executable(test_stateless_widget test/test_widget/stateless_widget.cpp)
 target_link_libraries(test_stateless_widget async_runtime)
 
@@ -30,5 +34,8 @@ target_link_libraries(test_stateful_widget async_runtime)
 add_executable(test_multi_child_widget test/test_widget/multi_child_widget.cpp)
 target_link_libraries(test_multi_child_widget async_runtime)
 
-add_executable(test_timer test/test_fundamental/timer.cpp)
-target_link_libraries(test_timer async_runtime)
+add_executable(root_inherited_widget test/test_widget/root_inherited_widget.cpp)
+target_link_libraries(root_inherited_widget async_runtime)
+
+add_executable(value_listenable_builder test/test_widget/value_listenable_builder.cpp)
+target_link_libraries(value_listenable_builder async_runtime)
