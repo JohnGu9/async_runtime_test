@@ -25,6 +25,9 @@ add_executable(test_timer test/test_fundamental/timer.cpp)
 target_link_libraries(test_timer async_runtime)
 
 
+add_executable(my_widget test/test_widget/my_widget.cpp)
+target_link_libraries(my_widget async_runtime)
+
 add_executable(test_stateless_widget test/test_widget/stateless_widget.cpp)
 target_link_libraries(test_stateless_widget async_runtime)
 
