@@ -5,8 +5,8 @@
 class PeriodicOutput : public StatefulWidget
 {
 public:
-    PeriodicOutput(Object::Ref<Widget> child_, Logger::Handler handler_, Object::Ref<Key> key = nullptr)
-        : child(child_), handler(handler_), StatefulWidget(key) {}
+    PeriodicOutput(Object::Ref<Widget> child, Logger::Handler handler, Object::Ref<Key> key = nullptr)
+        : child(child), handler(handler), StatefulWidget(key) {}
 
     Object::Ref<Widget> child;
     Logger::Handler handler;
