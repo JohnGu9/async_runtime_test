@@ -10,7 +10,7 @@ public:
 
     Object::Ref<Widget> child;
     Logger::Handler handler;
-    Object::Ref<State> createState() override;
+    Object::Ref<State<StatefulWidget>> createState() override;
 };
 
 class _PeriodicOutputState : public State<PeriodicOutput>
@@ -44,7 +44,7 @@ class _PeriodicOutputState : public State<PeriodicOutput>
     }
 };
 
-inline Object::Ref<StatefulWidgetState> PeriodicOutput::createState()
+inline Object::Ref<State<StatefulWidget>> PeriodicOutput::createState()
 {
     return Object::create<_PeriodicOutputState>();
 }

@@ -20,7 +20,7 @@ class _BubbleNotification : public StatefulWidget
 {
 public:
     _BubbleNotification(Object::Ref<Key> key = nullptr) : StatefulWidget(key) {}
-    Object::Ref<State> createState() override;
+    Object::Ref<State<StatefulWidget>> createState() override;
 };
 
 class __BubbleNotificationState : public State<_BubbleNotification>
@@ -53,7 +53,7 @@ class __BubbleNotificationState : public State<_BubbleNotification>
     }
 };
 
-inline Object::Ref<StatefulWidget::State> _BubbleNotification::createState()
+inline Object::Ref<State<StatefulWidget>> _BubbleNotification::createState()
 {
     return Object::create<__BubbleNotificationState>();
 }

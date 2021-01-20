@@ -15,7 +15,7 @@ public:
 
 class MyWidget : public StatefulWidget
 {
-    Object::Ref<State> createState() override;
+    Object::Ref<State<StatefulWidget>> createState() override;
 };
 
 class _MyWidgetState : public State<MyWidget>
@@ -56,7 +56,7 @@ class _MyWidgetState : public State<MyWidget>
     }
 };
 
-Object::Ref<StatefulWidget::State> MyWidget::createState()
+Object::Ref<State<StatefulWidget>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

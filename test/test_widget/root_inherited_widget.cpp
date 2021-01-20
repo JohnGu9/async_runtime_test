@@ -2,7 +2,7 @@
 
 struct MyWidget : StatefulWidget
 {
-    Object::Ref<State> createState() override;
+    Object::Ref<State<StatefulWidget>> createState() override;
 };
 
 struct _MyWidgetState : State<MyWidget>
@@ -39,7 +39,7 @@ struct _MyWidgetState : State<MyWidget>
     }
 };
 
-Object::Ref<StatefulWidget::State> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
+Object::Ref<State<StatefulWidget>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
 
 int main()
 {

@@ -2,12 +2,12 @@
 
 class MyWidget : public StatefulWidget
 {
-    Object::Ref<StatefulWidget::State> createState() override;
+    Object::Ref<State<StatefulWidget>> createState() override;
 };
 
 class _MyWidgetState : public State<MyWidget>
 {
-    using super = StatefulWidget::State;
+    using super = State<MyWidget>;
 
     static Object::Ref<Widget> onChildBuild(Object::Ref<BuildContext> context)
     {
@@ -43,7 +43,7 @@ class _MyWidgetState : public State<MyWidget>
     }
 };
 
-inline Object::Ref<StatefulWidget::State> MyWidget::createState()
+inline Object::Ref<State<StatefulWidget>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

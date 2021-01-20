@@ -2,7 +2,7 @@
 
 class MainActivity : public StatefulWidget
 {
-    virtual Object::Ref<State> createState() override;
+    virtual Object::Ref<State<StatefulWidget>> createState() override;
 };
 
 class _MainActivityState : public State<MainActivity>
@@ -51,7 +51,7 @@ class _MainActivityState : public State<MainActivity>
     }
 };
 
-inline Object::Ref<StatefulWidgetState> MainActivity::createState()
+inline Object::Ref<State<StatefulWidget>> MainActivity::createState()
 {
     return Object::create<_MainActivityState>();
 }
