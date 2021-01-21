@@ -21,7 +21,10 @@ struct _MyWidgetState : State<MyWidget>
             [self] {
                 self->_notifier->setValue(!self->_notifier->getValue());
                 if (self->_notifier->getValue() == false)
+                {
+                    debug_print("Request Exit");
                     RootInheritedWidget::of(self->getContext())->requestExit();
+                }
             },
             Duration(2000));
     }

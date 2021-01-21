@@ -10,7 +10,7 @@ void _test(Object::Ref<Listenable> self)
 int main(const int argc, char **args)
 {
     auto notifier = Object::create<ValueNotifier<bool>>(false);
-    auto fn = Object::create<Fn<void(Object::Ref<Listenable>)>>(_test);
+    Function<void(Object::Ref<Listenable>)> fn = _test;
     notifier->addListener(fn);
 
     std::cout << "Change value" << std::endl;

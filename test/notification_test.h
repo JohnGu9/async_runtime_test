@@ -5,7 +5,7 @@
 class MessageNotification : public Notification
 {
 public:
-    MessageNotification(String message_) : message(message_) {}
+    MessageNotification(String &&message_) : message(std::forward<String>(message_)) {}
     String message;
 };
 
