@@ -30,14 +30,14 @@ target_link_libraries(test_file async_runtime)
 add_executable(my_widget test/test_widget/my_widget.cpp)
 target_link_libraries(my_widget async_runtime)
 
-add_executable(test_stateless_widget test/test_widget/stateless_widget.cpp)
-target_link_libraries(test_stateless_widget async_runtime)
+add_executable(stateless_widget test/test_widget/stateless_widget.cpp)
+target_link_libraries(stateless_widget async_runtime)
 
-add_executable(test_stateful_widget test/test_widget/stateful_widget.cpp)
-target_link_libraries(test_stateful_widget async_runtime)
+add_executable(stateful_widget test/test_widget/stateful_widget.cpp)
+target_link_libraries(stateful_widget async_runtime)
 
-add_executable(test_multi_child_widget test/test_widget/multi_child_widget.cpp)
-target_link_libraries(test_multi_child_widget async_runtime)
+add_executable(multi_child_widget test/test_widget/multi_child_widget.cpp)
+target_link_libraries(multi_child_widget async_runtime)
 
 add_executable(root_inherited_widget test/test_widget/root_inherited_widget.cpp)
 target_link_libraries(root_inherited_widget async_runtime)

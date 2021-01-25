@@ -70,6 +70,17 @@
         "vector": "cpp",
         "fstream": "cpp",
         "iomanip": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "__cxx_version": "cpp",
+        "__functional_base_03": "cpp",
+        "__undef_macros": "cpp",
+        "cassert": "cpp",
+        "ccomplex": "cpp",
+        "cerrno": "cpp",
+        "climits": "cpp",
+        "ctgmath": "cpp",
+        "__memory": "cpp",
+        "filesystem": "cpp",
+        "memory_resource": "cpp"
     }
 }

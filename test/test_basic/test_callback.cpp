@@ -1,16 +1,14 @@
 #include <iostream>
 #include "async_runtime/basic/value_notifier.h"
 
-void _test(Object::Ref<Listenable> self)
-{
-    Object::Ref<ValueNotifier<bool>> notifier = self->cast<ValueNotifier<bool>>();
-    std::cout << "Value changed to " << notifier->getValue() << std::endl;
-}
-
 int main(const int argc, char **args)
 {
     auto notifier = Object::create<ValueNotifier<bool>>(false);
-    Function<void(Object::Ref<Listenable>)> fn = _test;
+    Function<void(Object::Ref<Listenable>)> fn = [](Object::Ref<Listenable> self) {
+        Object::Ref<ValueNotifier<bool>> notifier = self->cast<ValueNotifier<bool>>();
+        std::cout << "Value changed to " << notifier->getValue() << std::endl;
+    };
+    Function<> &ref = fn;
     notifier->addListener(fn);
 
     std::cout << "Change value" << std::endl;
