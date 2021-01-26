@@ -21,18 +21,18 @@ struct _MyWidgetState : State<MyWidget>
             this, [self] {
                 self->_file->overwrite("This is app log. \n")
                     ->than<void>([self] {
-                        self->_file->read()
-                            ->than<void>([](const String &value) { debug_print(value); })
-                            ->than<void>([self] { RootInheritedWidget::of(self->getContext())->requestExit(); });
-
-                        // self->_file->readWordAsStream()
-                        //     ->listen([self](String word) { debug_print(word); })
-                        //     ->onClose([self] {
-                        //         RootInheritedWidget::of(self->getContext())->requestExit();
-                        //     });
+                        self->_file->readWordAsStream()
+                            ->listen([self](String word) { debug_print(word); })
+                            ->onClose([self] {
+                                self->_file->read()
+                                    ->than<void>([self](const String &value) {
+                                        debug_print(value);
+                                        RootInheritedWidget::of(self->getContext())->requestExit();
+                                    });
+                            });
                     });
             },
-            Duration(1000));
+            Duration::fromMilliseconds(1000));
     }
 
     void dispose() override

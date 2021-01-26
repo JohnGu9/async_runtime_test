@@ -8,11 +8,12 @@ class MainActivity : public StatelessWidget
 {
     Object::Ref<Widget> build(Object::Ref<BuildContext> context) override
     {
-        return Object::create<LoggerBlocker>(
+        return Logger::file(
             Object::create<MultiChildWidget>()->setChildren({
                 Object::create<PeriodicOutput>(LeafWidget::factory(), Logger::of(context)), // PeriodicOutput
                 Object::create<NotificationTest>(),                                         // NotificationTest
                 Object::create<RebuildTest>(),                                              // RebuildTest
-            }));
+            }),
+            "app.log");
     }
 };
