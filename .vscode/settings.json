@@ -81,6 +81,8 @@
         "ctgmath": "cpp",
         "__memory": "cpp",
         "filesystem": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "unordered_set": "cpp",
+        "shared_mutex": "cpp"
     }
 }

@@ -19,7 +19,7 @@ class RebuildTest : public StatefulWidget
 {
 public:
     RebuildTest(Object::Ref<Key> key = nullptr) : StatefulWidget(key) {}
-    Object::Ref<State<StatefulWidget>> createState() override;
+    Object::Ref<State<>> createState() override;
 };
 
 class _RebuildTestState : public State<RebuildTest>
@@ -37,13 +37,13 @@ class _RebuildTestState : public State<RebuildTest>
         _timer = Timer::periodic(
             this,
             [self] {
-                if (self->getMounted())
+                if (self->mounted)
                     self->setState([self] {
                         self->_count++;
                         if (self->_count > 5)
                         {
                             self->_timer->cancel();
-                            Logger::of(self->getContext())->writeLine("RebuildTest timer cancel");
+                            Logger::of(self->context)->writeLine("RebuildTest timer cancel");
                         }
                     });
             },
@@ -62,7 +62,7 @@ class _RebuildTestState : public State<RebuildTest>
     }
 };
 
-inline Object::Ref<State<StatefulWidget>> RebuildTest::createState()
+inline Object::Ref<State<>> RebuildTest::createState()
 {
     return Object::create<_RebuildTestState>();
 }

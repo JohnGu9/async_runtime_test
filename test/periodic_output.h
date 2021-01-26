@@ -10,7 +10,7 @@ public:
 
     Object::Ref<Widget> child;
     Logger::Handler handler;
-    Object::Ref<State<StatefulWidget>> createState() override;
+    Object::Ref<State<>> createState() override;
 };
 
 class _PeriodicOutputState : public State<PeriodicOutput>
@@ -25,7 +25,7 @@ class _PeriodicOutputState : public State<PeriodicOutput>
         self->getWidget()->handler->writeLine("initState");
         _timer = Timer::periodic(
             this, [self] {
-                if (self->getMounted())
+                if (self->mounted)
                     self->getWidget()->handler->writeLine("Timer callback");
             },
             Duration(5000));
@@ -44,7 +44,7 @@ class _PeriodicOutputState : public State<PeriodicOutput>
     }
 };
 
-inline Object::Ref<State<StatefulWidget>> PeriodicOutput::createState()
+inline Object::Ref<State<>> PeriodicOutput::createState()
 {
     return Object::create<_PeriodicOutputState>();
 }

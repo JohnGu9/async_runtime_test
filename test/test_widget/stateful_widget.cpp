@@ -15,7 +15,7 @@ public:
 
 class MyWidget : public StatefulWidget
 {
-    Object::Ref<State<StatefulWidget>> createState() override;
+    Object::Ref<State<>> createState() override;
 };
 
 class _MyWidgetState : public State<MyWidget>
@@ -31,7 +31,7 @@ class _MyWidgetState : public State<MyWidget>
         _count = 0;
         _timer = Timer::periodic(
             this, [self] {
-                if (!self->getMounted())
+                if (!self->mounted)
                     return;
                 if (self->_count > 5)
                 {
@@ -56,7 +56,7 @@ class _MyWidgetState : public State<MyWidget>
     }
 };
 
-Object::Ref<State<StatefulWidget>> MyWidget::createState()
+Object::Ref<State<>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

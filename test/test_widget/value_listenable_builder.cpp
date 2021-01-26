@@ -2,7 +2,7 @@
 
 struct MyWidget : StatefulWidget
 {
-    Object::Ref<State<StatefulWidget>> createState() override;
+    Object::Ref<State<>> createState() override;
 };
 
 struct _MyWidgetState : State<MyWidget>
@@ -23,7 +23,7 @@ struct _MyWidgetState : State<MyWidget>
                 if (self->_notifier->getValue() == false)
                 {
                     debug_print("Request Exit");
-                    RootInheritedWidget::of(self->getContext())->requestExit();
+                    RootInheritedWidget::of(self->context)->requestExit();
                 }
             },
             Duration(2000));
@@ -46,7 +46,7 @@ struct _MyWidgetState : State<MyWidget>
     }
 };
 
-Object::Ref<State<StatefulWidget>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
+Object::Ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
 
 int main()
 {

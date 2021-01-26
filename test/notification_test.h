@@ -5,7 +5,7 @@
 class MessageNotification : public Notification
 {
 public:
-    MessageNotification(String &&message_) : message(std::forward<String>(message_)) {}
+    MessageNotification(String message_) : message(message_) {}
     String message;
 };
 
@@ -20,7 +20,7 @@ class _BubbleNotification : public StatefulWidget
 {
 public:
     _BubbleNotification(Object::Ref<Key> key = nullptr) : StatefulWidget(key) {}
-    Object::Ref<State<StatefulWidget>> createState() override;
+    Object::Ref<State<>> createState() override;
 };
 
 class __BubbleNotificationState : public State<_BubbleNotification>
@@ -35,8 +35,8 @@ class __BubbleNotificationState : public State<_BubbleNotification>
         _timer = Timer::periodic(
             this,
             [self] {
-                if (self->getMounted())
-                    Object::create<MessageNotification>("Bubble message test")->dispatch(self->getContext());
+                if (self->mounted)
+                    Object::create<MessageNotification>("Bubble message test")->dispatch(self->context);
             },
             Duration(5000));
     }
@@ -53,7 +53,7 @@ class __BubbleNotificationState : public State<_BubbleNotification>
     }
 };
 
-inline Object::Ref<State<StatefulWidget>> _BubbleNotification::createState()
+inline Object::Ref<State<>> _BubbleNotification::createState()
 {
     return Object::create<__BubbleNotificationState>();
 }

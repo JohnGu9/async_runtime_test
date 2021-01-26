@@ -2,7 +2,7 @@
 
 class MyWidget : public StatefulWidget
 {
-    Object::Ref<State<StatefulWidget>> createState() override;
+    Object::Ref<State<>> createState() override;
 };
 
 class _MyWidgetState : public State<MyWidget>
@@ -43,7 +43,7 @@ class _MyWidgetState : public State<MyWidget>
     }
 };
 
-inline Object::Ref<State<StatefulWidget>> MyWidget::createState()
+inline Object::Ref<State<>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

@@ -27,7 +27,7 @@ struct _MyWidgetState : State<MyWidget>
                                 self->_file->read()
                                     ->than<void>([self](const String &value) {
                                         debug_print(value);
-                                        RootInheritedWidget::of(self->getContext())->requestExit();
+                                        RootInheritedWidget::of(self->context)->requestExit();
                                     });
                             });
                     });

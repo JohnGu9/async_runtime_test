@@ -11,7 +11,10 @@ int main(const int argc, char **args)
     Function<> &ref = fn;
     notifier->addListener(fn);
 
-    std::cout << "Change value" << std::endl;
+    std::cout << "add same function will not call twice when [notifyListeners]" << std::endl;
+    notifier->addListener(fn);
+
+    std::cout << "Change value (only call function once)" << std::endl;
     notifier->setValue(true);
 
     std::cout << "Not change value" << std::endl;

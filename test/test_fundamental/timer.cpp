@@ -17,29 +17,29 @@ class _MainActivityState : public State<MainActivity>
         this->_timer = Timer::periodic(
             this,
             [self] {
-                if (self->getMounted())
-                    Logger::of(self->getContext())->writeLine("Timer callback");
+                if (self->mounted)
+                    Logger::of(self->context)->writeLine("Timer callback");
             },
             Duration(1000));
     }
 
     void didWidgetUpdated(Object::Ref<StatefulWidget> oldWidget) override
     {
-        Logger::of(this->getContext())->writeLine("_MainActivityState::didWidgetUpdated");
+        Logger::of(this->context)->writeLine("_MainActivityState::didWidgetUpdated");
         super::didWidgetUpdated(oldWidget);
     }
 
     void didDependenceChanged() override
     {
-        Scheduler::Handler handler = Scheduler::of(this->getContext());
-        Logger::of(this->getContext())->writeLine("_MainActivityState::didDependenceChanged");
-        Logger::of(this->getContext())->writeLine("Current scheduler handler is " + handler->runtimeType());
+        Scheduler::Handler handler = Scheduler::of(context);
+        Logger::of(this->context)->writeLine("_MainActivityState::didDependenceChanged");
+        Logger::of(this->context)->writeLine("Current scheduler handler is " + handler->runtimeType());
         super::didDependenceChanged();
     }
 
     void dispose() override
     {
-        Logger::of(this->getContext())->writeLine("_MainActivityState::dispose");
+        Logger::of(context)->writeLine("_MainActivityState::dispose");
         this->_timer->dispose();
         super::dispose();
     }
