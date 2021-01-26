@@ -5,7 +5,11 @@
 class MessageNotification : public Notification
 {
 public:
-    MessageNotification(String message_) : message(message_) {}
+    static Object::Ref<MessageNotification> fromString(String message)
+    {
+        return Object::create<MessageNotification>(message);
+    }
+    MessageNotification(String message) : message(message) {}
     String message;
 };
 
@@ -36,7 +40,7 @@ class __BubbleNotificationState : public State<_BubbleNotification>
             this,
             [self] {
                 if (self->mounted)
-                    Object::create<MessageNotification>("Bubble message test")->dispatch(self->context);
+                    MessageNotification::fromString("Bubble message test")->dispatch(self->context);
             },
             Duration(5000));
     }
