@@ -11,38 +11,46 @@ struct _MyWidgetState : State<MyWidget>
     Object::Ref<File> _file;
     Object::Ref<Timer> _timer;
 
-    void initState() override
-    {
-        super::initState();
-        debug_print("initState");
+    Function<void()> _readWriteFile = [this] {
         auto self = Object::cast<>(this);
-        _file = File::fromPath(this, "app.log");
-        _timer = Timer::delay(
-            this,
-            [self] {
-                self->_file->exists()
-                    ->than<void>([self](const bool &exists) { debug_print("File exists: " << exists); })
-                    ->than<void>([self] {
-                        self->_file->overwrite("This is app log. \n")
-                            ->than<void>([self] {
-                                self->_file->readWordAsStream()
-                                    ->listen([self](String word) { debug_print(word); })
-                                    ->onClose([self] {
-                                        self->_file->read()
-                                            ->than<void>([self](const String &value) {
-                                                debug_print(value);
-                                                debug_print("To remove file: " << self->_file->path);
-                                                self->_file->remove()->than<void>(
-                                                    [self](const int &code) {
-                                                        debug_print("Remove code: " << code);
-                                                        RootInheritedWidget::of(self->context)->requestExit();
-                                                    });
+        self->_file->exists()
+            ->than<void>([self](const bool &exists) {
+                debug_print("File exists: " << exists);
+                if (exists)
+                    self->_file->size()
+                        ->than<void>([](const size_t &size) { debug_print("File size: " << size); });
+            })
+            ->than([self] {
+                debug_print("File override ");
+                self->_file->overwrite("This is app log. \n")
+                    ->than([self] {
+                        debug_print("File readWordAsStream: ");
+                        self->_file->readWordAsStream()
+                            ->listen([self](String word) { debug_print(word); })
+                            ->onClose([self] {
+                                debug_print("File stream close ");
+                                debug_print("File read: ");
+                                self->_file->read()
+                                    ->than<void>([self](const String &value) {
+                                        debug_print(value);
+                                        debug_print("To remove file: " << self->_file->path);
+                                        self->_file->remove()->than<void>(
+                                            [self](const int &code) {
+                                                debug_print("Remove code: " << code);
+                                                RootInheritedWidget::of(self->context)->requestExit();
                                             });
                                     });
                             });
                     });
-            },
-            Duration::fromMilliseconds(1000));
+            });
+    };
+
+    void initState() override
+    {
+        super::initState();
+        debug_print("initState");
+        _file = File::fromPath(this, "app.log");
+        _timer = Timer::delay(this, _readWriteFile, Duration::fromMilliseconds(1000));
     }
 
     void dispose() override

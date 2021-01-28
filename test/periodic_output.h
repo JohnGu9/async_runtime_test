@@ -22,7 +22,7 @@ class _PeriodicOutputState : public State<PeriodicOutput>
     {
         super::initState();
         auto self = Object::cast<>(this);
-        self->getWidget()->handler->writeLine("initState");
+        this->getWidget()->handler->writeLine("initState");
         _timer = Timer::periodic(
             this, [self] {
                 if (self->mounted)

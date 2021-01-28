@@ -15,7 +15,7 @@ class _MyWidgetState : public State<MyWidget>
         return LeafWidget::factory();
     };
 
-    Object::List<Object::Ref<Widget>> children;
+    List<Object::Ref<Widget>> children;
 
     void initState() override
     {

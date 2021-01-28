@@ -31,9 +31,8 @@ class _RebuildTestState : public State<RebuildTest>
     void initState() override
     {
         super::initState();
-        _count = 0;
-
         auto self = Object::cast<>(this);
+        _count = 0;
         _timer = Timer::periodic(
             this,
             [self] {
