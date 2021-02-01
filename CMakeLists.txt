@@ -17,30 +17,36 @@ add_executable(test test/test.cpp)
 target_link_libraries(test async_runtime)
 
 # test case
-add_executable(test_basic_callback test/test_basic/test_callback.cpp)
+
+# basic
+add_executable(test_basic_callback test/test_basic/callback.cpp)
 target_link_libraries(test_basic_callback async_runtime)
 
-add_executable(test_timer test/test_fundamental/timer.cpp)
-target_link_libraries(test_timer async_runtime)
+add_executable(test_basic_lock test/test_basic/lock.cpp)
+target_link_libraries(test_basic_lock async_runtime)
 
-add_executable(test_file test/test_fundamental/file.cpp)
-target_link_libraries(test_file async_runtime)
+# fundamental
+add_executable(test_fundamental_timer test/test_fundamental/timer.cpp)
+target_link_libraries(test_fundamental_timer async_runtime)
 
+add_executable(test_fundamental_file test/test_fundamental/file.cpp)
+target_link_libraries(test_fundamental_file async_runtime)
 
-add_executable(my_widget test/test_widget/my_widget.cpp)
-target_link_libraries(my_widget async_runtime)
+# widget
+add_executable(test_widget_my_widget test/test_widget/my_widget.cpp)
+target_link_libraries(test_widget_my_widget async_runtime)
 
-add_executable(stateless_widget test/test_widget/stateless_widget.cpp)
-target_link_libraries(stateless_widget async_runtime)
+add_executable(test_widget_stateless_widget test/test_widget/stateless_widget.cpp)
+target_link_libraries(test_widget_stateless_widget async_runtime)
 
-add_executable(stateful_widget test/test_widget/stateful_widget.cpp)
-target_link_libraries(stateful_widget async_runtime)
+add_executable(test_widget_stateful_widget test/test_widget/stateful_widget.cpp)
+target_link_libraries(test_widget_stateful_widget async_runtime)
 
-add_executable(multi_child_widget test/test_widget/multi_child_widget.cpp)
-target_link_libraries(multi_child_widget async_runtime)
+add_executable(test_widget_multi_child_widget test/test_widget/multi_child_widget.cpp)
+target_link_libraries(test_widget_multi_child_widget async_runtime)
 
-add_executable(root_inherited_widget test/test_widget/root_inherited_widget.cpp)
-target_link_libraries(root_inherited_widget async_runtime)
+add_executable(test_widget_root_inherited_widget test/test_widget/root_inherited_widget.cpp)
+target_link_libraries(test_widget_root_inherited_widget async_runtime)
 
-add_executable(value_listenable_builder test/test_widget/value_listenable_builder.cpp)
-target_link_libraries(value_listenable_builder async_runtime)
+add_executable(test_widget_value_listenable_builder test/test_widget/value_listenable_builder.cpp)
+target_link_libraries(test_widget_value_listenable_builder async_runtime)

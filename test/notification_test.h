@@ -40,9 +40,12 @@ class __BubbleNotificationState : public State<_BubbleNotification>
             this,
             [self] {
                 if (self->mounted)
+                {
+                    Logger::of(self->context)->writeLine("Start testing bubble message");
                     MessageNotification::fromString("Bubble message test")->dispatch(self->context);
+                }
             },
-            Duration(5000));
+            Duration(2000));
     }
 
     void dispose() override
