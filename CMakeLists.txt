@@ -25,6 +25,9 @@ target_link_libraries(test_basic_callback async_runtime)
 add_executable(test_basic_lock test/test_basic/lock.cpp)
 target_link_libraries(test_basic_lock async_runtime)
 
+add_executable(test_basic_container test/test_basic/container.cpp)
+target_link_libraries(test_basic_container async_runtime)
+
 # fundamental
 add_executable(test_fundamental_timer test/test_fundamental/timer.cpp)
 target_link_libraries(test_fundamental_timer async_runtime)

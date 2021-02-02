@@ -9,6 +9,7 @@ class _MainActivityState : public State<MainActivity>
 {
     using super = State<MainActivity>;
     Object::Ref<Timer> _timer;
+    size_t _count = 0;
 
     void initState() override
     {
@@ -19,6 +20,8 @@ class _MainActivityState : public State<MainActivity>
             [self] {
                 if (self->mounted)
                     Logger::of(self->context)->writeLine("Timer callback");
+                if (++self->_count > 5)
+                    RootInheritedWidget::of(self->context)->requestExit();
             },
             Duration(1000));
     }
@@ -58,10 +61,6 @@ inline Object::Ref<State<StatefulWidget>> MainActivity::createState()
 
 int main()
 {
-    Object::Ref<RootElement> root = Object::create<RootElement>(Object::create<MainActivity>());
-    root->attach();
-    root->getStdoutHandler()->writeLine("Testing timer").get();
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    root->detach();
+    runApp(Object::create<MainActivity>());
     return EXIT_SUCCESS;
 }
