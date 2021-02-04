@@ -12,7 +12,7 @@ int main(const int argc, char **args)
     notifier->addListener(fn);
 
     std::cout << "add same function will not call twice when [notifyListeners]" << std::endl;
-    notifier->addListener(fn);
+    notifier->addListener(fn); // not valid
 
     std::cout << "Change value (only call function once)" << std::endl;
     notifier->setValue(true);
@@ -27,7 +27,7 @@ int main(const int argc, char **args)
     std::cout << "Dispose" << std::endl;
     notifier->dispose();
 
-    std::cout << "Invalid access after dispose()" << std::endl;
+    std::cout << "Invalid access after dispose() and cause assert exception. " << std::endl;
     notifier->setValue(false);
 
     return EXIT_SUCCESS;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "async_runtime.h"
 #include "periodic_output.h"
 #include "notification_test.h"
 #include "rebuild_test.h"

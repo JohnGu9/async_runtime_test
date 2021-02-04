@@ -81,5 +81,6 @@ int main()
         currentTime();
         // release at 17s
     });
+    threadPool->dispose();
     return EXIT_SUCCESS;
 }
