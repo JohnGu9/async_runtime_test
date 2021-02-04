@@ -22,13 +22,12 @@ class _PeriodicOutputState : public State<PeriodicOutput>
     {
         super::initState();
         auto self = Object::cast<>(this);
-        this->getWidget()->handler->writeLine("initState");
+        debug_print("initState");
         _timer = Timer::periodic(
-            this, [self] {
+            this, Duration(1000), [self] {
                 if (self->mounted)
                     self->getWidget()->handler->writeLine("Timer callback");
-            },
-            Duration(5000));
+            });
     }
 
     void dispose() override

@@ -50,7 +50,7 @@ struct _MyWidgetState : State<MyWidget>
         super::initState();
         debug_print("initState");
         _file = File::fromPath(this, "app.log");
-        _timer = Timer::delay(this, _readWriteFile, Duration::fromMilliseconds(1000));
+        _timer = Timer::delay(this, Duration::fromMilliseconds(1000), _readWriteFile);
     }
 
     void dispose() override

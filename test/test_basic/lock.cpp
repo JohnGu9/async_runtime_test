@@ -12,7 +12,7 @@ static inline void currentTime()
 
 int main()
 {
-    Object::Ref<ThreadPool> threadPool = Object::create<AutoReleaseThreadPool>(6);
+    Object::Ref<ThreadPool> threadPool = AutoReleaseThreadPool::factory(6);
     Object::Ref<Lock> lock = Object::create<Lock>();
     threadPool->post([lock] {
         auto sharedLock = lock->sharedLock(); // done at 0s

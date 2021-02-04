@@ -17,16 +17,14 @@ struct _MyWidgetState : State<MyWidget>
         auto self = Object::cast<>(this);
         _notifier = Object::create<ValueNotifier<bool>>(false);
         _timer = Timer::periodic(
-            this,
-            [self] {
+            this, Duration(2000), [self] {
                 self->_notifier->setValue(!self->_notifier->getValue());
                 if (self->_notifier->getValue() == false)
                 {
                     debug_print("Request Exit");
                     RootInheritedWidget::of(self->context)->requestExit();
                 }
-            },
-            Duration(2000));
+            });
     }
 
     void dispose() override

@@ -24,7 +24,7 @@ struct _MyWidgetState : State<MyWidget>
         super::initState();
         auto self = Object::cast<>(this);
         _timer = Timer::delay(
-            this, [self] { self->_requestExit(); }, Duration(2000));
+            this, Duration(2000), [self] { self->_requestExit(); });
     }
 
     void dispose() override

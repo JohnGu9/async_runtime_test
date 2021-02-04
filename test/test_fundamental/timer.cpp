@@ -16,27 +16,25 @@ class _MainActivityState : public State<MainActivity>
         super::initState();
         Object::Ref<_MainActivityState> self = Object::cast<>(this);
         this->_timer = Timer::periodic(
-            this,
-            [self] {
+            this, Duration(1000), [self] {
                 if (self->mounted)
                     Logger::of(self->context)->writeLine("Timer callback");
                 if (++self->_count > 5)
                     RootInheritedWidget::of(self->context)->requestExit();
-            },
-            Duration(1000));
+            });
     }
 
     void didWidgetUpdated(Object::Ref<StatefulWidget> oldWidget) override
     {
-        Logger::of(this->context)->writeLine("_MainActivityState::didWidgetUpdated");
+        Logger::of(context)->writeLine("_MainActivityState::didWidgetUpdated");
         super::didWidgetUpdated(oldWidget);
     }
 
     void didDependenceChanged() override
     {
         Scheduler::Handler handler = Scheduler::of(context);
-        Logger::of(this->context)->writeLine("_MainActivityState::didDependenceChanged");
-        Logger::of(this->context)->writeLine("Current scheduler handler is " + handler->runtimeType());
+        Logger::of(context)->writeLine("_MainActivityState::didDependenceChanged");
+        Logger::of(context)->writeLine("Current scheduler handler is " + handler->runtimeType());
         super::didDependenceChanged();
     }
 

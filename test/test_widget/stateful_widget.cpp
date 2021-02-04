@@ -30,7 +30,7 @@ class _MyWidgetState : public State<MyWidget>
         auto self = Object::cast<>(this);
         _count = 0;
         _timer = Timer::periodic(
-            this, [self] {
+            this, Duration(1000), [self] {
                 if (!self->mounted)
                     return;
                 if (self->_count > 5)
@@ -40,8 +40,7 @@ class _MyWidgetState : public State<MyWidget>
                     return;
                 }
                 self->setState([self] { self->_count++; });
-            },
-            Duration(1000));
+            });
     }
 
     void dispose() override

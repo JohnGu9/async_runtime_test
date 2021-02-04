@@ -34,8 +34,7 @@ class _RebuildTestState : public State<RebuildTest>
         auto self = Object::cast<>(this);
         _count = 0;
         _timer = Timer::periodic(
-            this,
-            [self] {
+            this, Duration(1000), [self] {
                 if (self->mounted)
                     self->setState([self] {
                         self->_count++;
@@ -45,8 +44,7 @@ class _RebuildTestState : public State<RebuildTest>
                             Logger::of(self->context)->writeLine("RebuildTest timer cancel");
                         }
                     });
-            },
-            Duration(1000));
+            });
     }
 
     void dispose() override
