@@ -53,3 +53,6 @@ target_link_libraries(test_widget_root_inherited_widget async_runtime)
 
 add_executable(test_widget_value_listenable_builder test/test_widget/value_listenable_builder.cpp)
 target_link_libraries(test_widget_value_listenable_builder async_runtime)
+
+add_executable(test_widget_future_builder test/test_widget/future_builder.cpp)
+target_link_libraries(test_widget_future_builder async_runtime)
