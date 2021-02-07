@@ -37,6 +37,7 @@ class _MyWidgetState : public State<MyWidget>
                 {
                     self->_timer->cancel();
                     debug_print("Timer cancel");
+                    RootInheritedWidget::of(self->context)->requestExit();
                     return;
                 }
                 self->setState([self] { self->_count++; });
