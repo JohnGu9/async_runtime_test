@@ -36,11 +36,11 @@ struct _MyWidgetState : State<MyWidget>
     Object::Ref<Widget> build(Object::Ref<BuildContext>) override
     {
         return Object::create<ValueListenableBuilder<bool>>(
+            _notifier,
             [](Object::Ref<BuildContext> context, bool value, Object::Ref<Widget> child) {
                 debug_print("current value: " << value);
                 return LeafWidget::factory();
-            },
-            _notifier);
+            });
     }
 };
 

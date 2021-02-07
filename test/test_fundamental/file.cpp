@@ -9,9 +9,9 @@ struct _MyWidgetState : State<MyWidget>
 {
     using super = State<MyWidget>;
     Object::Ref<File> _file;
-    Object::Ref<Timer> _timer;
 
-    Function<void()> _readWriteFile = [this] {
+    void _readWriteFile()
+    {
         auto self = Object::cast<>(this);
         self->_file->exists()
             ->than<void>([self](const bool &exists) {
@@ -50,12 +50,11 @@ struct _MyWidgetState : State<MyWidget>
         super::initState();
         debug_print("initState");
         _file = File::fromPath(this, "app.log");
-        _timer = Timer::delay(this, Duration::fromMilliseconds(1000), _readWriteFile);
+        _readWriteFile();
     }
 
     void dispose() override
     {
-        _timer->dispose();
         _file->dispose();
         super::dispose();
     }
