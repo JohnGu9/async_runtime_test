@@ -1,6 +1,6 @@
 #include <chrono>
 #include <ctime>
-#include "async_runtime/basic/lock.h"
+#include "async_runtime/object.h"
 #include "async_runtime/fundamental/async.h"
 
 static inline void currentTime()

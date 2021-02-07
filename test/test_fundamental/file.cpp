@@ -25,22 +25,22 @@ struct _MyWidgetState : State<MyWidget>
                 self->_file->overwrite("This is app log. \n")
                     ->than([self] {
                         debug_print("File readWordAsStream: ");
-                        self->_file->readWordAsStream()
-                            ->listen([self](String word) { debug_print(word); })
-                            ->onClose([self] {
-                                debug_print("File stream close ");
-                                debug_print("File read: ");
-                                self->_file->read()
-                                    ->than<void>([self](const String &value) {
-                                        debug_print(value);
-                                        debug_print("To remove file: " << self->_file->path);
-                                        self->_file->remove()->than<void>(
-                                            [self](const int &code) {
-                                                debug_print("Remove code: " << code);
-                                                RootInheritedWidget::of(self->context)->requestExit();
-                                            });
-                                    });
-                            });
+                        auto subscription = self->_file->readWordAsStream()
+                                                ->listen([self](String word) { debug_print(word); });
+                        subscription->stream->onClose([self] {
+                            debug_print("File stream close ");
+                            debug_print("File read: ");
+                            self->_file->read()
+                                ->than<void>([self](const String &value) {
+                                    debug_print(value);
+                                    debug_print("To remove file: " << self->_file->path);
+                                    self->_file->remove()->than<void>(
+                                        [self](const int &code) {
+                                            debug_print("Remove code: " << code);
+                                            RootInheritedWidget::of(self->context)->requestExit();
+                                        });
+                                });
+                        });
                     });
             });
     };
