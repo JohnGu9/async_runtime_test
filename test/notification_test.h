@@ -36,16 +36,13 @@ class __BubbleNotificationState : public State<_BubbleNotification>
     {
         super::initState();
         auto self = Object::cast<>(this);
-        _timer = Timer::periodic(
-            this,
-            Duration(2000),
-            [self] {
-                if (self->mounted)
-                {
-                    Logger::of(self->context)->writeLine("Start testing bubble message");
-                    MessageNotification::fromString("Bubble message test")->dispatch(self->context);
-                }
-            });
+        _timer = Timer::periodic(this, Duration(2000), [self] {
+            if (self->mounted)
+            {
+                Logger::of(self->context)->writeLine("Start testing bubble message");
+                MessageNotification::fromString("Bubble message test")->dispatch(self->context);
+            }
+        });
     }
 
     void dispose() override

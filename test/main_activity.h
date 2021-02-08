@@ -16,6 +16,6 @@ class MainActivity : public StatelessWidget
                 Object::create<NotificationTest>(),                                         // NotificationTest
                 Logger::file("rebuild_test.log", Object::create<RebuildTest>()),            // RebuildTest
             })                                                                              // MultiChildWidget
-        );
+        );                                                                                  // Logger
     }
 };

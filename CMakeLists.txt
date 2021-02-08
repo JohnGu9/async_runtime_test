@@ -48,6 +48,9 @@ target_link_libraries(test_widget_stateful_widget async_runtime)
 add_executable(test_widget_multi_child_widget test/test_widget/multi_child_widget.cpp)
 target_link_libraries(test_widget_multi_child_widget async_runtime)
 
+add_executable(test_widget_named_multi_child_widget test/test_widget/named_multi_child_widget.cpp)
+target_link_libraries(test_widget_named_multi_child_widget async_runtime)
+
 add_executable(test_widget_root_inherited_widget test/test_widget/root_inherited_widget.cpp)
 target_link_libraries(test_widget_root_inherited_widget async_runtime)
 
