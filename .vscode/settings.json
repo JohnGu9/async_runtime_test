@@ -83,6 +83,13 @@
         "filesystem": "cpp",
         "memory_resource": "cpp",
         "unordered_set": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "__tree": "cpp",
+        "csignal": "cpp",
+        "map": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "regex": "cpp",
+        "set": "cpp"
     }
 }

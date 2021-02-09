@@ -32,7 +32,7 @@ class _PeriodicOutputState : public State<PeriodicOutput>
 
     void dispose() override
     {
-        _timer->dispose();
+        _timer->cancel();
         debug_print("dispose");
         super::dispose();
     }

@@ -47,7 +47,7 @@ class __BubbleNotificationState : public State<_BubbleNotification>
 
     void dispose() override
     {
-        _timer->dispose();
+        _timer->cancel();
         super::dispose();
     }
 

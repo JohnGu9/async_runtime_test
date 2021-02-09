@@ -41,7 +41,7 @@ class _MainActivityState : public State<MainActivity>
     void dispose() override
     {
         Logger::of(context)->writeLine("_MainActivityState::dispose");
-        this->_timer->dispose();
+        this->_timer->cancel();
         super::dispose();
     }
 

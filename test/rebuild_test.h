@@ -19,7 +19,7 @@ class RebuildTest : public StatefulWidget
 {
 public:
     RebuildTest(Object::Ref<Key> key = nullptr) : StatefulWidget(key) {}
-    Object::Ref<State<>> createState() override;
+    Object::Ref<State<> > createState() override;
 };
 
 class _RebuildTestState : public State<RebuildTest>
@@ -48,7 +48,7 @@ class _RebuildTestState : public State<RebuildTest>
 
     void dispose() override
     {
-        _timer->dispose();
+        _timer->cancel();
         super::dispose();
     }
 
@@ -58,7 +58,7 @@ class _RebuildTestState : public State<RebuildTest>
     }
 };
 
-inline Object::Ref<State<>> RebuildTest::createState()
+inline Object::Ref<State<> > RebuildTest::createState()
 {
     return Object::create<_RebuildTestState>();
 }

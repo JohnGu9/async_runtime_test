@@ -29,7 +29,7 @@ struct _MyWidgetState : State<MyWidget>
 
     void dispose() override
     {
-        _timer->dispose();
+        _timer->cancel();
         super::dispose();
     }
 

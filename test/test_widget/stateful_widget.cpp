@@ -46,7 +46,7 @@ class _MyWidgetState : public State<MyWidget>
 
     void dispose() override
     {
-        _timer->dispose();
+        _timer->cancel();
         super::dispose();
     }
 
