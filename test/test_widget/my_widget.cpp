@@ -1,4 +1,5 @@
 #include "../main_activity.h"
+#include "async_runtime/elements/root_element.h"
 
 int main()
 {
