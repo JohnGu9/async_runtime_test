@@ -3,7 +3,7 @@
 
 int main()
 {
-    Object::Ref<RootElement> root = Object::create<RootElement>(Object::create<MainActivity>());
+    ref<RootElement> root = Object::create<RootElement>(Object::create<MainActivity>());
     root->attach();
 
     std::this_thread::sleep_for(std::chrono::seconds(2));

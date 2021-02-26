@@ -8,7 +8,7 @@ public:
     _ChildWidget(const int count) : count(count) {}
     const int count;
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext> context) override
+    ref<Widget> build(ref<BuildContext> context) override
     {
         Logger::of(context)->writeLine("_ChildWidget::build on " + std::to_string(count));
         return LeafWidget::factory();
@@ -18,15 +18,15 @@ public:
 class RebuildTest : public StatefulWidget
 {
 public:
-    RebuildTest(Object::Ref<Key> key = nullptr) : StatefulWidget(key) {}
-    Object::Ref<State<> > createState() override;
+    RebuildTest(ref<Key> key = nullptr) : StatefulWidget(key) {}
+    ref<State<> > createState() override;
 };
 
 class _RebuildTestState : public State<RebuildTest>
 {
     using super = State<RebuildTest>;
     int _count;
-    Object::Ref<Timer> _timer;
+    ref<Timer> _timer;
 
     void initState() override
     {
@@ -52,13 +52,13 @@ class _RebuildTestState : public State<RebuildTest>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<_ChildWidget>(_count);
     }
 };
 
-inline Object::Ref<State<> > RebuildTest::createState()
+inline ref<State<> > RebuildTest::createState()
 {
     return Object::create<_RebuildTestState>();
 }

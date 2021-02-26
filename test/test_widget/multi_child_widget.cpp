@@ -2,20 +2,20 @@
 
 class MyWidget : public StatefulWidget
 {
-    Object::Ref<State<>> createState() override;
+    ref<State<>> createState() override;
 };
 
 class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
 
-    static Object::Ref<Widget> onChildBuild(Object::Ref<BuildContext> context)
+    static ref<Widget> onChildBuild(ref<BuildContext> context)
     {
         debug_print("onChildBuild");
         return LeafWidget::factory();
     };
 
-    List<Object::Ref<Widget>> children;
+    List<ref<Widget>> children;
 
     void initState() override
     {
@@ -37,13 +37,13 @@ class _MyWidgetState : public State<MyWidget>
         this->setState([self] { self->children->push_back(Object::create<Builder>(onChildBuild)); });
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext> context) override
+    ref<Widget> build(ref<BuildContext> context) override
     {
         return Object::create<MultiChildWidget>(this->children);
     }
 };
 
-inline Object::Ref<State<>> MyWidget::createState()
+inline ref<State<>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

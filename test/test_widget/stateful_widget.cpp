@@ -3,7 +3,7 @@
 class Child : public StatelessWidget
 {
     int count;
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         debug_print("Child count is " << count);
         return LeafWidget::factory();
@@ -15,14 +15,14 @@ public:
 
 class MyWidget : public StatefulWidget
 {
-    Object::Ref<State<>> createState() override;
+    ref<State<>> createState() override;
 };
 
 class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
     int _count;
-    Object::Ref<Timer> _timer;
+    ref<Timer> _timer;
 
     void initState() override
     {
@@ -50,13 +50,13 @@ class _MyWidgetState : public State<MyWidget>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<Child>(_count);
     }
 };
 
-Object::Ref<State<>> MyWidget::createState()
+ref<State<>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

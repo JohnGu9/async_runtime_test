@@ -5,18 +5,18 @@
 class PeriodicOutput : public StatefulWidget
 {
 public:
-    PeriodicOutput(Object::Ref<Widget> child, Logger::Handler handler, Object::Ref<Key> key = nullptr)
+    PeriodicOutput(ref<Widget> child, Logger::Handler handler, ref<Key> key = nullptr)
         : child(child), handler(handler), StatefulWidget(key) {}
 
-    Object::Ref<Widget> child;
+    ref<Widget> child;
     Logger::Handler handler;
-    Object::Ref<State<>> createState() override;
+    ref<State<>> createState() override;
 };
 
 class _PeriodicOutputState : public State<PeriodicOutput>
 {
     using super = State<PeriodicOutput>;
-    Object::Ref<Timer> _timer;
+    ref<Timer> _timer;
 
     void initState() override
     {
@@ -37,13 +37,13 @@ class _PeriodicOutputState : public State<PeriodicOutput>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return this->getWidget()->child;
     }
 };
 
-inline Object::Ref<State<>> PeriodicOutput::createState()
+inline ref<State<>> PeriodicOutput::createState()
 {
     return Object::create<_PeriodicOutputState>();
 }

@@ -7,7 +7,7 @@
 
 class MainActivity : public StatelessWidget
 {
-    Object::Ref<Widget> build(Object::Ref<BuildContext> context) override
+    ref<Widget> build(ref<BuildContext> context) override
     {
         return Logger::file(
             "app.log",

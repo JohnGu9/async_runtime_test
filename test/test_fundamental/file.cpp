@@ -2,13 +2,13 @@
 
 struct MyWidget : StatefulWidget
 {
-    Object::Ref<State<StatefulWidget>> createState() override;
+    ref<State<StatefulWidget>> createState() override;
 };
 
 struct _MyWidgetState : State<MyWidget>
 {
     using super = State<MyWidget>;
-    Object::Ref<File> _file;
+    ref<File> _file;
 
     void _readWriteFile()
     {
@@ -59,13 +59,13 @@ struct _MyWidgetState : State<MyWidget>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return LeafWidget::factory();
     }
 };
 
-inline Object::Ref<State<StatefulWidget>> MyWidget::createState()
+inline ref<State<StatefulWidget>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

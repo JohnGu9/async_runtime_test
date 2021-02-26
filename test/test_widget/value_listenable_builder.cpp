@@ -2,14 +2,14 @@
 
 struct MyWidget : StatefulWidget
 {
-    Object::Ref<State<>> createState() override;
+    ref<State<>> createState() override;
 };
 
 struct _MyWidgetState : State<MyWidget>
 {
     using super = ::State<MyWidget>;
-    Object::Ref<Timer> _timer;
-    Object::Ref<ValueNotifier<bool>> _notifier;
+    ref<Timer> _timer;
+    ref<ValueNotifier<bool>> _notifier;
 
     void initState() override
     {
@@ -33,18 +33,18 @@ struct _MyWidgetState : State<MyWidget>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<ValueListenableBuilder<bool>>(
             _notifier,
-            [](Object::Ref<BuildContext> context, bool value, Object::Ref<Widget> child) {
+            [](ref<BuildContext> context, bool value, ref<Widget> child) {
                 debug_print("current value: " << value);
                 return LeafWidget::factory();
             });
     }
 };
 
-Object::Ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
+ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
 
 int main()
 {

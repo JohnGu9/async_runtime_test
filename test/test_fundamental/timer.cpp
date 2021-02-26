@@ -2,19 +2,19 @@
 
 class MainActivity : public StatefulWidget
 {
-    virtual Object::Ref<State<StatefulWidget>> createState() override;
+    virtual ref<State<StatefulWidget>> createState() override;
 };
 
 class _MainActivityState : public State<MainActivity>
 {
     using super = State<MainActivity>;
-    Object::Ref<Timer> _timer;
+    ref<Timer> _timer;
     size_t _count = 0;
 
     void initState() override
     {
         super::initState();
-        Object::Ref<_MainActivityState> self = Object::cast<>(this);
+        ref<_MainActivityState> self = Object::cast<>(this);
         this->_timer = Timer::periodic(
             this, Duration(1000), [self] {
                 if (self->mounted)
@@ -24,7 +24,7 @@ class _MainActivityState : public State<MainActivity>
             });
     }
 
-    void didWidgetUpdated(Object::Ref<StatefulWidget> oldWidget) override
+    void didWidgetUpdated(ref<StatefulWidget> oldWidget) override
     {
         Logger::of(context)->writeLine("_MainActivityState::didWidgetUpdated");
         super::didWidgetUpdated(oldWidget);
@@ -45,14 +45,14 @@ class _MainActivityState : public State<MainActivity>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext> context) override
+    ref<Widget> build(ref<BuildContext> context) override
     {
         Logger::of(context)->writeLine("_MainActivityState::build");
         return LeafWidget::factory();
     }
 };
 
-inline Object::Ref<State<StatefulWidget>> MainActivity::createState()
+inline ref<State<StatefulWidget>> MainActivity::createState()
 {
     return Object::create<_MainActivityState>();
 }

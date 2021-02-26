@@ -12,8 +12,8 @@ static inline void currentTime()
 
 int main()
 {
-    Object::Ref<ThreadPool> threadPool = Object::create<ThreadPool>(6);
-    Object::Ref<Lock> lock = Object::create<Lock>();
+    ref<ThreadPool> threadPool = Object::create<ThreadPool>(6);
+    ref<Lock> lock = Object::create<Lock>();
     threadPool->post([lock] {
         auto sharedLock = lock->sharedLock(); // done at 0s
         std::cout << "Lock::SharedLock#0 for 3 second. Begin at ";

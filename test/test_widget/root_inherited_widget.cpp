@@ -2,13 +2,13 @@
 
 struct MyWidget : StatefulWidget
 {
-    Object::Ref<State<>> createState() override;
+    ref<State<>> createState() override;
 };
 
 struct _MyWidgetState : State<MyWidget>
 {
     using super = ::State<MyWidget>;
-    Object::Ref<Timer> _timer;
+    ref<Timer> _timer;
 
     void _requestExit()
     {
@@ -33,13 +33,13 @@ struct _MyWidgetState : State<MyWidget>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return LeafWidget::factory();
     }
 };
 
-Object::Ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
+ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
 
 int main()
 {

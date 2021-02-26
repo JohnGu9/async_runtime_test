@@ -4,13 +4,13 @@ class MyWidget : public StatefulWidget
 {
 public:
     MyWidget() {}
-    Object::Ref<State<>> createState() override;
+    ref<State<>> createState() override;
 };
 
 class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
-    Object::Ref<Completer<int>> _completer;
+    ref<Completer<int>> _completer;
 
     void initState() override
     {
@@ -27,11 +27,11 @@ class _MyWidgetState : public State<MyWidget>
         });
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<FutureBuilder<int>>(
             _completer->future,
-            [](Object::Ref<BuildContext>, Object::Ref<AsyncSnapshot<int>> snapshot) {
+            [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) {
                 debug_print(AsyncSnapshot<>::ConnectionState::toString(snapshot->state));
                 if (snapshot->hasData())
                 {
@@ -42,7 +42,7 @@ class _MyWidgetState : public State<MyWidget>
     }
 };
 
-Object::Ref<State<>> MyWidget::createState()
+ref<State<>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

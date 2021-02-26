@@ -4,7 +4,7 @@ struct Child : StatefulWidget
 {
     Child(String name) : name(name) {}
     String name;
-    Object::Ref<State<>> createState() override;
+    ref<State<>> createState() override;
 };
 
 struct _ChildState : State<Child>
@@ -23,20 +23,20 @@ struct _ChildState : State<Child>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return LeafWidget::factory();
     }
 };
 
-inline Object::Ref<State<>> Child::createState()
+inline ref<State<>> Child::createState()
 {
     return Object::create<_ChildState>();
 }
 
 class MyWidget : public StatefulWidget
 {
-    Object::Ref<State<>> createState() override;
+    ref<State<>> createState() override;
 };
 
 class _MyWidgetState : public State<MyWidget>
@@ -44,8 +44,8 @@ class _MyWidgetState : public State<MyWidget>
     using super = State<MyWidget>;
 
     int _count;
-    Map<String, Object::Ref<Widget>> _children;
-    Object::Ref<Timer> _timer;
+    Map<String, ref<Widget>> _children;
+    ref<Timer> _timer;
 
     void initState() override
     {
@@ -82,13 +82,13 @@ class _MyWidgetState : public State<MyWidget>
         super::dispose();
     }
 
-    Object::Ref<Widget> build(Object::Ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext>) override
     {
         return NamedMultiChildWidget::fromChildren(this->_children);
     }
 };
 
-inline Object::Ref<State<>> MyWidget::createState()
+inline ref<State<>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }
