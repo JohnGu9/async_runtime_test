@@ -14,8 +14,8 @@ class _MainActivityState : public State<MainActivity>
     void initState() override
     {
         super::initState();
-        ref<_MainActivityState> self = Object::cast<>(this);
-        this->_timer = Timer::periodic(
+        auto self = Object::cast<>(this);
+        _timer = Timer::periodic(
             this, Duration(1000), [self] {
                 if (self->mounted)
                     Logger::of(self->context)->writeLine("Timer callback");
@@ -41,7 +41,7 @@ class _MainActivityState : public State<MainActivity>
     void dispose() override
     {
         Logger::of(context)->writeLine("_MainActivityState::dispose");
-        this->_timer->cancel();
+        _timer->cancel();
         super::dispose();
     }
 

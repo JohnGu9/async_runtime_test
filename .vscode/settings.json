@@ -1,5 +1,6 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.cppStandard": "c++11",
     "files.associations": {
         "future": "cpp",
         "__functional_03": "cpp",
