@@ -8,14 +8,14 @@ struct MyWidget : StatefulWidget
 struct _MyWidgetState : State<MyWidget>
 {
     using super = ::State<MyWidget>;
-    ref<Timer> _timer;
+    lateref<Timer> _timer;
 
     void _requestExit()
     {
         if (this->mounted)
         {
             Logger::of(context)->writeLine("MyWidget request to exit");
-            RootInheritedWidget::of(context)->requestExit();
+            RootInheritedWidget::of(context)->exit();
         }
     }
 

@@ -5,7 +5,7 @@
 class PeriodicOutput : public StatefulWidget
 {
 public:
-    PeriodicOutput(ref<Widget> child, Logger::Handler handler, ref<Key> key = nullptr)
+    PeriodicOutput(ref<Widget> child, Logger::Handler handler, option<Key> key = nullptr)
         : child(child), handler(handler), StatefulWidget(key) {}
 
     ref<Widget> child;
@@ -16,7 +16,7 @@ public:
 class _PeriodicOutputState : public State<PeriodicOutput>
 {
     using super = State<PeriodicOutput>;
-    ref<Timer> _timer;
+    lateref<Timer> _timer;
 
     void initState() override
     {

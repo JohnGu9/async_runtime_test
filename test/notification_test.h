@@ -16,21 +16,21 @@ public:
 class NotificationTest : public StatelessWidget
 {
 public:
-    NotificationTest(ref<Key> key = nullptr) : StatelessWidget(key) {}
+    NotificationTest(option<Key> key = nullptr) : StatelessWidget(key) {}
     ref<Widget> build(ref<BuildContext> context) override;
 };
 
 class _BubbleNotification : public StatefulWidget
 {
 public:
-    _BubbleNotification(ref<Key> key = nullptr) : StatefulWidget(key) {}
+    _BubbleNotification(option<Key> key = nullptr) : StatefulWidget(key) {}
     ref<State<>> createState() override;
 };
 
 class __BubbleNotificationState : public State<_BubbleNotification>
 {
     using super = State<_BubbleNotification>;
-    ref<Timer> _timer;
+    lateref<Timer> _timer;
 
     void initState() override
     {
@@ -67,7 +67,8 @@ inline ref<Widget> NotificationTest::build(ref<BuildContext> context)
     return Object::create<NotificationListener>(
         Object::create<_BubbleNotification>(),
         [context](ref<Notification> notification) {
-            if (ref<MessageNotification> messageNotification = notification->cast<MessageNotification>())
+            lateref<MessageNotification> messageNotification;
+            if (notification->cast<MessageNotification>().isNotNull(messageNotification))
             {
                 Logger::of(context)->writeLine(messageNotification->message);
                 return true;

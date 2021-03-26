@@ -22,7 +22,7 @@ class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
     int _count;
-    ref<Timer> _timer;
+    lateref<Timer> _timer;
 
     void initState() override
     {
@@ -37,7 +37,7 @@ class _MyWidgetState : public State<MyWidget>
                 {
                     self->_timer->cancel();
                     debug_print("Timer cancel");
-                    RootInheritedWidget::of(self->context)->requestExit();
+                    RootInheritedWidget::of(self->context)->exit();
                     return;
                 }
                 self->setState([self] { self->_count++; });

@@ -8,8 +8,8 @@ struct MyWidget : StatefulWidget
 struct _MyWidgetState : State<MyWidget>
 {
     using super = ::State<MyWidget>;
-    ref<Timer> _timer;
-    ref<ValueNotifier<bool>> _notifier;
+    lateref<Timer> _timer;
+    lateref<ValueNotifier<bool>> _notifier;
 
     void initState() override
     {
@@ -22,7 +22,7 @@ struct _MyWidgetState : State<MyWidget>
                 if (self->_notifier->getValue() == false)
                 {
                     debug_print("Request Exit");
-                    RootInheritedWidget::of(self->context)->requestExit();
+                    RootInheritedWidget::of(self->context)->exit();
                 }
             });
     }
@@ -37,7 +37,7 @@ struct _MyWidgetState : State<MyWidget>
     {
         return Object::create<ValueListenableBuilder<bool>>(
             _notifier,
-            [](ref<BuildContext> context, bool value, ref<Widget> child) {
+            [](option<BuildContext> context, bool value, option<Widget> child) {
                 debug_print("current value: " << value);
                 return LeafWidget::factory();
             });

@@ -8,7 +8,7 @@ struct MyWidget : StatefulWidget
 struct _MyWidgetState : State<MyWidget>
 {
     using super = State<MyWidget>;
-    ref<File> _file;
+    lateref<File> _file;
 
     void _readWriteFile()
     {
@@ -37,7 +37,7 @@ struct _MyWidgetState : State<MyWidget>
                                     self->_file->remove()->than<void>(
                                         [self](const int &code) {
                                             debug_print("Remove code: " << code);
-                                            RootInheritedWidget::of(self->context)->requestExit();
+                                            RootInheritedWidget::of(self->context)->exit();
                                         });
                                 });
                         });

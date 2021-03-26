@@ -8,7 +8,7 @@ class MainActivity : public StatefulWidget
 class _MainActivityState : public State<MainActivity>
 {
     using super = State<MainActivity>;
-    ref<Timer> _timer;
+    lateref<Timer> _timer;
     size_t _count = 0;
 
     void initState() override
@@ -20,7 +20,7 @@ class _MainActivityState : public State<MainActivity>
                 if (self->mounted)
                     Logger::of(self->context)->writeLine("Timer callback");
                 if (++self->_count > 5)
-                    RootInheritedWidget::of(self->context)->requestExit();
+                    RootInheritedWidget::of(self->context)->exit();
             });
     }
 

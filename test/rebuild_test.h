@@ -18,7 +18,7 @@ public:
 class RebuildTest : public StatefulWidget
 {
 public:
-    RebuildTest(ref<Key> key = nullptr) : StatefulWidget(key) {}
+    RebuildTest(option<Key> key = nullptr) : StatefulWidget(key) {}
     ref<State<> > createState() override;
 };
 
@@ -26,7 +26,7 @@ class _RebuildTestState : public State<RebuildTest>
 {
     using super = State<RebuildTest>;
     int _count;
-    ref<Timer> _timer;
+    lateref<Timer> _timer;
 
     void initState() override
     {

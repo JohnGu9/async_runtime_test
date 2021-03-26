@@ -10,7 +10,7 @@ public:
 class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
-    ref<Completer<int>> _completer;
+    lateref<Completer<int>> _completer;
 
     void initState() override
     {
@@ -19,7 +19,7 @@ class _MyWidgetState : public State<MyWidget>
         _completer = Object::create<Completer<int>>(this);
         _completer->future->than([self, this] {
             Future<void>::delay(this, Duration(1000), [self, this] {
-                RootInheritedWidget::of(this->context)->requestExit();
+                RootInheritedWidget::of(this->context)->exit();
             });
         });
         auto timer = Timer::delay(this, Duration(2000), [self] {

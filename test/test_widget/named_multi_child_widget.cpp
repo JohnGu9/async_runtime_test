@@ -44,8 +44,8 @@ class _MyWidgetState : public State<MyWidget>
     using super = State<MyWidget>;
 
     int _count;
-    Map<String, ref<Widget>> _children;
-    ref<Timer> _timer;
+    Map<String, lateref<Widget>> _children;
+    lateref<Timer> _timer;
 
     void initState() override
     {
@@ -60,7 +60,7 @@ class _MyWidgetState : public State<MyWidget>
         _timer = Timer::periodic(this, Duration(1000), [self] {
             if (self->_count > 10)
             {
-                RootInheritedWidget::of(self->context)->requestExit();
+                RootInheritedWidget::of(self->context)->exit();
                 return;
             }
             self->setState([self] {
