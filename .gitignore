@@ -1,2 +1,4 @@
 build
 .VSCodeCounter
+.DS_Store
+._*
