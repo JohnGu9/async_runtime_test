@@ -22,7 +22,7 @@ struct _MyWidgetState : State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = Object::cast<>(this);
+        auto self = self();
         _timer = Timer::delay(
             this, Duration(2000), [self] { self->_requestExit(); });
     }

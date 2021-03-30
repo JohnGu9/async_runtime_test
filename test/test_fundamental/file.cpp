@@ -12,7 +12,7 @@ struct _MyWidgetState : State<MyWidget>
 
     void _readWriteFile()
     {
-        auto self = Object::cast<>(this);
+        auto self = self();
         self->_file->exists()
             ->than<void>([self](const bool &exists) {
                 debug_print("File exists: " << exists);
@@ -56,6 +56,7 @@ struct _MyWidgetState : State<MyWidget>
     void dispose() override
     {
         _file->dispose();
+        debug_print("dispose");
         super::dispose();
     }
 

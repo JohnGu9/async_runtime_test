@@ -33,7 +33,7 @@ class _MyWidgetState : public State<MyWidget>
 
     void addChild()
     {
-        auto self = Object::cast<>(this);
+        auto self = self();
         this->setState([self] { self->children->push_back(Object::create<Builder>(onChildBuild)); });
     }
 

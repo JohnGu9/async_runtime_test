@@ -15,7 +15,7 @@ class _MyWidgetState : public State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = Object::cast<>(this);
+        auto self = self();
         _completer = Object::create<Completer<int>>(this);
         _completer->future->than([self, this] {
             Future<void>::delay(this, Duration(1000), [self, this] {

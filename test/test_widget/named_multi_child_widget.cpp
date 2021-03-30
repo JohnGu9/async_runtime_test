@@ -50,7 +50,7 @@ class _MyWidgetState : public State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = Object::cast<>(this);
+        auto self = self();
         _children = {
             {"child0", Object::create<Child>("child0")},
             {"child1", Object::create<Child>("child1")},

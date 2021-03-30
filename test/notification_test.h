@@ -35,7 +35,7 @@ class __BubbleNotificationState : public State<_BubbleNotification>
     void initState() override
     {
         super::initState();
-        auto self = Object::cast<>(this);
+        auto self = self();
         _timer = Timer::periodic(this, Duration(2000), [self] {
             if (self->mounted)
             {

@@ -21,7 +21,7 @@ class _PeriodicOutputState : public State<PeriodicOutput>
     void initState() override
     {
         super::initState();
-        auto self = Object::cast<>(this);
+        auto self = self();
         debug_print("initState");
         _timer = Timer::periodic(
             this, Duration(1000), [self] {
