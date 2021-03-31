@@ -3,7 +3,11 @@ cmake_minimum_required(VERSION 3.10)
 project(async_runtime_test)
 
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
-    ADD_DEFINITIONS(-DDEBUG)
+    if(MSVC)
+        add_compile_definitions(DEBUG)
+    else()    
+        ADD_DEFINITIONS(-DDEBUG)
+    endif()
 endif()
 
 set(CMAKE_CXX_STANDARD 11)

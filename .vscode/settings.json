@@ -91,6 +91,7 @@
         "numeric": "cpp",
         "random": "cpp",
         "regex": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "xutility": "cpp"
     }
 }
