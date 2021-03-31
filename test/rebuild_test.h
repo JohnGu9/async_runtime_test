@@ -19,7 +19,7 @@ class RebuildTest : public StatefulWidget
 {
 public:
     RebuildTest(option<Key> key = nullptr) : StatefulWidget(key) {}
-    ref<State<> > createState() override;
+    ref<State<>> createState() override;
 };
 
 class _RebuildTestState : public State<RebuildTest>
@@ -58,7 +58,7 @@ class _RebuildTestState : public State<RebuildTest>
     }
 };
 
-inline ref<State<> > RebuildTest::createState()
+inline ref<State<>> RebuildTest::createState()
 {
     return Object::create<_RebuildTestState>();
 }
