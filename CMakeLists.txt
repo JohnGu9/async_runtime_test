@@ -9,8 +9,10 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/async_runtime/include) # add include path
-add_subdirectory(async_runtime) # add lib
+# add include path
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/async_runtime/include)
+# add lib
+add_subdirectory(async_runtime)
 
 # test globally
 add_executable(test test/test.cpp)
