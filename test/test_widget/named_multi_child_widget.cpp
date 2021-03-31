@@ -43,7 +43,7 @@ class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
 
-    int _count;
+    size_t _count;
     Map<String, lateref<Widget>> _children;
     lateref<Timer> _timer;
 
