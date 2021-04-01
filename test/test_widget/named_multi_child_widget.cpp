@@ -2,8 +2,8 @@
 
 struct Child : StatefulWidget
 {
-    Child(String name) : name(name) {}
-    String name;
+    Child(ref<String> name) : name(name) {}
+    ref<String> name;
     ref<State<>> createState() override;
 };
 
@@ -44,7 +44,7 @@ class _MyWidgetState : public State<MyWidget>
     using super = State<MyWidget>;
 
     size_t _count;
-    Map<String, lateref<Widget>> _children;
+    Map<ref<String>, lateref<Widget>> _children;
     lateref<Timer> _timer;
 
     void initState() override
@@ -64,7 +64,7 @@ class _MyWidgetState : public State<MyWidget>
                 return;
             }
             self->setState([self] {
-                static const String name = "child";
+                static finalref<String> name = "child";
                 ++self->_count;
                 auto iter = self->_children->find(name + (self->_count - 3));
                 if (iter != self->_children->end())

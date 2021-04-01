@@ -5,12 +5,12 @@
 class MessageNotification : public Notification
 {
 public:
-    static ref<MessageNotification> fromString(String message)
+    static ref<MessageNotification> fromString(ref<String> message)
     {
         return Object::create<MessageNotification>(message);
     }
-    MessageNotification(String message) : message(message) {}
-    String message;
+    MessageNotification(ref<String> message) : message(message) {}
+    ref<String> message;
 };
 
 class NotificationTest : public StatelessWidget
