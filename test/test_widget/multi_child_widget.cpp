@@ -27,14 +27,14 @@ class _MyWidgetState : public State<MyWidget>
 
     void dispose() override
     {
-        this->children->clear();
+        this->children = nullptr;
         super::dispose();
     }
 
     void addChild()
     {
         auto self = self();
-        this->setState([self] { self->children->push_back(Object::create<Builder>(onChildBuild)); });
+        this->setState([self] { self->children->emplace_back(Object::create<Builder>(onChildBuild)); });
     }
 
     ref<Widget> build(ref<BuildContext> context) override
