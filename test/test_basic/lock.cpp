@@ -1,13 +1,19 @@
 #include <chrono>
 #include <ctime>
+#include <iostream>
+#include <iomanip>
 #include "async_runtime/object.h"
 #include "async_runtime/fundamental/async.h"
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#pragma warning(disable : 4996)
+#endif
+
 static inline void currentTime()
 {
-    using namespace std;
-    auto timenow = chrono::system_clock::to_time_t(chrono::system_clock::now());
-    cout << ctime(&timenow) << endl;
+
+    const auto timenow = std::time(nullptr);
+    std::cout << std::ctime(&timenow) << std::endl;
 }
 
 int main()
