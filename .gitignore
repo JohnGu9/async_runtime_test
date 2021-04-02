@@ -1,4 +1,9 @@
 build
 .VSCodeCounter
-.DS_Store
-._*
+*.DS_Store
+*._*
+
+# for Visual Studio
+out
+.vs
+*CMakeSettings.json
