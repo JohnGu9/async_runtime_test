@@ -43,8 +43,8 @@ target_link_libraries(test_fundamental_timer async_runtime)
 add_executable(test_fundamental_file test/test_fundamental/file.cpp)
 target_link_libraries(test_fundamental_file async_runtime)
 
-add_executable(test_fundamental_http_client test/test_fundamental/http_client.cpp)
-target_link_libraries(test_fundamental_http_client async_runtime)
+add_executable(test_fundamental_http test/test_fundamental/http.cpp)
+target_link_libraries(test_fundamental_http async_runtime)
 
 # widget
 add_executable(test_widget_my_widget test/test_widget/my_widget.cpp)
