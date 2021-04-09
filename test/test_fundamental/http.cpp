@@ -22,6 +22,9 @@ class _HttpTestState : public State<HttpTest>
         super::initState();
         _server = Object::create<Http::Server>(this);
         _server->onGet(pattern, [](const Http::Request &request, Http::Response &response) {
+            debug_print("HttpServer" << std::endl
+                                     << "Body: Hello World!" << std::endl
+                                     << "Content-Type: text/plain" << std::endl);
             response.set_content("Hello World!", "text/plain");
         });
         _server->listen(localhost, port);
@@ -61,16 +64,18 @@ class _HttpClientTestState : public State<HttpClientTest>
         _client->get(widget->pattern)
             // async api Future::than
             ->than<void>([this](const ref<Http::Client::Result> &res) {
-                debug_print("Get result: " << std::endl
-                                           << "Error: " << res->errorString()
-                                           << std::endl);
+                assert(res->error == httplib::Success);
+                debug_print("Http Client: " << std::endl
+                                            << "Error: " << res->errorString()
+                                            << std::endl);
                 if (res->response != nullptr)
                 {
                     debug_print("HttpResponse" << std::endl
                                                << "HttpStatus: " << res->response->status << std::endl
                                                << "HttpVersion: " << res->response->version << std::endl
                                                << "HttpLocation: " << res->response->location << std::endl
-                                               << "HttpBody: " << res->response->body << std::endl);
+                                               << "HttpBody: " << res->response->body << std::endl
+                                               << "Content-Type: " << res->response->get_header_value("Content-Type") << std::endl);
                 }
                 else
                 {
