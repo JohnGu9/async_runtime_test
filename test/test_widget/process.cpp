@@ -15,7 +15,7 @@ struct _MyWidgetState : State<MyWidget>
         if (this->mounted)
         {
             Logger::of(context)->writeLine("MyWidget request to exit");
-            RootInheritedWidget::of(context)->exit();
+            Process::of(context)->exit();
         }
     }
 

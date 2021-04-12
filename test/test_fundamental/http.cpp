@@ -14,7 +14,6 @@ static finalref<String> localhost = "localhost";
 class _HttpTestState : public State<HttpTest>
 {
     using super = State<HttpTest>;
-
     lateref<Http::Server> _server;
 
     void initState() override
@@ -22,9 +21,9 @@ class _HttpTestState : public State<HttpTest>
         super::initState();
         _server = Object::create<Http::Server>(this);
         _server->onGet(pattern, [](const Http::Request &request, Http::Response &response) {
-            debug_print("HttpServer" << std::endl
-                                     << "Body: Hello World!" << std::endl
-                                     << "Content-Type: text/plain" << std::endl);
+            debug_print("HttpServer Running on thread: " << ThreadPool::thisThreadName << std::endl
+                                                         << "Body: Hello World!" << std::endl
+                                                         << "Content-Type: text/plain" << std::endl);
             response.set_content("Hello World!", "text/plain");
         });
         _server->listen(localhost, port);
@@ -38,6 +37,11 @@ class _HttpTestState : public State<HttpTest>
 
     ref<Widget> build(ref<BuildContext>) override;
 };
+
+inline ref<State<>> HttpTest::createState()
+{
+    return Object::create<_HttpTestState>();
+}
 
 class HttpClientTest : public StatefulWidget
 {
@@ -81,7 +85,7 @@ class _HttpClientTestState : public State<HttpClientTest>
                 {
                     debug_print("No HttpResponse" << std::endl);
                 }
-                RootInheritedWidget::of(this->context)->exit();
+                Process::of(this->context)->exit();
             });
     }
 
@@ -100,11 +104,6 @@ class _HttpClientTestState : public State<HttpClientTest>
 inline ref<State<>> HttpClientTest::createState()
 {
     return Object::create<_HttpClientTestState>();
-}
-
-inline ref<State<>> HttpTest::createState()
-{
-    return Object::create<_HttpTestState>();
 }
 
 inline ref<Widget> _HttpTestState::build(ref<BuildContext>)

@@ -60,7 +60,7 @@ class _MyWidgetState : public State<MyWidget>
         _timer = Timer::periodic(this, Duration(1000), [self] {
             if (self->_count > 10)
             {
-                RootInheritedWidget::of(self->context)->exit();
+                Process::of(self->context)->exit();
                 return;
             }
             self->setState([self] {

@@ -20,7 +20,7 @@ class _MainActivityState : public State<MainActivity>
                 if (self->mounted)
                     Logger::of(self->context)->writeLine("Timer callback");
                 if (++self->_count > 5)
-                    RootInheritedWidget::of(self->context)->exit();
+                    Process::of(self->context)->exit();
             });
     }
 

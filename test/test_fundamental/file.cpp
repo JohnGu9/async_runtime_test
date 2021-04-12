@@ -37,7 +37,7 @@ struct _MyWidgetState : State<MyWidget>
                                     self->_file->remove()->than<void>(
                                         [self](const int &code) {
                                             debug_print("Remove code: " << code);
-                                            RootInheritedWidget::of(self->context)->exit();
+                                            Process::of(self->context)->exit();
                                         });
                                 });
                         });
