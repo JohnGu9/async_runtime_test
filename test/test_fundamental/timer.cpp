@@ -17,11 +17,20 @@ class _MainActivityState : public State<MainActivity>
         auto self = self();
         _timer = Timer::periodic(
             this, Duration(1000), [self] {
-                if (self->mounted)
-                    Logger::of(self->context)->writeLine("Timer callback");
                 if (++self->_count > 5)
                     Process::of(self->context)->exit();
+                else if (self->mounted)
+                    Logger::of(self->context)->writeLine("Timer::periodic callback");
             });
+
+        // you can hold no timer reference that you do not want to cancel it.
+        // but be careful for the state life cycle.
+        // check the [mounted] flag making sure state is alive.
+        // if state is not alive, you can't access the context. 
+        Timer::delay(this, Duration(2000), [self] {
+            if (self->mounted)
+                Logger::of(self->context)->writeLine("Timer::delay callback");
+        });
     }
 
     void didWidgetUpdated(ref<StatefulWidget> oldWidget) override
