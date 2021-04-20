@@ -10,6 +10,5 @@ class MyWidget : public StatelessWidget
 
 int main()
 {
-    runApp(Object::create<MyWidget>());
-    return EXIT_SUCCESS;
+    return runApp(Object::create<MyWidget>());
 }

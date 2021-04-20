@@ -3,6 +3,5 @@
 
 int main(int argc, char **args)
 {
-    runApp(Object::create<MainActivity>());
-    return EXIT_SUCCESS;
+    return runApp(Object::create<MainActivity>());
 }

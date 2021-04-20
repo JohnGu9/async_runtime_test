@@ -48,6 +48,5 @@ ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); 
 
 int main()
 {
-    runApp(Object::create<MyWidget>());
-    return EXIT_SUCCESS;
+    return runApp(Object::create<MyWidget>());
 }

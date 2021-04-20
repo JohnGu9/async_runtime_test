@@ -10,21 +10,18 @@ struct _MyWidgetState : State<MyWidget>
     using super = ::State<MyWidget>;
     lateref<Timer> _timer;
 
-    void _requestExit()
-    {
-        if (this->mounted)
-        {
-            Logger::of(context)->writeLine("MyWidget request to exit");
-            Process::of(context)->exit();
-        }
-    }
-
     void initState() override
     {
         super::initState();
         auto self = self();
         _timer = Timer::delay(
-            this, Duration(2000), [self] { self->_requestExit(); });
+            this, Duration(2000), [this, self] {
+                if (this->mounted)
+                {
+                    Logger::of(context)->writeLine("MyWidget request to exit");
+                    Process::of(context)->exit(1);
+                }
+            });
     }
 
     void dispose() override
@@ -43,6 +40,10 @@ ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); 
 
 int main()
 {
-    runApp(Object::create<MyWidget>());
-    return EXIT_SUCCESS;
+    const auto exitCode = runApp(Object::create<MyWidget>());
+    assert(exitCode == 1);
+    std::cout << "exited with code " << exitCode << std::endl;
+    return exitCode;
+    // or directly return like this:
+    // return runApp(Object::create<MyWidget>());
 }

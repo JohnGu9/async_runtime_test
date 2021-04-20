@@ -95,6 +95,5 @@ inline ref<State<>> MyWidget::createState()
 
 int main()
 {
-    runApp(Object::create<MyWidget>());
-    return EXIT_SUCCESS;
+    return runApp(Object::create<MyWidget>());
 }
