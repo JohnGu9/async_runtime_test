@@ -11,7 +11,6 @@
 
 static inline void currentTime()
 {
-
     const auto timenow = std::time(nullptr);
     std::cout << std::ctime(&timenow) << std::endl;
 }

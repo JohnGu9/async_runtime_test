@@ -24,7 +24,7 @@ class _PeriodicOutputState : public State<PeriodicOutput>
         auto self = self();
         debug_print("initState");
         _timer = Timer::periodic(
-            this, Duration(1000), [self] {
+            this, Duration::fromMilliseconds(1000), [self] {
                 if (self->mounted)
                     self->getWidget()->handler->writeLine("Timer callback");
             });

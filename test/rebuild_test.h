@@ -33,7 +33,7 @@ class _RebuildTestState : public State<RebuildTest>
         super::initState();
         auto self = self();
         _count = 0;
-        _timer = Timer::periodic(this, Duration(1000), [self] {
+        _timer = Timer::periodic(this, Duration::fromMilliseconds(1000), [self] {
             if (self->mounted)
                 self->setState([self] {
                     self->_count++;
