@@ -2,7 +2,7 @@
 
 struct MyWidget : StatefulWidget
 {
-    ref<State<StatefulWidget>> createState() override;
+    ref<State<>> createState() override;
 };
 
 struct _MyWidgetState : State<MyWidget>
@@ -12,32 +12,31 @@ struct _MyWidgetState : State<MyWidget>
 
     void _readWriteFile()
     {
-        auto self = self();
-        self->_file->exists()
-            ->than<void>([self](const bool &exists) {
-                debug_print("File exists: " << exists);
+        _file->exists()
+            ->than<void>([this](const bool &exists) {
+                LogInfo("File exists: " << exists);
                 if (exists)
-                    self->_file->size()
-                        ->than<void>([](const size_t &size) { debug_print("File size: " << size); });
+                    _file->size()
+                        ->than<void>([this](const size_t &size) { LogInfo("File size: " << size); });
             })
-            ->than([self] {
-                debug_print("File override ");
-                self->_file->overwrite("This is app log. \n")
-                    ->than([self] {
-                        debug_print("File readWordAsStream: ");
-                        auto subscription = self->_file->readWordAsStream()
-                                                ->listen([self](ref<String> word) { debug_print(word); });
-                        subscription->stream->onClose([self] {
-                            debug_print("File stream close ");
-                            debug_print("File read: ");
-                            self->_file->read()
-                                ->than<void>([self](const ref<String> &value) {
-                                    debug_print(value);
-                                    debug_print("To remove file: " << self->_file->path);
-                                    self->_file->remove()->than<void>(
-                                        [self](const int &code) {
-                                            debug_print("Remove code: " << code);
-                                            Process::of(self->context)->exit();
+            ->than([this] {
+                LogInfo("File override ");
+                _file->overwrite("This is app log. \n")
+                    ->than([this] {
+                        LogInfo("File readWordAsStream: ");
+                        auto subscription = _file->readWordAsStream()
+                                                ->listen([this](ref<String> word) { LogInfo(word); });
+                        subscription->stream->onClose([this] {
+                            LogInfo("File stream close ");
+                            LogInfo("File read: ");
+                            _file->read()
+                                ->than<void>([this](const ref<String> &value) {
+                                    LogInfo(value);
+                                    LogInfo("To remove file: " << _file->path);
+                                    _file->remove()->than<void>(
+                                        [this](const int &code) {
+                                            LogInfo("Remove code: " << code);
+                                            Process::of(context)->exit();
                                         });
                                 });
                         });
@@ -48,7 +47,6 @@ struct _MyWidgetState : State<MyWidget>
     void initState() override
     {
         super::initState();
-        debug_print("initState");
         _file = File::fromPath(this, "app.log");
         _readWriteFile();
     }
@@ -56,7 +54,7 @@ struct _MyWidgetState : State<MyWidget>
     void dispose() override
     {
         _file->dispose();
-        debug_print("dispose");
+        LogInfo("dispose");
         super::dispose();
     }
 

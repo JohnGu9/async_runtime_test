@@ -36,7 +36,7 @@ class __BubbleNotificationState : public State<_BubbleNotification>
     {
         super::initState();
         auto self = self();
-        _timer = Timer::periodic(this, Duration::fromMilliseconds(1000), [self] {
+        _timer = Timer::periodic(this, Duration::fromMilliseconds(1000), [this, self] {
             debug_print("on bubble");
             if (self->mounted)
                 MessageNotification::fromString("Bubble message test")->dispatch(self->context);

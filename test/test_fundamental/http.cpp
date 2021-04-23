@@ -20,10 +20,10 @@ class _HttpTestState : public State<HttpServerTest>
     {
         super::initState();
         _server = Object::create<Http::Server>(this);
-        _server->onGet(pattern, [](const Http::Request &request, Http::Response &response) {
-                   debug_print("HttpServer Running on thread: " << ThreadPool::thisThreadName << std::endl // Http:Server callback will work on state's thread, don't worry about thread problem
-                                                                << "Body: Hello World!" << std::endl
-                                                                << "Content-Type: text/plain" << std::endl);
+        _server->onGet(pattern, [this](const Http::Request &request, Http::Response &response) {
+                   LogInfo("HttpServer Running on thread: " << ThreadPool::thisThreadName << std::endl // Http:Server callback will work on state's thread, don't worry about thread problem
+                                                            << "Body: Hello World!" << std::endl
+                                                            << "Content-Type: text/plain" << std::endl);
                    response.set_content("Hello World!", "text/plain");
                })
             ->onPost("/post", [](const Http::Request &request, Http::Response &response) { response.set_content("onPost", "text/plain"); })
@@ -65,21 +65,21 @@ class _HttpClientTestState : public State<HttpClientTest>
     void onReturn(const ref<Http::Client::Result> &res)
     {
         assert(res->error == httplib::Success);
-        debug_print("Http Client: " << std::endl
-                                    << "Error: " << res->errorString()
-                                    << std::endl);
+        LogInfo("Http Client: " << std::endl
+                                << "Error: " << res->errorString()
+                                << std::endl);
         if (res->response != nullptr)
         {
-            debug_print("HttpResponse" << std::endl
-                                       << "Status: " << res->response->status << std::endl
-                                       << "Version: " << res->response->version << std::endl
-                                       << "Location: " << res->response->location << std::endl
-                                       << "Body: " << res->response->body << std::endl
-                                       << "Content-Type: " << res->response->get_header_value("Content-Type") << std::endl);
+            LogInfo("HttpResponse" << std::endl
+                                   << "Status: " << res->response->status << std::endl
+                                   << "Version: " << res->response->version << std::endl
+                                   << "Location: " << res->response->location << std::endl
+                                   << "Body: " << res->response->body << std::endl
+                                   << "Content-Type: " << res->response->get_header_value("Content-Type") << std::endl);
         }
         else
         {
-            debug_print("No HttpResponse" << std::endl);
+            LogInfo("No HttpResponse" << std::endl);
         }
         Process::of(context)->exit();
     }

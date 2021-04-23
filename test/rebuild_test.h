@@ -10,7 +10,7 @@ public:
 
     ref<Widget> build(ref<BuildContext> context) override
     {
-        Logger::of(context)->writeLine("_ChildWidget::build on " + std::to_string(count));
+        LogInfo("_ChildWidget::build on {}", count);
         return LeafWidget::factory();
     }
 };
@@ -33,14 +33,14 @@ class _RebuildTestState : public State<RebuildTest>
         super::initState();
         auto self = self();
         _count = 0;
-        _timer = Timer::periodic(this, Duration::fromMilliseconds(1000), [self] {
+        _timer = Timer::periodic(this, Duration::fromMilliseconds(1000), [this, self] {
             if (self->mounted)
-                self->setState([self] {
+                self->setState([this, self] {
                     self->_count++;
                     if (self->_count > 5)
                     {
                         self->_timer->cancel();
-                        Logger::of(self->context)->writeLine("RebuildTest timer cancel");
+                        LogInfo("RebuildTest timer cancel");
                     }
                 });
         });
