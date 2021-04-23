@@ -28,14 +28,16 @@ int main()
     ref<String> notReallyNullString = reallyNullString.isNotNullElse([] { return "notReallyNullString"; });
     std::cout << notReallyNullString << std::endl; // it work
 
-    ref<String> formatedString = ref<String>("Hello, {}! It's {} today. Temperature is {} degree. ")->format("Kiddy", "rain", "26");
-    std::cout << formatedString << std::endl;
+    ref<String> formatedString =
+        ref<String>("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ")
+            ->format("Kiddy", "rain", 26, true); // match "{}"
+    std::cout << formatedString << std::endl;    // Hello, Kiddy! It's rain today. Temperature is 26 degree. The answer is true.
 
     formatedString = ref<String>("Hello, {}! It's {} today. Temperature is {} degree. ")->format("Kiddy", "rain"); // less arguments is fine
-    std::cout << formatedString << std::endl;
+    std::cout << formatedString << std::endl;                                                                      // Hello, Kiddy! It's rain today. Temperature is {} degree.
 
-    formatedString = ref<String>("Hello, {}! It's {} today. ")->format("Kiddy", "rain", "26"); // more arguments is fine but with error message on console
-    std::cout << formatedString << std::endl;
+    formatedString = ref<String>("Hello, {}! It's {} today. ")->format("Kiddy", "rain", 26); // more arguments is fine but with error message on console
+    std::cout << formatedString << std::endl;                                                // Hello, Kiddy! It's rain today.
 
     return EXIT_SUCCESS;
 }
