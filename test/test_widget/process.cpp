@@ -18,7 +18,7 @@ struct _MyWidgetState : State<MyWidget>
             this, Duration(2000), [this, self] {
                 if (this->mounted)
                 {
-                    Logger::of(context)->writeLine("MyWidget request to exit");
+                    LogInfo("MyWidget request to exit");
                     Process::of(context)->exit(1);
                 }
             });

@@ -11,7 +11,7 @@ class _MyWidgetState : public State<MyWidget>
 
     static ref<Widget> onChildBuild(ref<BuildContext> context)
     {
-        debug_print("onChildBuild");
+        LogInfo("onChildBuild");
         return LeafWidget::factory();
     };
 

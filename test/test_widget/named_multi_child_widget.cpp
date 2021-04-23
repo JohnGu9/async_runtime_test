@@ -11,15 +11,9 @@ struct _ChildState : State<Child>
 {
     using super = State<Child>;
 
-    void initState() override
-    {
-        super::initState();
-        debug_print("initState " << this->getWidget()->name);
-    }
-
     void dispose() override
     {
-        debug_print("dispose " << this->getWidget()->name);
+        LogInfo("dispose " << this->getWidget()->name);
         super::dispose();
     }
 
@@ -57,21 +51,21 @@ class _MyWidgetState : public State<MyWidget>
             {"child2", Object::create<Child>("child2")},
         };
         _count = _children->size();
-        _timer = Timer::periodic(this, Duration(1000), [self] {
-            if (self->_count > 10)
+        _timer = Timer::periodic(this, Duration(1000), [this, self] {
+            if (_count > 10)
             {
-                Process::of(self->context)->exit();
+                Process::of(context)->exit();
                 return;
             }
-            self->setState([self] {
+            setState([this, self] {
                 static finalref<String> name = "child";
-                ++self->_count;
-                auto iter = self->_children->find(name + (self->_count - 3));
-                if (iter != self->_children->end())
-                    self->_children->erase(iter);
+                ++_count;
+                auto iter = _children->find(name + (_count - 3));
+                if (iter != _children->end())
+                    _children->erase(iter);
                 else
-                    debug_print("Can't find: " << (name + (self->_count - 3)));
-                self->_children[name + self->_count] = Object::create<Child>(name + self->_count);
+                    LogInfo("Can't find: " << (name + (_count - 3)));
+                _children[name + _count] = Object::create<Child>(name + _count);
             });
         });
     }

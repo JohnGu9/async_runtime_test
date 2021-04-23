@@ -3,9 +3,9 @@
 class Child : public StatelessWidget
 {
     int count;
-    ref<Widget> build(ref<BuildContext>) override
+    ref<Widget> build(ref<BuildContext> context) override
     {
-        debug_print("Child count is " << count);
+        LogInfo("Child count is " << count);
         return LeafWidget::factory();
     }
 
@@ -30,13 +30,13 @@ class _MyWidgetState : public State<MyWidget>
         auto self = self();
         _count = 0;
         _timer = Timer::periodic(
-            this, Duration(1000), [self] {
+            this, Duration(1000), [this, self] {
                 if (!self->mounted)
                     return;
                 if (self->_count > 5)
                 {
                     self->_timer->cancel();
-                    debug_print("Timer cancel");
+                    LogInfo("Timer cancel");
                     Process::of(self->context)->exit();
                     return;
                 }

@@ -31,11 +31,11 @@ class _MyWidgetState : public State<MyWidget>
     {
         return Object::create<FutureBuilder<int>>(
             _completer->future,
-            [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) {
-                debug_print(AsyncSnapshot<>::ConnectionState::toString(snapshot->state));
+            [this](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) {
+                LogInfo(AsyncSnapshot<>::ConnectionState::toString(snapshot->state));
                 if (snapshot->hasData())
                 {
-                    debug_print(snapshot->data);
+                    LogInfo(snapshot->data);
                 }
                 return LeafWidget::factory();
             });

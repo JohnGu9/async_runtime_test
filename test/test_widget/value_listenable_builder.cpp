@@ -17,11 +17,11 @@ struct _MyWidgetState : State<MyWidget>
         auto self = self();
         _notifier = Object::create<ValueNotifier<bool>>(false);
         _timer = Timer::periodic(
-            this, Duration(2000), [self] {
+            this, Duration(2000), [this, self] {
                 self->_notifier->setValue(!self->_notifier->getValue());
                 if (self->_notifier->getValue() == false)
                 {
-                    debug_print("Request Exit");
+                    LogInfo("Request Exit");
                     Process::of(self->context)->exit();
                 }
             });
@@ -37,8 +37,8 @@ struct _MyWidgetState : State<MyWidget>
     {
         return Object::create<ValueListenableBuilder<bool>>(
             _notifier,
-            [](option<BuildContext> context, bool value, option<Widget> child) {
-                debug_print("current value: " << value);
+            [this](option<BuildContext> _, bool value, option<Widget> child) {
+                LogInfo("current value: " << value);
                 return LeafWidget::factory();
             });
     }
