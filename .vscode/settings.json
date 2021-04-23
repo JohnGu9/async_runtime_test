@@ -113,6 +113,8 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "*.tcc": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmes": "cpp"
     }
 }
