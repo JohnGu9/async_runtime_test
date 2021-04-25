@@ -1,6 +1,5 @@
-#include <iostream>
+#define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
-#include "async_runtime/fundamental/http.h"
 
 class HttpServerTest : public StatefulWidget
 {

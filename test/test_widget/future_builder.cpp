@@ -1,3 +1,4 @@
+#define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
 
 class MyWidget : public StatefulWidget

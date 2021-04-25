@@ -32,6 +32,9 @@ int main()
         ref<String>("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ")
             ->format("Kiddy", "rain", 26, true); // match "{}"
     std::cout << formatedString << std::endl;    // Hello, Kiddy! It's rain today. Temperature is 26 degree. The answer is true.
+    formatedString = String::formatFromString("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ",
+                                    "Kiddy", "rain", 26, true);
+    std::cout << formatedString << std::endl;
 
     formatedString = ref<String>("Hello, {}! It's {} today. Temperature is {} degree. ")->format("Kiddy", "rain"); // less arguments is fine
     std::cout << formatedString << std::endl;                                                                      // Hello, Kiddy! It's rain today. Temperature is {} degree.
