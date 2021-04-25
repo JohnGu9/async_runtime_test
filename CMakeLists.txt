@@ -43,6 +43,9 @@ target_link_libraries(test_fundamental_timer async_runtime)
 add_executable(test_fundamental_file test/test_fundamental/file.cpp)
 target_link_libraries(test_fundamental_file async_runtime)
 
+add_executable(test_fundamental_logger test/test_fundamental/logger.cpp)
+target_link_libraries(test_fundamental_logger async_runtime)
+
 add_executable(test_fundamental_http test/test_fundamental/http.cpp)
 target_link_libraries(test_fundamental_http async_runtime)
 

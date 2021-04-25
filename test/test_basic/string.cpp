@@ -28,13 +28,33 @@ int main()
     ref<String> notReallyNullString = reallyNullString.isNotNullElse([] { return "notReallyNullString"; });
     std::cout << notReallyNullString << std::endl; // it work
 
+    //
+    //
+
+    // String template
+    // format String from source and arguments
+
+    // init from String::format
     ref<String> formatedString =
         ref<String>("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ")
             ->format("Kiddy", "rain", 26, true); // match "{}"
     std::cout << formatedString << std::endl;    // Hello, Kiddy! It's rain today. Temperature is 26 degree. The answer is true.
+    
+    // init from String::formatFromString
     formatedString = String::formatFromString("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ",
-                                    "Kiddy", "rain", 26, true);
+                                              "Kiddy", "rain", 26, true);
     std::cout << formatedString << std::endl;
+    
+    //init from String::formatFromIterator
+    auto str = std::string("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ");
+    formatedString = String::formatFromIterator(str.begin(), str.end(), "Kiddy", "rain", 26, true);
+    std::cout << formatedString << std::endl;
+
+    //
+    //
+
+    // String format exception case(String format would not throw any error)
+    // more arguments or less arguments
 
     formatedString = ref<String>("Hello, {}! It's {} today. Temperature is {} degree. ")->format("Kiddy", "rain"); // less arguments is fine
     std::cout << formatedString << std::endl;                                                                      // Hello, Kiddy! It's rain today. Temperature is {} degree.
