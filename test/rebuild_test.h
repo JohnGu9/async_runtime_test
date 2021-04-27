@@ -31,19 +31,20 @@ class _RebuildTestState : public State<RebuildTest>
     void initState() override
     {
         super::initState();
-        auto self = self();
+        auto self = self(); // hold a ref of self
         _count = 0;
-        _timer = Timer::periodic(this, Duration::fromMilliseconds(1000), [this, self] {
-            if (self->mounted)
-                self->setState([this, self] {
-                    self->_count++;
-                    if (self->_count > 5)
-                    {
-                        self->_timer->cancel();
-                        LogInfo("RebuildTest timer cancel");
-                    }
-                });
-        });
+        _timer = Timer::periodic(this, Duration::fromMilliseconds(1000),
+                                 [this, self /* make sure State object live longer than async task */] {
+                                     if (self->mounted)
+                                         self->setState([this, self] {
+                                             self->_count++;
+                                             if (self->_count > 5)
+                                             {
+                                                 self->_timer->cancel();
+                                                 LogInfo("RebuildTest timer cancel");
+                                             }
+                                         });
+                                 });
     }
 
     void dispose() override

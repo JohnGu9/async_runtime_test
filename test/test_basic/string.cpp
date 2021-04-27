@@ -39,12 +39,12 @@ int main()
         ref<String>("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ")
             ->format("Kiddy", "rain", 26, true); // match "{}"
     std::cout << formatedString << std::endl;    // Hello, Kiddy! It's rain today. Temperature is 26 degree. The answer is true.
-    
+
     // init from String::formatFromString
     formatedString = String::formatFromString("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ",
                                               "Kiddy", "rain", 26, true);
     std::cout << formatedString << std::endl;
-    
+
     //init from String::formatFromIterator
     auto str = std::string("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ");
     formatedString = String::formatFromIterator(str.begin(), str.end(), "Kiddy", "rain", 26, true);
@@ -62,5 +62,17 @@ int main()
     formatedString = ref<String>("Hello, {}! It's {} today. ")->format("Kiddy", "rain", 26); // more arguments is fine but with error message on console
     std::cout << formatedString << std::endl;                                                // Hello, Kiddy! It's rain today.
 
+    //
+    //
+
+    // String::split
+    //
+
+    auto list = formatedString->split(" ");
+    for (const auto &element : list)
+    {
+        std::cout << element << std::endl;
+    }
+    std::cout << "list length: " << list->size() << std::endl;
     return EXIT_SUCCESS;
 }
