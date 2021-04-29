@@ -3,17 +3,20 @@
 
 int main()
 {
-    lateref<List<int>> list = {1, 2, 3};
+    ref<List<int>> list = {1, 2, 3};
     for (auto &element : list)
         std::cout
             << element << std::endl;
     std::cout << list[1] << std::endl;
 
-    lateref<Set<int>> set = {1, 2, 3};
+    ref<Set<int>> set = {1, 2, 3};
     for (auto &element : set)
         std::cout << element << std::endl;
 
-    lateref<Map<std::string, std::string>> map = {
+    lateref<Map<std::string, std::string>> map;
+    // map = {}; // compile error
+    // use Object::create<Map<std::string, std::string>>>() to create a empty map
+    map = {
         {"A", "B"},
         {"C", "D"},
     };
