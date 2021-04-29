@@ -73,6 +73,7 @@ int main()
     {
         std::cout << element << std::endl;
     }
+    assert(list->size() == 5);
     std::cout << "list length: " << list->size() << std::endl;
     return EXIT_SUCCESS;
 }

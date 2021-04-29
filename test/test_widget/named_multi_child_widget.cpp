@@ -39,7 +39,7 @@ class _MyWidgetState : public State<MyWidget>
     using super = State<MyWidget>;
 
     size_t _count;
-    Map<ref<String>, lateref<Widget>> _children;
+    lateref<Map<ref<String>, lateref<Widget>>> _children;
     lateref<Timer> _timer;
 
     void initState() override

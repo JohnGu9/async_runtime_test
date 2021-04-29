@@ -16,7 +16,7 @@ class _MyWidgetState : public State<MyWidget>
         return LeafWidget::factory();
     };
 
-    List<ref<Widget>> children;
+    lateref<List<ref<Widget>>> children;
 
     void initState() override
     {
@@ -28,7 +28,7 @@ class _MyWidgetState : public State<MyWidget>
 
     void dispose() override
     {
-        this->children = nullptr;
+        this->children->clear();
         super::dispose();
     }
 

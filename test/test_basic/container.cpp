@@ -1,36 +1,19 @@
 #include "async_runtime.h"
 #include <iostream>
 
-class MyClass
-{
-public:
-    MyClass()
-    {
-        map = {};
-        assert(map);
-    }
-    Map<int, std::string> map;
-};
-
 int main()
 {
-    auto myClass = MyClass();
-    List<int> list = List<int>::empty();
-    assert(list);
-    list = {1, 2, 3};
+    lateref<List<int>> list = {1, 2, 3};
     for (auto &element : list)
-        std::cout << element << std::endl;
+        std::cout
+            << element << std::endl;
     std::cout << list[1] << std::endl;
 
-    Set<int> set = Set<int>::empty();
-    assert(set);
-    set = {1, 2, 3};
+    lateref<Set<int>> set = {1, 2, 3};
     for (auto &element : set)
         std::cout << element << std::endl;
 
-    Map<std::string, std::string> map = Map<std::string, std::string>::empty();
-    assert(map);
-    map = {
+    lateref<Map<std::string, std::string>> map = {
         {"A", "B"},
         {"C", "D"},
     };
