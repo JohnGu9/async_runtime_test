@@ -30,6 +30,31 @@ int main()
 
     //
     //
+    // String compare
+    //
+
+    ref<String> string0 = "Hello World";
+    ref<String> string1 = "Hello World";
+    assert(string0 == string1);
+    assert(!(string0 != string1));
+
+    option<String> string2 = "Hello World";
+    option<String> string3 = "Hello World";
+    option<String> string4 = nullptr;
+    // with ref<String>
+    assert(string2 == string0);
+    assert(!(string2 != string0));
+    // with option<String>
+    assert(string2 == string3);
+    assert(!(string2 != string3));
+    // with nullptr
+    assert(string2 != string4);
+    assert(!(string2 == string4));
+    assert(string4 == nullptr);
+    assert(!(string4 != nullptr));
+
+    //
+    //
 
     // String template
     // format String from source and arguments

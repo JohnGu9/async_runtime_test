@@ -20,11 +20,11 @@ class _MyWidgetState : public State<MyWidget>
         _completer = Object::create<Completer<int>>(this);
         _completer->future->than([self, this] {
             Future<void>::delay(this, Duration(1000), [self, this] {
-                Process::of(this->context)->exit();
+                Process::of(context)->exit();
             });
         });
-        auto timer = Timer::delay(this, Duration(2000), [self] {
-            self->_completer->complete(2);
+        auto timer = Timer::delay(this, Duration(2000), [self, this] {
+            _completer->complete(2);
         });
     }
 

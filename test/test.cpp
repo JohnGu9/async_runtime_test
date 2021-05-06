@@ -3,5 +3,5 @@
 
 int main(int argc, char **args)
 {
-    return runApp(Object::create<MainActivity>());
+    return runApp(Logger::file("main_activity.log", Object::create<MainActivity>()));
 }
