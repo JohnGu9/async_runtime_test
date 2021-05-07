@@ -1,4 +1,5 @@
 #define ASYNC_RUNTIME_DISABLE_CONSOLE
+#define ASYNC_RUNTIME_TIMESTAMP_FORMAT "%c %Z" // custom time format
 #include "async_runtime.h"
 
 class LoggerTest : public StatefulWidget
