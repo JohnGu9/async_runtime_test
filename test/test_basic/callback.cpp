@@ -4,9 +4,8 @@
 int main(const int argc, char **args)
 {
     auto notifier = Object::create<ValueNotifier<bool>>(false);
-    Function<void(ref<Listenable>)> fn = [](ref<Listenable> self) {
-        ref<ValueNotifier<bool>> notifier = self->covariant<ValueNotifier<bool>>();
-        std::cout << "Value changed to " << notifier->getValue() << std::endl;
+    Function<void()> fn = [&notifier] {
+        std::cout << "Value changed to " << notifier->value << std::endl;
     };
     Function<> &ref = fn;
     notifier->addListener(fn);

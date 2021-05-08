@@ -33,7 +33,7 @@ class _HttpClientTestState : public State<HttpClientTest>
                         << "Http Status: " << result->response->status << std::endl
                         << "Http Body: " << result->response->body << std::endl);
             }
-            Process::of(context)->exit(0);
+            _client->get("/exit");
         });
     }
 

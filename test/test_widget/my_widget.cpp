@@ -1,5 +1,6 @@
 #define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
+#include "async_runtime/elements/root_element.h"
 #include "../main_activity.h"
 
 int main()

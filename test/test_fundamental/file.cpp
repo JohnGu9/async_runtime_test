@@ -36,7 +36,8 @@ struct _MyWidgetState : State<MyWidget>
                             LogInfo("File read: ");
                             _file->read()
                                 ->than<void>([this](const ref<String> &value) {
-                                    LogInfo(value);
+                                    LogInfo(std::endl
+                                            << value);
                                     LogInfo("To remove file: \"{}\"", _file->path);
                                     _file->remove()->than<void>(
                                         [this](const int &code) {
