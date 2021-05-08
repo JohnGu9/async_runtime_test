@@ -1,6 +1,59 @@
 #define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
 
+class HttpClientTest : public StatefulWidget
+{
+    ref<State<>> createState() override;
+
+public:
+    HttpClientTest(ref<String> address, ref<String> pattern, int port)
+        : address(address), pattern(pattern), port(port) {}
+
+    ref<String> address;
+    ref<String> pattern;
+    int port;
+};
+
+class _HttpClientTestState : public State<HttpClientTest>
+{
+    using super = State<HttpClientTest>;
+    lateref<Http::Client> _client;
+
+    void initState() override
+    {
+        super::initState();
+        auto widget = this->getWidget();
+        _client = Object::create<Http::Client>(this, widget->address, widget->port);
+        _client->get(widget->pattern)->than<void>([this](const ref<Http::Client::Result> &result) {
+            LogInfo("Http Client get result with error [{}]", result->errorString());
+            if (result->response != nullptr)
+            {
+                LogInfo(std::endl
+                        << "Http Version: " << result->response->version << std::endl
+                        << "Http Status: " << result->response->status << std::endl
+                        << "Http Body: " << result->response->body << std::endl);
+            }
+            Process::of(context)->exit(0);
+        });
+    }
+
+    void dispose() override
+    {
+        _client->dispose();
+        super::dispose();
+    }
+
+    ref<Widget> build(ref<BuildContext>) override
+    {
+        return LeafWidget::factory();
+    }
+};
+
+inline ref<State<>> HttpClientTest::createState()
+{
+    return Object::create<_HttpClientTestState>();
+}
+
 class HttpServerTest : public StatefulWidget
 {
     ref<State<>> createState() override;
@@ -25,6 +78,11 @@ class _HttpTestState : public State<HttpServerTest>
                                                             << "Content-Type: text/plain" << std::endl);
                    response.set_content("Hello World!", "text/plain");
                })
+            ->onGet("/exit", [this](const Http::Request &request, Http::Response &response) {
+                LogInfo("System exit");
+                response.set_content("System exit", "text/plain");
+                Process::of(context)->exit(0);
+            })
             ->onPost("/post", [](const Http::Request &request, Http::Response &response) { response.set_content("onPost", "text/plain"); })
             ->onDelete("/delete", [](const Http::Request &request, Http::Response &response) { response.set_content("onDelete", "text/plain"); })
             ->listen(localhost, port);
@@ -36,97 +94,19 @@ class _HttpTestState : public State<HttpServerTest>
         super::dispose();
     }
 
-    ref<Widget> build(ref<BuildContext>) override;
+    ref<Widget> build(ref<BuildContext>) override
+    {
+        return Object::create<HttpClientTest>(
+            localhost, /* address */
+            pattern,   /* pattern */
+            port       /* port */
+        );
+    }
 };
 
 inline ref<State<>> HttpServerTest::createState()
 {
     return Object::create<_HttpTestState>();
-}
-
-class HttpClientTest : public StatefulWidget
-{
-public:
-    HttpClientTest(ref<String> url, int port, ref<String> pattern)
-        : url(url), port(port), pattern(pattern){};
-
-    ref<String> url;
-    int port;
-    ref<String> pattern;
-    ref<State<>> createState() override;
-};
-
-class _HttpClientTestState : public State<HttpClientTest>
-{
-    using super = State<HttpClientTest>;
-    lateref<Http::Client> _client;
-
-    void onReturn(const ref<Http::Client::Result> &res)
-    {
-        assert(res->error == httplib::Success);
-        LogInfo("Http Client: " << std::endl
-                                << "Error: " << res->errorString()
-                                << std::endl);
-        if (res->response != nullptr)
-        {
-            LogInfo("HttpResponse" << std::endl
-                                   << "Status: " << res->response->status << std::endl
-                                   << "Version: " << res->response->version << std::endl
-                                   << "Location: " << res->response->location << std::endl
-                                   << "Body: " << res->response->body << std::endl
-                                   << "Content-Type: " << res->response->get_header_value("Content-Type") << std::endl);
-        }
-        else
-        {
-            LogInfo("No HttpResponse" << std::endl);
-        }
-        Process::of(context)->exit();
-    }
-
-    void initState() override
-    {
-        super::initState();
-        auto widget = this->getWidget();
-        _client = Object::create<Http::Client>(this, widget->url, widget->port);
-        _client->get(widget->pattern)
-            // async api Future::than
-            ->than<void>([this](const ref<Http::Client::Result> &res) { onReturn(res); });
-    }
-
-    void didWidgetUpdated(ref<StatefulWidget> oldWidget) override
-    {
-        super::didWidgetUpdated(oldWidget);
-        auto widget = this->getWidget();
-        auto old = oldWidget->covariant<HttpClientTest>();
-        if (widget->url != old->url || widget->port != old->port)
-        {
-            _client->dispose();
-            _client->get(widget->pattern)
-                // async api Future::than
-                ->than<void>([this](const ref<Http::Client::Result> &res) { onReturn(res); });
-        }
-    }
-
-    void dispose() override
-    {
-        _client->dispose();
-        super::dispose();
-    }
-
-    ref<Widget> build(ref<BuildContext>) override
-    {
-        return LeafWidget::factory();
-    }
-};
-
-inline ref<State<>> HttpClientTest::createState()
-{
-    return Object::create<_HttpClientTestState>();
-}
-
-inline ref<Widget> _HttpTestState::build(ref<BuildContext>)
-{
-    return Object::create<HttpClientTest>(localhost, port, pattern);
 }
 
 int main()
