@@ -1,18 +1,36 @@
 #define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
 
-class Child : public StatelessWidget
+class Child : public StatefulWidget
 {
-    int count;
-    ref<Widget> build(ref<BuildContext> context) override
-    {
-        LogInfo("Child count is " << count);
-        return LeafWidget::factory();
-    }
+    ref<State<>> createState() override;
 
 public:
     Child(int count_) : count(count_) {}
+    int count;
 };
+
+class _ChildState : public State<Child>
+{
+    using super = State<Child>;
+
+    void didWidgetUpdated(ref<Child> oldWidget) override
+    {
+        super::didWidgetUpdated(oldWidget);
+        LogInfo("Child count change from [{}] to [{}]", oldWidget->count, widget->count);
+    }
+
+    ref<Widget> build(ref<BuildContext> context) override
+    {
+        LogInfo("Child count is " << widget->count);
+        return LeafWidget::factory();
+    }
+};
+
+ref<State<>> Child::createState()
+{
+    return Object::create<_ChildState>();
+}
 
 class MyWidget : public StatefulWidget
 {
