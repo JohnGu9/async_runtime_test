@@ -5,7 +5,7 @@ int main(const int argc, char **args)
 {
     auto notifier = Object::create<ValueNotifier<bool>>(false);
     Function<void()> fn = [&notifier] {
-        std::cout << "Value changed to " << notifier->value << std::endl;
+        info_print("Value changed to " << notifier->value);
     };
     Function<> &ref = fn;
     notifier->addListener(fn);

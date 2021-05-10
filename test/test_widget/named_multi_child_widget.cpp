@@ -14,7 +14,7 @@ struct _ChildState : State<Child>
 
     void dispose() override
     {
-        LogInfo("dispose " << this->getWidget()->name);
+        LogInfo("dispose " << this->widget->name);
         super::dispose();
     }
 

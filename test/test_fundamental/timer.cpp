@@ -46,10 +46,10 @@ class _MainActivityState : public State<MainActivity>
         });
     }
 
-    void didWidgetUpdated(ref<StatefulWidget> oldWidget) override
+    void didWidgetUpdated(ref<MainActivity> oldWidget) override
     {
-        LogInfo("_MainActivityState::didWidgetUpdated");
         super::didWidgetUpdated(oldWidget);
+        LogInfo("_MainActivityState::didWidgetUpdated");
     }
 
     void didDependenceChanged() override

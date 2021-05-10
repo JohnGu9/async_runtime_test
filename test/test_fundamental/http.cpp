@@ -22,7 +22,6 @@ class _HttpClientTestState : public State<HttpClientTest>
     void initState() override
     {
         super::initState();
-        auto widget = this->getWidget();
         _client = Object::create<Http::Client>(this, widget->address, widget->port);
         _client->get(widget->pattern)->than<void>([this](const ref<Http::Client::Result> &result) {
             LogInfo("Http Client get result with error [{}]", result->errorString());
