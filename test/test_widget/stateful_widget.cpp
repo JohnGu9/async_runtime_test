@@ -27,7 +27,7 @@ class _ChildState : public State<Child>
     }
 };
 
-ref<State<>> Child::createState()
+inline ref<State<>> Child::createState()
 {
     return Object::create<_ChildState>();
 }
@@ -50,16 +50,16 @@ class _MyWidgetState : public State<MyWidget>
         _count = 0;
         _timer = Timer::periodic(
             this, Duration(1000), [this, self] {
-                if (!self->mounted)
+                if (!mounted)
                     return;
-                if (self->_count > 5)
+                if (_count > 5)
                 {
-                    self->_timer->cancel();
+                    _timer->cancel();
                     LogInfo("Timer cancel");
-                    Process::of(self->context)->exit();
+                    Process::of(context)->exit();
                     return;
                 }
-                self->setState([self] { self->_count++; });
+                setState([this, self] { _count++; });
             });
     }
 
@@ -75,7 +75,7 @@ class _MyWidgetState : public State<MyWidget>
     }
 };
 
-ref<State<>> MyWidget::createState()
+inline ref<State<>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

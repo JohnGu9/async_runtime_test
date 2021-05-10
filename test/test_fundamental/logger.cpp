@@ -19,14 +19,14 @@ class _LoggerTestState : public State<LoggerTest>
         auto self = self();
         _timer = Timer::periodic(
             this, Duration::fromMilliseconds(1000), [this, self] {
-                if (++self->_count > 5)
-                    Process::of(self->context)->exit();
-                else if (self->mounted)
+                if (++_count > 5)
+                    Process::of(context)->exit();
+                else if (mounted)
                 {
                     LogInfo("Timer::periodic callback with counter {}! [printf style]", _count);
                     LogInfo("Timer::periodic callback with counter " << _count << "! [istream style]");
                 }
-            }); // async runtime's timer is async that not block the thread
+            });
     }
 
     void dispose() override
