@@ -22,7 +22,7 @@ class _HttpClientTestState : public State<HttpClientTest>
     void initState() override
     {
         super::initState();
-        _client = Object::create<Http::Client>(this, widget->address, widget->port);
+        _client = Object::create<Http::Client>(self(), widget->address, widget->port);
         _client->get(widget->pattern)->than<void>([this](const ref<Http::Client::Result> &result) {
             LogInfo("Http Client get result with error [{}]", result->errorString());
             if (result->response != nullptr)
@@ -70,7 +70,7 @@ class _HttpTestState : public State<HttpServerTest>
     void initState() override
     {
         super::initState();
-        _server = Object::create<Http::Server>(this);
+        _server = Object::create<Http::Server>(self());
         _server->onGet(pattern, [this](const Http::Request &request, Http::Response &response) {
                    LogInfo("HttpServer Running on thread: " << ThreadPool::thisThreadName << std::endl // Http:Server callback will work on state's thread, don't worry about thread problem
                                                             << "Body: Hello World!" << std::endl

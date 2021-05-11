@@ -15,15 +15,14 @@ struct _MyWidgetState : State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = self();
         _notifier = Object::create<ValueNotifier<bool>>(false);
         _timer = Timer::periodic(
-            this, Duration(2000), [this, self] {
-                self->_notifier->setValue(!self->_notifier->getValue());
-                if (self->_notifier->getValue() == false)
+            self(), Duration(2000), [this] {
+                _notifier->setValue(!_notifier->value);
+                if (_notifier->getValue() == false)
                 {
                     LogInfo("Request Exit");
-                    Process::of(self->context)->exit();
+                    Process::of(context)->exit();
                 }
             });
     }

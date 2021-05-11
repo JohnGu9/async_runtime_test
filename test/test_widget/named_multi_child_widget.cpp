@@ -45,20 +45,19 @@ class _MyWidgetState : public State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = self();
         _children = {
             {"child0", Object::create<Child>("child0")},
             {"child1", Object::create<Child>("child1")},
             {"child2", Object::create<Child>("child2")},
         };
         _count = _children->size();
-        _timer = Timer::periodic(this, Duration(1000), [this, self] {
+        _timer = Timer::periodic(self(), Duration(1000), [this] {
             if (_count > 10)
             {
                 Process::of(context)->exit();
                 return;
             }
-            setState([this, self] {
+            setState([this] {
                 static finalref<String> name = "child";
                 ++_count;
                 auto iter = _children->find(name + (_count - 3));

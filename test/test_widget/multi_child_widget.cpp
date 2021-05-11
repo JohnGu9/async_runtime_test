@@ -16,31 +16,44 @@ class _MyWidgetState : public State<MyWidget>
         return LeafWidget::factory();
     };
 
-    lateref<List<ref<Widget>>> children;
+    lateref<List<ref<Widget>>> _children;
+    lateref<Timer> _timer;
+    int _count;
 
     void initState() override
     {
         super::initState();
-        this->children = {
+        _children = {
             Object::create<Builder>(onChildBuild),
             Object::create<Builder>(onChildBuild)};
+        _count = 0;
+        _timer = Timer::periodic(self(), Duration::fromSeconds(1), [this] {
+            if (++_count > 5)
+            {
+                _timer->cancel();
+                Process::of(context)->exit();
+            }
+            else
+            {
+                addChild();
+            }
+        });
     }
 
     void dispose() override
     {
-        this->children->clear();
+        _children->clear();
         super::dispose();
     }
 
     void addChild()
     {
-        auto self = self();
-        this->setState([self] { self->children->emplace_back(Object::create<Builder>(onChildBuild)); });
+        setState([this] { _children->emplace_back(Object::create<Builder>(onChildBuild)); });
     }
 
     ref<Widget> build(ref<BuildContext> context) override
     {
-        return Object::create<MultiChildWidget>(this->children);
+        return Object::create<MultiChildWidget>(this->_children);
     }
 };
 

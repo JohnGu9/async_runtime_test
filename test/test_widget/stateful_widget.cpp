@@ -46,10 +46,9 @@ class _MyWidgetState : public State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = self();
         _count = 0;
         _timer = Timer::periodic(
-            this, Duration(1000), [this, self] {
+            self(), Duration(1000), [this] {
                 if (!mounted)
                     return;
                 if (_count > 5)
@@ -59,7 +58,7 @@ class _MyWidgetState : public State<MyWidget>
                     Process::of(context)->exit();
                     return;
                 }
-                setState([this, self] { _count++; });
+                setState([this] { _count++; });
             });
     }
 

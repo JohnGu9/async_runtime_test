@@ -14,9 +14,8 @@ struct _MyWidgetState : State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = self();
         _timer = Timer::delay(
-            this, Duration(2000), [this, self] {
+            self(), Duration(2000), [this] {
                 if (this->mounted)
                 {
                     LogInfo("MyWidget request to exit");

@@ -16,9 +16,8 @@ class _LoggerTestState : public State<LoggerTest>
     void initState() override
     {
         super::initState();
-        auto self = self();
         _timer = Timer::periodic(
-            this, Duration::fromMilliseconds(1000), [this, self] {
+            self(), Duration::fromMilliseconds(1000), [this] {
                 if (++_count > 5)
                     Process::of(context)->exit();
                 else if (mounted)

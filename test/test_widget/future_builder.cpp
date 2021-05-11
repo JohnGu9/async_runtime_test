@@ -16,14 +16,13 @@ class _MyWidgetState : public State<MyWidget>
     void initState() override
     {
         super::initState();
-        auto self = self();
-        _completer = Object::create<Completer<int>>(this);
-        _completer->future->than([self, this] {
-            Future<void>::delay(this, Duration(1000), [self, this] {
+        _completer = Object::create<Completer<int>>(self());
+        _completer->future->than([this] {
+            Future<void>::delay(self(), Duration(1000), [this] {
                 Process::of(context)->exit();
             });
         });
-        auto timer = Timer::delay(this, Duration(2000), [self, this] {
+        Timer::delay(self(), Duration(2000), [this] {
             _completer->complete(2);
         });
     }
