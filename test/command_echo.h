@@ -10,32 +10,37 @@ class CommandEcho : public StatefulWidget
 class _CommandEchoState : public State<CommandEcho>
 {
     using super = State<CommandEcho>;
-    Function<void(ref<List<ref<String>>>)> onCommand;
-
-    void initState() override
-    {
-        super::initState();
-        onCommand = [this](ref<List<ref<String>>> arguments) {
-            if (arguments[0] == "echo")
-            {
-                std::stringstream ss;
-                for (size_t i = 1; i < arguments->size(); i++)
-                    ss << arguments[i] << " ";
-                StdoutLogger::of(context)->writeLine(ss.str());
-            }
-        };
-    }
+    lateref<StreamSubscription<ref<String>>> _subscription;
 
     void didDependenceChanged() override
     {
         super::didDependenceChanged();
-        Process::of(context)->command->addListener(onCommand);
+        _subscription = Process::of(context)->command->listen(
+            [this](ref<String> command) {
+                auto begin = command->find(" ");
+                if (begin != std::string::npos)
+                {
+                    auto cmd = command->substr(0, begin);
+                    if (cmd == "echo")
+                    {
+                        begin = command->find_first_not_of(" ", begin);
+                        if (begin != std::string::npos)
+                        {
+                            auto argu = command->substr(begin);
+                            StdoutLogger::of(context)->writeLine(argu);
+                        }
+                        else
+                        {
+                            LogError("echo with no argument");
+                        }
+                    }
+                }
+            });
     }
 
     void dispose() override
     {
-        Process::of(context)->command->removeListener(onCommand);
-        onCommand = nullptr;
+        _subscription->unsubscribe();
         super::dispose();
     }
 
