@@ -30,7 +30,7 @@ struct _MyWidgetState : State<MyWidget>
                         LogInfo("File readWordAsStream: ");
                         std::shared_ptr<size_t> amountOfWords = std::make_shared<size_t>(0); // async api run code out of current scope, make sure the resource live longer than the async task
                         auto stream = _file->readWordAsStream();
-                        stream->listen([this, amountOfWords](ref<String> word) { (*amountOfWords)++; });
+                        stream->listen([amountOfWords](ref<String> word) { (*amountOfWords)++; });
                         stream->onClose([this, amountOfWords] {
                             LogInfo("File stream close with amount of word: {}. ", *amountOfWords);
                             LogInfo("File read: ");

@@ -1,6 +1,36 @@
 #define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
 
+class Child : public StatefulWidget
+{
+public:
+    Child(int id) : id(id) {}
+    ref<State<>> createState() override;
+    const int id;
+};
+
+class _ChildState : public State<Child>
+{
+    using super = State<Child>;
+
+    void dispose() override
+    {
+        LogInfo("_ChildState::dispose id[{}]", widget->id);
+        super::dispose();
+    }
+
+    ref<Widget> build(ref<BuildContext>) override
+    {
+        LogInfo("_ChildState::build id[{}]", widget->id);
+        return LeafWidget::factory();
+    }
+};
+
+inline ref<State<>> Child::createState()
+{
+    return Object::create<_ChildState>();
+}
+
 class MyWidget : public StatefulWidget
 {
     ref<State<>> createState() override;
@@ -10,12 +40,6 @@ class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
 
-    static ref<Widget> onChildBuild(ref<BuildContext> context)
-    {
-        LogInfo("onChildBuild");
-        return LeafWidget::factory();
-    };
-
     lateref<List<ref<Widget>>> _children;
     lateref<Timer> _timer;
     int _count;
@@ -24,18 +48,24 @@ class _MyWidgetState : public State<MyWidget>
     {
         super::initState();
         _children = {
-            Object::create<Builder>(onChildBuild),
-            Object::create<Builder>(onChildBuild)};
-        _count = 0;
+            Object::create<Child>(0),
+            Object::create<Child>(1)};
+        _count = 1;
         _timer = Timer::periodic(self(), Duration::fromSeconds(1), [this] {
             if (++_count > 5)
             {
                 _timer->cancel();
-                Process::of(context)->exit();
+                setState([this] { _children->pop_back(); });
+                _timer = Timer::periodic(self(), Duration::fromSeconds(1), [this] {
+                    if (_children->empty())
+                        Process::of(context)->exit();
+                    else
+                        setState([this] { _children->pop_back(); });
+                });
             }
             else
             {
-                setState([this] { _children->emplace_back(Object::create<Builder>(onChildBuild)); });
+                setState([this] { _children->emplace_back(Object::create<Child>(_count)); });
             }
         });
     }
