@@ -37,7 +37,7 @@ struct _MyWidgetState : State<MyWidget>
     {
         return Object::create<ValueListenableBuilder<bool>>(
             _notifier,
-            [this](option<BuildContext> _, bool value, option<Widget> child) {
+            [this](ref<BuildContext> _, bool value, option<Widget> child) {
                 LogInfo("current value: " << value);
                 return LeafWidget::factory();
             });

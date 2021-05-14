@@ -42,8 +42,8 @@ int main()
     option<String> string3 = "Hello World";
     option<String> string4 = nullptr;
     // with ref<String>
-    assert(string2 == string0);
-    assert(!(string2 != string0));
+    assert(string2.assertNotNull() == string0);
+    assert(!(string2.assertNotNull() != string0));
     // with option<String>
     assert(string2 == string3);
     assert(!(string2 != string3));
