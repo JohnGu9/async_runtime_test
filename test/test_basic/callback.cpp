@@ -8,6 +8,8 @@ int main(const int argc, char **args)
         info_print("Value changed to " << notifier->value);
     };
     Function<> &ref = fn;
+    std::cout << "Is ref valid: " << std::boolalpha << static_cast<bool>(ref) << std::endl;
+
     notifier->addListener(fn);
 
     std::cout << "add same function will not call twice when [notifyListeners]" << std::endl;

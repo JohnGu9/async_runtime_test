@@ -10,7 +10,7 @@ public:
         return Object::create<MessageNotification>(message);
     }
     MessageNotification(ref<String> message) : message(message) {}
-    ref<String> message;
+    finalref<String> message;
 };
 
 class NotificationTest : public StatelessWidget

@@ -4,7 +4,7 @@
 struct Child : StatefulWidget
 {
     Child(ref<String> name) : name(name) {}
-    ref<String> name;
+    finalref<String> name;
     ref<State<>> createState() override;
 };
 

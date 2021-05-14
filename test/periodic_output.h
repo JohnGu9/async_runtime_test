@@ -6,10 +6,10 @@ class PeriodicOutput : public StatefulWidget
 {
 public:
     PeriodicOutput(ref<Widget> child, Logger::Handler handler, option<Key> key = nullptr)
-        : child(child), handler(handler), StatefulWidget(key) {}
+        : StatefulWidget(key), child(child), handler(handler) {}
 
-    ref<Widget> child;
-    Logger::Handler handler;
+    finalref<Widget> child;
+    finalref<LoggerHandler> handler;
     ref<State<>> createState() override;
 };
 

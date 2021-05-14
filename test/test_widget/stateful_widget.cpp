@@ -7,7 +7,7 @@ class Child : public StatefulWidget
 
 public:
     Child(int count_) : count(count_) {}
-    int count;
+    const int count;
 };
 
 class _ChildState : public State<Child>

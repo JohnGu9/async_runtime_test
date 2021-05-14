@@ -35,7 +35,7 @@ class _MyWidgetState : public State<MyWidget>
             }
             else
             {
-                addChild();
+                setState([this] { _children->emplace_back(Object::create<Builder>(onChildBuild)); });
             }
         });
     }
@@ -44,11 +44,6 @@ class _MyWidgetState : public State<MyWidget>
     {
         _children->clear();
         super::dispose();
-    }
-
-    void addChild()
-    {
-        setState([this] { _children->emplace_back(Object::create<Builder>(onChildBuild)); });
     }
 
     ref<Widget> build(ref<BuildContext> context) override
