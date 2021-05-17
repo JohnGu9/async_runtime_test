@@ -7,8 +7,6 @@ int main(const int argc, char **args)
     Function<void()> fn = [&notifier] {
         info_print("Value changed to " << notifier->value);
     };
-    Function<> &ref = fn;
-    std::cout << "Is ref valid: " << std::boolalpha << static_cast<bool>(ref) << std::endl;
 
     notifier->addListener(fn);
 
