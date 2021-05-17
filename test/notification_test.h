@@ -59,15 +59,10 @@ inline ref<State<>> _BubbleNotification::createState()
 
 inline ref<Widget> NotificationTest::build(ref<BuildContext> context)
 {
-    return Object::create<NotificationListener>(
+    return Object::create<NotificationListener<MessageNotification>>(
         Object::create<_BubbleNotification>(),
-        [context](ref<Notification> notification) {
-            lateref<MessageNotification> messageNotification;
-            if (notification->cast<MessageNotification>().isNotNull(messageNotification))
-            {
-                Logger::of(context)->writeLine(messageNotification->message);
-                return true;
-            }
-            return false;
+        [context](ref<MessageNotification> notification) {
+            LogInfo(notification->message);
+            return true;
         });
 }
