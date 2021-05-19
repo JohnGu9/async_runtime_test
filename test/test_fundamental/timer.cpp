@@ -15,13 +15,12 @@ class _MainActivityState : public State<MainActivity>
     void initState() override
     {
         super::initState();
-        _timer = Timer::periodic(
-            self(), Duration::fromMilliseconds(1000), [this] {
-                if (++_count > 5)
-                    Process::of(context)->exit();
-                else if (mounted)
-                    LogInfo("Timer::periodic callback"); // will be canceled so that original _timer only be called twice
-            });                                          // async runtime's timer is async that not block the thread
+        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000), [this] {
+            if (++_count > 5)
+                Process::of(context)->exit();
+            else if (mounted)
+                LogInfo("Timer::periodic callback"); // will be canceled so that original _timer only be called twice
+        });                                          // async runtime's timer is async that not block the thread
 
         // you can hold no timer reference that you do not want to cancel it.
         // but be careful for the state life cycle.

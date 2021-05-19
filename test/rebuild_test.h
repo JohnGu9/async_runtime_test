@@ -32,17 +32,16 @@ class _RebuildTestState : public State<RebuildTest>
     {
         super::initState();
         _count = 0;
-        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000),
-                                 [this] {
-                                     setState([this] {
-                                         _count++;
-                                         if (_count > 5)
-                                         {
-                                             _timer->cancel();
-                                             LogInfo("RebuildTest timer cancel");
-                                         }
-                                     });
-                                 });
+        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000), [this] {
+            setState([this] {
+                _count++;
+                if (_count > 5)
+                {
+                    _timer->cancel();
+                    LogInfo("RebuildTest timer cancel");
+                }
+            });
+        });
     }
 
     void dispose() override

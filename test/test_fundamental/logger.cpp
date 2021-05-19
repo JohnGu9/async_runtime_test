@@ -16,16 +16,15 @@ class _LoggerTestState : public State<LoggerTest>
     void initState() override
     {
         super::initState();
-        _timer = Timer::periodic(
-            self(), Duration::fromMilliseconds(1000), [this] {
-                if (++_count > 5)
-                    Process::of(context)->exit();
-                else if (mounted)
-                {
-                    LogInfo("Timer::periodic callback with counter {}! [printf style]", _count);
-                    LogInfo("Timer::periodic callback with counter " << _count << "! [istream style]");
-                }
-            });
+        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000), [this] {
+            if (++_count > 5)
+                Process::of(context)->exit();
+            else if (mounted)
+            {
+                LogInfo("Timer::periodic callback with counter {}! [printf style]", _count);
+                LogInfo("Timer::periodic callback with counter " << _count << "! [istream style]");
+            }
+        });
     }
 
     void dispose() override
