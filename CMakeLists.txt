@@ -19,7 +19,7 @@ target_link_libraries(test async_runtime)
 
 # test case
 if(WIN32)
-add_definitions(/W4 /wd4100 /wd4458)
+add_definitions(/wd4100 /wd4458)
 else()
 add_definitions(-Wall)
 endif()

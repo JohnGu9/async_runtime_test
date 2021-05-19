@@ -48,27 +48,27 @@ class _MainActivityState : public State<MainActivity>
     void didWidgetUpdated(ref<MainActivity> oldWidget) override
     {
         super::didWidgetUpdated(oldWidget);
-        LogInfo("_MainActivityState::didWidgetUpdated");
+        LogInfo(__FUNCTION__);
     }
 
     void didDependenceChanged() override
     {
         Scheduler::Handler handler = Scheduler::of(context);
-        LogInfo("_MainActivityState::didDependenceChanged");
+        LogInfo(__FUNCTION__);
         LogInfo("Current scheduler handler is " << handler->runtimeType());
         super::didDependenceChanged();
     }
 
     void dispose() override
     {
-        LogInfo("_MainActivityState::dispose");
+        LogInfo(__FUNCTION__);
         _timer->cancel();
         super::dispose();
     }
 
     ref<Widget> build(ref<BuildContext> context) override
     {
-        LogInfo("_MainActivityState::build");
+        LogInfo(__FUNCTION__);
         return LeafWidget::factory();
     }
 };
