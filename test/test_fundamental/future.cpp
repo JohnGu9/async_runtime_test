@@ -8,11 +8,10 @@ class FutureTest : public StatefulWidget
 
 class _FutureTestState : public State<FutureTest>
 {
-
     void initState() override
     {
         Future<void>::race(self(), {
-                                       Future<void>::delay(self(), Duration(2000), [=] { LogInfo("Future#0 completed"); })->timeout(Duration(1000))->than([=] { LogInfo("Future#0 timout"); }),
+                                       Future<void>::delay(self(), Duration(2000), [=] { LogInfo("Future#0 completed"); })->timeout(Duration(1000))->than([=] { LogInfo("Future#0 timeout"); }),
                                        Future<void>::delay(self(), Duration(2000), [=] { LogInfo("Future#1 completed"); }),
                                        Future<void>::delay(self(), Duration(3000), [=] { LogInfo("Future#2 completed"); }),
 

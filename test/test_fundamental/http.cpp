@@ -23,17 +23,19 @@ class _HttpClientTestState : public State<HttpClientTest>
     {
         super::initState();
         _client = Object::create<Http::Client>(self(), widget->address, widget->port);
-        _client->get(widget->pattern)->than<void>([this](const ref<Http::Client::Result> &result) {
-            LogInfo("Http Client get result with error [{}]", result->errorString());
-            if (result->response != nullptr)
-            {
-                LogInfo(std::endl
-                        << "Http Version: " << result->response->version << std::endl
-                        << "Http Status: " << result->response->status << std::endl
-                        << "Http Body: " << result->response->body << std::endl);
-            }
-            _client->get("/exit");
-        });
+        _client->get(widget->pattern)->than<void>([this](const ref<Http::Client::Result> &result) -> FutureOr<void>
+                                                  {
+                                                      LogInfo("Http Client get result with error [{}]", result->errorString());
+                                                      if (result->response != nullptr)
+                                                      {
+                                                          LogInfo(std::endl
+                                                                  << "Http Version: " << result->response->version << std::endl
+                                                                  << "Http Status: " << result->response->status << std::endl
+                                                                  << "Http Body: " << result->response->body << std::endl);
+                                                      }
+                                                      _client->get("/exit");
+                                                      return {};
+                                                  });
     }
 
     void dispose() override
@@ -71,19 +73,23 @@ class _HttpTestState : public State<HttpServerTest>
     {
         super::initState();
         _server = Object::create<Http::Server>(self());
-        _server->onGet(pattern, [this](const Http::Request &request, Http::Response &response) {
-                   LogInfo("HttpServer Running on thread: " << ThreadPool::thisThreadName << std::endl // Http:Server callback will work on state's thread, don't worry about thread problem
-                                                            << "Body: Hello World!" << std::endl
-                                                            << "Content-Type: text/plain" << std::endl);
-                   response.set_content("Hello World!", "text/plain");
-               })
-            ->onGet("/exit", [this](const Http::Request &request, Http::Response &response) {
-                LogInfo("System exit");
-                response.set_content("System exit", "text/plain");
-                Process::of(context)->exit(0);
-            })
-            ->onPost("/post", [](const Http::Request &request, Http::Response &response) { response.set_content("onPost", "text/plain"); })
-            ->onDelete("/delete", [](const Http::Request &request, Http::Response &response) { response.set_content("onDelete", "text/plain"); })
+        _server->onGet(pattern, [this](const Http::Request &request, Http::Response &response)
+                       {
+                           LogInfo("HttpServer Running on thread: " << ThreadPool::thisThreadName << std::endl // Http:Server callback will work on state's thread, don't worry about thread problem
+                                                                    << "Body: Hello World!" << std::endl
+                                                                    << "Content-Type: text/plain" << std::endl);
+                           response.set_content("Hello World!", "text/plain");
+                       })
+            ->onGet("/exit", [this](const Http::Request &request, Http::Response &response)
+                    {
+                        LogInfo("System exit");
+                        response.set_content("System exit", "text/plain");
+                        Process::of(context)->exit(0);
+                    })
+            ->onPost("/post", [](const Http::Request &request, Http::Response &response)
+                     { response.set_content("onPost", "text/plain"); })
+            ->onDelete("/delete", [](const Http::Request &request, Http::Response &response)
+                       { response.set_content("onDelete", "text/plain"); })
             ->listen(localhost, port);
     }
 
