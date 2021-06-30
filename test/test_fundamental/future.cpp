@@ -14,7 +14,6 @@ class _FutureTestState : public State<FutureTest>
                                        Future<void>::delay(self(), Duration(2000), [=] { LogInfo("Future#0 completed"); })->timeout(Duration(1000))->than([=] { LogInfo("Future#0 timeout"); }),
                                        Future<void>::delay(self(), Duration(2000), [=] { LogInfo("Future#1 completed"); }),
                                        Future<void>::delay(self(), Duration(3000), [=] { LogInfo("Future#2 completed"); }),
-
                                    })
             ->than([=] { LogInfo("Future::race completed"); /* the future complete with the first completed future */ })
             ->than([=] {
