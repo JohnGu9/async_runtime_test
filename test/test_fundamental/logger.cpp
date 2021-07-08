@@ -18,12 +18,15 @@ class _LoggerTestState : public State<LoggerTest>
         super::initState();
         _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000), [this]
                                  {
-                                     if (++_count > 5)
-                                         Process::of(context)->exit();
-                                     else if (mounted)
+                                     if (mounted)
                                      {
-                                         LogInfo("Timer::periodic callback with counter {}! [printf style]", _count);
-                                         LogInfo("Timer::periodic callback with counter " << _count << "! [istream style]");
+                                         if (++_count > 5)
+                                             Process::of(context)->exit();
+                                         else
+                                         {
+                                             LogInfo("Timer::periodic callback with counter {}! [printf style]", _count);
+                                             LogInfo("Timer::periodic callback with counter " << _count << "! [istream style]");
+                                         }
                                      }
                                  });
     }
@@ -90,11 +93,12 @@ class _LoggerChangeWidgetState : public State<LoggerChangeWidget>
         _newLoggerHandler = false;
         _timer = Timer::delay(self(), Duration::fromSeconds(2), [this]
                               { setState([this]
-                                         { _newLoggerHandler = true; }); });
+                                         { _newLoggerHandler = true; /* change the logger handle 2 second after this state init */ }); });
     }
 
     void dispose() override
     {
+        _timer->cancel();
         super::dispose();
     }
 

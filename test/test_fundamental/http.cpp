@@ -22,18 +22,22 @@ class _HttpClientTestState : public State<HttpClientTest>
     void initState() override
     {
         super::initState();
-        _client = Object::create<Http::Client>(self(), widget->address, widget->port);
-        _client->get(widget->pattern)->than<void>([this](const ref<Http::Client::Result> &result) -> FutureOr<void>
+        auto self = self();
+        _client = Object::create<Http::Client>(self, widget->address, widget->port);
+        _client->get(widget->pattern)->than<void>([this, self](const ref<Http::Client::Result> &result) -> FutureOr<void>
                                                   {
-                                                      LogInfo("Http Client get result with error [{}]", result->errorString());
-                                                      if (result->response != nullptr)
+                                                      if (mounted)
                                                       {
-                                                          LogInfo(std::endl
-                                                                  << "Http Version: " << result->response->version << std::endl
-                                                                  << "Http Status: " << result->response->status << std::endl
-                                                                  << "Http Body: " << result->response->body << std::endl);
+                                                          LogInfo("Http Client get result with error [{}]", result->errorString());
+                                                          if (result->response != nullptr)
+                                                          {
+                                                              LogInfo(std::endl
+                                                                      << "Http Version: " << result->response->version << std::endl
+                                                                      << "Http Status: " << result->response->status << std::endl
+                                                                      << "Http Body: " << result->response->body << std::endl);
+                                                          }
+                                                          _client->get("/exit");
                                                       }
-                                                      _client->get("/exit");
                                                       return {};
                                                   });
     }
