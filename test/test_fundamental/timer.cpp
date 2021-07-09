@@ -15,7 +15,8 @@ class _MainActivityState : public State<MainActivity>
     void initState() override
     {
         super::initState();
-        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000), [this]
+        auto self = self();
+        _timer = Timer::periodic(self, Duration::fromMilliseconds(1000), [this]
                                  {
                                      if (mounted)
                                      {
@@ -30,43 +31,31 @@ class _MainActivityState : public State<MainActivity>
         // but be careful for the state life cycle.
         // check the [mounted] flag making sure state is alive.
         // if state is not alive, you can't access the context.
-        Timer::delay(self(), Duration::fromMilliseconds(2000), [this]
+        Timer::delay(self, Duration::fromMilliseconds(2000), [this, self
+                                                              /* this timer is out of control of the state, so add a ref of this state to make sure the state resource not release until the function called */]
                      {
-                         if (mounted)
+                         if (mounted /*check State::mounted is not necessary because timer will always cancel when the state dispose in this case*/)
                          {
                              LogInfo("Timer::delay callback");
 
                              _timer->cancel(); // canceled so that original _timer only be called twice
                              _count = 0;
-                             _timer = Timer::periodic(
-                                 self(), Duration(1000), [this]
-                                 {
-                                     if (++_count > 4)
-                                         Process::of(context)->exit();
-                                     else if (mounted)
-                                         LogInfo("Timer::periodic new callback"); // new _timer will be called four times
-                                 });
+                             _timer = Timer::periodic(self(), Duration(1000), [this]
+                                                      {
+                                                          if (++_count > 4)
+                                                              Process::of(context)->exit();
+                                                          else
+                                                              LogInfo("Timer::periodic new callback"); // new _timer will be called four times
+                                                      });
                          }
                      });
-    }
-
-    void didWidgetUpdated(ref<MainActivity> oldWidget) override
-    {
-        super::didWidgetUpdated(oldWidget);
-        LogInfo(__FUNCTION__);
-    }
-
-    void didDependenceChanged() override
-    {
-        super::didDependenceChanged();
-        Scheduler::Handler handler = Scheduler::of(context);
-        LogInfo(__FUNCTION__);
-        LogInfo("Current scheduler handler is " << handler->toString());
     }
 
     void dispose() override
     {
         LogInfo(__FUNCTION__);
+        // remember release the timer resource when state dispose
+        // if not cancel the timer, will cause runtime error and memory leak
         _timer->cancel();
         super::dispose();
     }

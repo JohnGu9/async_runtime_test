@@ -18,16 +18,16 @@ class _CommandEchoState : public State<CommandEcho>
         _subscription = Process::of(context)->command->listen(
             [this](ref<String> command) {
                 auto begin = command->find(" ");
-                if (begin != std::string::npos)
+                if (begin != String::npos)
                 {
                     auto cmd = command->substr(0, begin);
                     if (cmd == "echo")
                     {
                         begin = command->find_first_not_of(" ", begin);
-                        if (begin != std::string::npos)
+                        if (begin != String::npos)
                         {
-                            auto argu = command->substr(begin);
-                            StdoutLogger::of(context)->writeLine(argu);
+                            auto argument = command->substr(begin);
+                            StdoutLogger::of(context)->writeLine(argument);
                         }
                         else
                         {

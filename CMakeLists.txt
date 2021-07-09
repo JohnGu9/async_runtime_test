@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(async_runtime_test)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # add lib
@@ -40,6 +40,9 @@ target_link_libraries(test_basic_string async_runtime)
 # fundamental
 add_executable(test_fundamental_future test/test_fundamental/future.cpp)
 target_link_libraries(test_fundamental_future async_runtime)
+
+add_executable(test_fundamental_stream test/test_fundamental/stream.cpp)
+target_link_libraries(test_fundamental_stream async_runtime)
 
 add_executable(test_fundamental_timer test/test_fundamental/timer.cpp)
 target_link_libraries(test_fundamental_timer async_runtime)
