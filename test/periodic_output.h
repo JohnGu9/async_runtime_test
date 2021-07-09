@@ -23,12 +23,13 @@ class _PeriodicOutputState : public State<PeriodicOutput>
         super::initState();
         // by default logger macro use the logger from context
         // but here, widget explicitly require a logger
-        // use the widget's handle rather than use logger from context
+        // use the widget handle rather than use logger from context
         widget->handler->writeLine("initState");
-        _timer = Timer::periodic(
-            self(), Duration::fromMilliseconds(1000), [this] {
-                widget->handler->writeLine("Timer callback");
-            });
+        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000),
+                                 [this]
+                                 {
+                                     widget->handler->writeLine("Timer callback");
+                                 });
     }
 
     void dispose() override

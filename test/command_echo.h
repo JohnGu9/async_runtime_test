@@ -40,7 +40,7 @@ class _CommandEchoState : public State<CommandEcho>
 
     void dispose() override
     {
-        _subscription->unsubscribe();
+        _subscription->cancel();
         super::dispose();
     }
 

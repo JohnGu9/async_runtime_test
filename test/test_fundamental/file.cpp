@@ -23,7 +23,7 @@ struct _MyWidgetState : State<MyWidget>
                                   else
                                       return {0};
                               })
-            /* check file size */
+            /* print file size */
             ->than<void>([this](const long long &size) -> FutureOr<void>
                          {
                              LogInfo("File size: " << size);
