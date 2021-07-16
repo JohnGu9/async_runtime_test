@@ -23,23 +23,26 @@ class _HttpClientTestState : public State<HttpClientTest>
     {
         super::initState();
         auto self = self();
-        _client = Object::create<Http::Client>(self, widget->address, widget->port);
-        _client->get(widget->pattern)->than<void>([this, self](const ref<Http::Client::Result> &result) -> FutureOr<void>
-                                                  {
-                                                      if (mounted)
-                                                      {
-                                                          LogInfo("Http Client get result with error [{}]", result->errorString());
-                                                          if (result->response != nullptr)
-                                                          {
-                                                              LogInfo(std::endl
-                                                                      << "Http Version: " << result->response->version << std::endl
-                                                                      << "Http Status: " << result->response->status << std::endl
-                                                                      << "Http Body: " << result->response->body << std::endl);
-                                                          }
-                                                          _client->get("/exit");
-                                                      }
-                                                      return {};
-                                                  });
+        _client = Object::create<Http::Client>(/* state */ self,
+                                               /* address */ widget->address,
+                                               /* port */ widget->port);
+        _client->get(/* pattern */ widget->pattern)
+            ->than<void>([this, self](const ref<Http::Client::Result> &result) -> FutureOr<void>
+                         {
+                             if (mounted)
+                             {
+                                 LogInfo("Http Client get result with error [{}]", result->errorString());
+                                 if (result->response != nullptr)
+                                 {
+                                     LogInfo(std::endl
+                                             << "Http Version: " << result->response->version << std::endl
+                                             << "Http Status: " << result->response->status << std::endl
+                                             << "Http Body: " << result->response->body << std::endl);
+                                 }
+                                 _client->get("/exit");
+                             }
+                             return {};
+                         });
     }
 
     void dispose() override
@@ -76,23 +79,23 @@ class _HttpTestState : public State<HttpServerTest>
     void initState() override
     {
         super::initState();
-        _server = Object::create<Http::Server>(self());
-        _server->onGet(pattern, [this](const Http::Request &request, Http::Response &response)
+        _server = Object::create<Http::Server>(/* state */ self());
+        _server->onGet(/* pattern */ pattern, /* callback */ [this](const Http::Request &request, Http::Response &response)
                        {
                            LogInfo("HttpServer Running on thread: " << ThreadPool::thisThreadName << std::endl // Http:Server callback will work on state's thread, don't worry about thread problem
                                                                     << "Body: Hello World!" << std::endl
                                                                     << "Content-Type: text/plain" << std::endl);
                            response.set_content("Hello World!", "text/plain");
                        })
-            ->onGet("/exit", [this](const Http::Request &request, Http::Response &response)
+            ->onGet(/* state */ "/exit", /* callback */ [this](const Http::Request &request, Http::Response &response)
                     {
                         LogInfo("System exit");
                         response.set_content("System exit", "text/plain");
                         Process::of(context)->exit(0);
                     })
-            ->onPost("/post", [](const Http::Request &request, Http::Response &response)
+            ->onPost(/* state */ "/post", /* callback */ [](const Http::Request &request, Http::Response &response)
                      { response.set_content("onPost", "text/plain"); })
-            ->onDelete("/delete", [](const Http::Request &request, Http::Response &response)
+            ->onDelete(/* state */ "/delete", /* callback */ [](const Http::Request &request, Http::Response &response)
                        { response.set_content("onDelete", "text/plain"); })
             ->listen(localhost, port);
     }
@@ -106,10 +109,9 @@ class _HttpTestState : public State<HttpServerTest>
     ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<HttpClientTest>(
-            localhost, /* address */
-            pattern,   /* pattern */
-            port       /* port */
-        );
+            /* address */ localhost,
+            /* pattern */ pattern,
+            /* port */ port);
     }
 };
 

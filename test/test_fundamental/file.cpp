@@ -74,7 +74,8 @@ struct _MyWidgetState : State<MyWidget>
     void initState() override
     {
         super::initState();
-        _file = File::fromPath(self(), "app.log");
+        _file = File::fromPath(/* state */ self(),
+                               /* path */ "app.log");
         _readWriteFile();
     }
 

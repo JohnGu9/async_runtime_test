@@ -51,23 +51,25 @@ class _MyWidgetState : public State<MyWidget>
             {"child2", Object::create<Child>("child2")},
         };
         _count = _children->size();
-        _timer = Timer::periodic(self(), Duration(1000), [this] {
-            if (_count > 10)
-            {
-                Process::of(context)->exit();
-                return;
-            }
-            setState([this] {
-                static finalref<String> name = "child";
-                ++_count;
-                auto iter = _children->find(name + (_count - 3));
-                if (iter != _children->end())
-                    _children->erase(iter);
-                else
-                    LogInfo("Can't find: " << (name + (_count - 3)));
-                _children[name + _count] = Object::create<Child>(name + _count);
-            });
-        });
+        _timer = Timer::periodic(self(), Duration(1000), [this]
+                                 {
+                                     if (_count > 10)
+                                     {
+                                         Process::of(context)->exit();
+                                         return;
+                                     }
+                                     setState([this]
+                                              {
+                                                  static finalref<String> name = "child";
+                                                  ++_count;
+                                                  auto iter = _children->find(name + (_count - 3));
+                                                  if (iter != _children->end())
+                                                      _children->erase(iter);
+                                                  else
+                                                      LogInfo("Can't find: " << (name + (_count - 3)));
+                                                  _children[name + _count] = Object::create<Child>(name + _count);
+                                              });
+                                 });
     }
 
     void dispose() override
@@ -78,7 +80,7 @@ class _MyWidgetState : public State<MyWidget>
 
     ref<Widget> build(ref<BuildContext>) override
     {
-        return NamedMultiChildWidget::fromChildren(this->_children);
+        return NamedMultiChildWidget::fromChildren(/* children */ this->_children);
     }
 };
 

@@ -16,7 +16,8 @@ class _LoggerTestState : public State<LoggerTest>
     void initState() override
     {
         super::initState();
-        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000), [this]
+        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000),
+                                 [this] /* Logger macro request context, catch this to access context */
                                  {
                                      if (mounted)
                                      {

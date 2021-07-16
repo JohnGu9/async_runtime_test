@@ -51,34 +51,40 @@ class _MyWidgetState : public State<MyWidget>
             Object::create<Child>(0),
             Object::create<Child>(1)};
         _count = 1;
-        _timer = Timer::periodic(self(), Duration::fromSeconds(1), [this] {
-            if (++_count > 5)
-            {
-                _timer->cancel();
-                setState([this] { _children->pop_back(); });
-                _timer = Timer::periodic(self(), Duration::fromSeconds(1), [this] {
-                    if (_children->empty())
-                        Process::of(context)->exit();
-                    else
-                        setState([this] { _children->pop_back(); });
-                });
-            }
-            else
-            {
-                setState([this] { _children->emplace_back(Object::create<Child>(_count)); });
-            }
-        });
+        _timer = Timer::periodic(self(), Duration::fromSeconds(1), [this]
+                                 {
+                                     if (++_count > 5)
+                                     {
+                                         _timer->cancel();
+                                         setState([this]
+                                                  { _children->pop_back(); });
+                                         _timer = Timer::periodic(self(), Duration::fromSeconds(1), [this]
+                                                                  {
+                                                                      if (_children->empty())
+                                                                          Process::of(context)->exit();
+                                                                      else
+                                                                          setState([this]
+                                                                                   { _children->pop_back(); });
+                                                                  });
+                                     }
+                                     else
+                                     {
+                                         setState([this]
+                                                  { _children->emplace_back(Object::create<Child>(_count)); });
+                                     }
+                                 });
     }
 
     void dispose() override
     {
+        _timer->cancel();
         _children->clear();
         super::dispose();
     }
 
     ref<Widget> build(ref<BuildContext> context) override
     {
-        return Object::create<MultiChildWidget>(this->_children);
+        return Object::create<MultiChildWidget>(/* children */ this->_children);
     }
 };
 

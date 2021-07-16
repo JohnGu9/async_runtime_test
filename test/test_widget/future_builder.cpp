@@ -17,21 +17,19 @@ class _MyWidgetState : public State<MyWidget>
     {
         super::initState();
         _completer = Object::create<Completer<int>>(self());
-        _completer->future->than([this] {
-            Future<void>::delay(self(), Duration(1000), [this] {
-                Process::of(context)->exit();
-            });
-        });
-        Timer::delay(self(), Duration(2000), [this] {
-            _completer->complete(2);
-        });
+        _completer->future->than([this]
+                                 { Future<void>::delay(self(), Duration(1000), [this]
+                                                       { Process::of(context)->exit(); }); });
+        Timer::delay(self(), Duration(2000), [this]
+                     { _completer->complete(2); });
     }
 
     ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<FutureBuilder<int>>(
-            _completer->future,
-            [this](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) {
+            /* future */ _completer->future,
+            /* builder */ [this](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot)
+            {
                 LogInfo(AsyncSnapshot<>::ConnectionState::toString(snapshot->state));
                 if (snapshot->hasData())
                 {

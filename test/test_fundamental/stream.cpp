@@ -20,8 +20,8 @@ class _StreamTestState : public State<StreamTest>
     {
         super::initState();
         _counter = 0;
-        _streamController = Object::create<StreamController<int>>(self());
-        _broadcastStreamController = Object::create<BroadcastStreamController<int>>(self());
+        _streamController = Object::create<StreamController<int>>(/* state */ self());
+        _broadcastStreamController = Object::create<BroadcastStreamController<int>>(/* state */ self());
         _streamController->stream->listen([this](const int &value)
                                           { _broadcastStreamController->sink(value); });
         _streamController->stream->onClose([this]
