@@ -119,6 +119,8 @@
         "xlocmes": "cpp",
         "charconv": "cpp",
         "format": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "__bits": "cpp",
+        "variant": "cpp"
     }
 }

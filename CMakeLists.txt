@@ -38,6 +38,9 @@ add_executable(test_basic_string test/test_basic/string.cpp)
 target_link_libraries(test_basic_string async_runtime)
 
 # fundamental
+add_executable(test_fundamental_event_loop test/test_fundamental/event_loop.cpp)
+target_link_libraries(test_fundamental_event_loop async_runtime)
+
 add_executable(test_fundamental_future test/test_fundamental/future.cpp)
 target_link_libraries(test_fundamental_future async_runtime)
 
