@@ -1,4 +1,3 @@
-#define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
 
 struct Child : StatefulWidget
@@ -51,7 +50,8 @@ class _MyWidgetState : public State<MyWidget>
             {"child2", Object::create<Child>("child2")},
         };
         _count = _children->size();
-        _timer = Timer::periodic(self(), Duration(1000), [this] {
+        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>)
+                                 {
             if (_count > 10)
             {
                 Process::of(context)->exit();
@@ -66,8 +66,8 @@ class _MyWidgetState : public State<MyWidget>
                 else
                     LogInfo("Can't find: " << (name + (_count - 3)));
                 _children[name + _count] = Object::create<Child>(name + _count);
-            });
-        });
+            }); });
+        _timer->start();
     }
 
     void dispose() override
@@ -89,5 +89,6 @@ inline ref<State<>> MyWidget::createState()
 
 int main()
 {
-    return runApp(Object::create<MyWidget>());
+    runApp(Object::create<MyWidget>());
+    return 0;
 }

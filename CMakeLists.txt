@@ -53,12 +53,6 @@ target_link_libraries(test_fundamental_timer async_runtime)
 add_executable(test_fundamental_file test/test_fundamental/file.cpp)
 target_link_libraries(test_fundamental_file async_runtime)
 
-add_executable(test_fundamental_logger test/test_fundamental/logger.cpp)
-target_link_libraries(test_fundamental_logger async_runtime)
-
-add_executable(test_fundamental_http test/test_fundamental/http.cpp)
-target_link_libraries(test_fundamental_http async_runtime)
-
 # widget
 add_executable(test_widget_my_widget test/test_widget/my_widget.cpp)
 target_link_libraries(test_widget_my_widget async_runtime)
@@ -74,9 +68,6 @@ target_link_libraries(test_widget_multi_child_widget async_runtime)
 
 add_executable(test_widget_named_multi_child_widget test/test_widget/named_multi_child_widget.cpp)
 target_link_libraries(test_widget_named_multi_child_widget async_runtime)
-
-add_executable(test_widget_process test/test_widget/process.cpp)
-target_link_libraries(test_widget_process async_runtime)
 
 add_executable(test_widget_value_listenable_builder test/test_widget/value_listenable_builder.cpp)
 target_link_libraries(test_widget_value_listenable_builder async_runtime)

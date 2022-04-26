@@ -5,6 +5,7 @@ void task();
 int main()
 {
     EventLoop::run(task);
+    return 0;
 }
 
 int onTimeout()
@@ -21,13 +22,17 @@ int timeoutCallback(const int &)
 
 void task()
 {
-    std::cout << "Future Testing" << std::endl;
+    // handle tell the event loop not to close before it was disposed
     auto handle = EventLoop::Handle::create();
+
+    // future is not handle, the callback will be missing call when event loop close before future resolved
     auto completer = Object::create<Completer<int>>();
     completer->then<int>([handle](const int &)
                          { 
                              std::cout << "completer callback" << std::endl;
+                             // dispose handle
                              handle->dispose();
+                             // now event loop has no alive handle that loop will be closed as soon as possible
                              return 0; });
     delay<int>(5000, [completer]
                { 

@@ -5,6 +5,7 @@ void task();
 int main()
 {
     EventLoop::run(task);
+    return 0;
 }
 
 void task()

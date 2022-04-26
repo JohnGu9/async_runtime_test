@@ -1,5 +1,5 @@
-#define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
+#include "async_runtime/elements/root_element.h"
 
 struct MyWidget : StatefulWidget
 {
@@ -17,14 +17,15 @@ struct _MyWidgetState : State<MyWidget>
         super::initState();
         _notifier = Object::create<ValueNotifier<bool>>(false);
         _timer = Timer::periodic(
-            self(), Duration(2000), [this] {
+            Duration(2000), [this](ref<Timer>)
+            {
                 _notifier->setValue(!_notifier->value);
                 if (_notifier->getValue() == false)
                 {
-                    LogInfo("Request Exit");
-                    Process::of(context)->exit();
-                }
-            });
+                    std::cout << "Request Exit" << std::endl;
+                    RootElement::of(context)->exit();
+                } });
+        _timer->start();
     }
 
     void dispose() override
@@ -37,8 +38,9 @@ struct _MyWidgetState : State<MyWidget>
     {
         return Object::create<ValueListenableBuilder<bool>>(
             _notifier,
-            [this](ref<BuildContext> _, bool value, option<Widget> child) {
-                LogInfo("current value: " << value);
+            [](ref<BuildContext> _, bool value, option<Widget> child)
+            {
+                std::cout << "current value: " << value << std::endl;
                 return LeafWidget::factory();
             });
     }
@@ -48,5 +50,6 @@ ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); 
 
 int main()
 {
-    return runApp(Object::create<MyWidget>());
+    runApp(Object::create<MyWidget>());
+    return 0;
 }
