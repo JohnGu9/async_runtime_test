@@ -4,7 +4,6 @@
 void task();
 int main()
 {
-    EventLoop::ensure();
     EventLoop::run(task);
 }
 

@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # add lib
 add_subdirectory(async_runtime)
 # add include path
-include_directories(${ASYNC_RUNTIME_INCLUDE_DIR})
+include_directories(async_runtime/include)
 message(STATUS "Using Async Runtime include: ${ASYNC_RUNTIME_INCLUDE_DIR}")
 message(STATUS "Using Async Runtime libraries: async_runtime")
 

@@ -1,10 +1,9 @@
-#include <iostream>
 #include "async_runtime/fundamental/event_loop.h"
+#include <iostream>
 
 void task();
 int main()
 {
-    EventLoop::ensure();
     EventLoop::run(task);
 }
 
