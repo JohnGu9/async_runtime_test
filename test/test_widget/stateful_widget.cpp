@@ -1,5 +1,4 @@
 #include "async_runtime.h"
-#include "async_runtime/elements/root_element.h"
 #include <iostream>
 
 class Child : public StatefulWidget
@@ -57,7 +56,7 @@ class _MyWidgetState : public State<MyWidget>
                     _timer->cancel();
                     std::cout << "Timer cancel" << std::endl;
 
-                    RootElement::of(context)->exit();
+                    RootWidget::of(context)->exit();
                     return;
                 } else
                     setState([this] { _count++; }); });

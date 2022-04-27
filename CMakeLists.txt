@@ -63,6 +63,9 @@ target_link_libraries(test_widget_stateless_widget async_runtime)
 add_executable(test_widget_stateful_widget test/test_widget/stateful_widget.cpp)
 target_link_libraries(test_widget_stateful_widget async_runtime)
 
+add_executable(test_widget_logger_widget test/test_widget/logger_widget.cpp)
+target_link_libraries(test_widget_logger_widget async_runtime)
+
 add_executable(test_widget_multi_child_widget test/test_widget/multi_child_widget.cpp)
 target_link_libraries(test_widget_multi_child_widget async_runtime)
 

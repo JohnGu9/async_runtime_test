@@ -1,4 +1,3 @@
-#define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
 
 class MyWidget : public StatefulWidget
@@ -16,26 +15,31 @@ class _MyWidgetState : public State<MyWidget>
     void initState() override
     {
         super::initState();
-        _completer = Object::create<Completer<int>>(self());
-        _completer->future->than([this] {
-            Future<void>::delay(self(), Duration(1000), [this] {
-                Process::of(context)->exit();
-            });
-        });
-        Timer::delay(self(), Duration(2000), [this] {
-            _completer->complete(2);
-        });
+        _completer = Object::create<Completer<int>>();
+        _completer->then<int>([this](const int &)
+                              { return Future<int>::delay(Duration(1000), [this]
+                                                          { 
+                                                        RootWidget::of(context)->exit(); 
+                                                        return 0; }); });
+        Timer::delay(Duration(2000), [this](ref<Timer>)
+                     { _completer->complete(123); })
+            ->start();
     }
 
     ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<FutureBuilder<int>>(
-            _completer->future,
-            [this](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) {
-                LogInfo(AsyncSnapshot<>::ConnectionState::toString(snapshot->state));
+            _completer,
+            [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot)
+            {
+                std::cout << AsyncSnapshot<>::ConnectionState::toString(snapshot->state) << ' ';
                 if (snapshot->hasData())
                 {
-                    LogInfo(snapshot->data);
+                    std::cout << snapshot->data << std::endl;
+                }
+                else
+                {
+                    std::cout << std::endl;
                 }
                 return LeafWidget::factory();
             });
@@ -49,5 +53,6 @@ ref<State<>> MyWidget::createState()
 
 int main()
 {
-    return runApp(Object::create<MyWidget>());
+    runApp(Object::create<MyWidget>());
+    return 0;
 }

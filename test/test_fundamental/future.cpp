@@ -25,7 +25,7 @@ void task()
     // handle tell the event loop not to close before it was disposed
     auto handle = EventLoop::Handle::create();
 
-    // future is not handle, the callback will be missing call when event loop close before future resolved
+    // future is not handle, the callback will be missing call when event loop close before future complete
     auto completer = Object::create<Completer<int>>();
     completer->then<int>([handle](const int &)
                          { 
@@ -34,10 +34,10 @@ void task()
                              handle->dispose();
                              // now event loop has no alive handle that loop will be closed as soon as possible
                              return 0; });
-    delay<int>(5000, [completer]
-               { 
+    Future<int>::delay(5000, [completer]
+                       { 
                    std::cout << "delay future callback" << std::endl;
-                   completer->resolve(0);
+                   completer->complete(0);
                    return 0; })
         ->timeout(3000, []
                   { 

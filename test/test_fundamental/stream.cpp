@@ -11,7 +11,7 @@ int main()
 static int counter = 0;
 void task()
 {
-    // stream is not handle, the callback will be missing call when event loop close before future resolved
+    // stream is not handle, the callback will be missing call when event loop close before stream closed
     auto controller = Object::create<StreamController<ref<String>>>();
     controller->sink("Hello");
     controller->sink("World");

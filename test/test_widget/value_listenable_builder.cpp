@@ -1,5 +1,4 @@
 #include "async_runtime.h"
-#include "async_runtime/elements/root_element.h"
 
 struct MyWidget : StatefulWidget
 {
@@ -23,7 +22,7 @@ struct _MyWidgetState : State<MyWidget>
                 if (_notifier->getValue() == false)
                 {
                     std::cout << "Request Exit" << std::endl;
-                    RootElement::of(context)->exit();
+                    RootWidget::of(context)->exit();
                 } });
         _timer->start();
     }
@@ -34,15 +33,17 @@ struct _MyWidgetState : State<MyWidget>
         super::dispose();
     }
 
+    Function<ref<Widget>(ref<BuildContext>, bool, option<Widget>)> builder =
+        [](ref<BuildContext> _, bool value, option<Widget> child)
+    {
+        std::cout << "current value: " << value << std::endl;
+        return LeafWidget::factory();
+    };
+
     ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<ValueListenableBuilder<bool>>(
-            _notifier,
-            [](ref<BuildContext> _, bool value, option<Widget> child)
-            {
-                std::cout << "current value: " << value << std::endl;
-                return LeafWidget::factory();
-            });
+            _notifier, builder);
     }
 };
 
