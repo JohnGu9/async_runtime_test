@@ -26,8 +26,8 @@ class _PeriodicOutputState : public State<PeriodicOutput>
         // use the widget handle rather than use logger from context
         widget->handler->writeLine("initState");
         _timer = Timer::periodic(Duration::fromMilliseconds(1000),
-                                 [this](ref<Timer>)
-                                 {
+                                 [this](ref<Timer>) //
+                                 {                  //
                                      widget->handler->writeLine("Timer callback");
                                  });
         _timer->start();

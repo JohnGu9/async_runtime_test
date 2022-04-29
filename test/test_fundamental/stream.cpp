@@ -21,9 +21,12 @@ void task()
 
     // but timer has handle
     // event loop close after timer cancel
-    Timer::periodic(1000, [controller](const ref<Timer> timer)
-                    {     
-                        if (++counter > 5) timer->cancel();
-                        else controller->sink(counter); })
+    Timer::periodic(1000, [controller](const ref<Timer> timer) //
+                    {                                          //
+                        if (++counter > 5)
+                            timer->cancel();
+                        else
+                            controller->sink(counter);
+                    })
         ->start();
 }

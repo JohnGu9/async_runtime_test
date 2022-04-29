@@ -72,31 +72,39 @@ class _LoggerSwitchState : public State<LoggerSwitch>
     void initState() override
     {
         super::initState();
-        Future<int>::delay(Duration(2500), [this]
-                           {
-                setState([this] { _now = file; }); 
-                return 0; })
-            ->then<int>([](const int &)
-                        { return Future<int>::delay(Duration(2500), 0); })
-            ->then<ref<File>>([this](const int &)
-                              {
-                setState([this] { _now = none; }); 
-                return File::fromPath(FILENAME, O_RDONLY,0); })
-            ->then<ref<String>>([](ref<File> file)
-                                {
-                                    lateref<File::Error> error;
-                                    if(file->cast<File::Error>().isNotNull(error)){
-                                        return Future<ref<String>>::value(
-                                            String::formatFromString("File open failed: {} ",error->openCode()));
-                                    }
-                                    return file->read(); })
-            ->then<int>([this](ref<String> value)
-                        { 
-                            auto root = RootWidget::of(context);
-                            root->cout->writeLine("File content: ");
-                            root->cout->writeLine(value);
-                            root->exit();
-                            return 0; });
+        _now = cout;                                                                                               // output log to stdout
+        Future<int>::delay(Duration(2500), [this]                                                                  // delay 2.5s
+                           {                                                                                       //
+                               setState([this]                                                                     //
+                                        { _now = file; });                                                         // switch to output log to file
+                               return 0;                                                                           //
+                           })                                                                                      //
+            ->then<int>([](const int &)                                                                            //
+                        { return Future<int>::delay(Duration(2500), 0); })                                         // delay 2.5s
+            ->then<ref<File>>([this](const int &)                                                                  //
+                              {                                                                                    //
+                                  setState([this]                                                                  //
+                                           { _now = none; });                                                      // switch no child
+                                  return File::fromPath(FILENAME, O_RDONLY, 0);                                    // open the log file
+                              })                                                                                   //
+            ->then<ref<String>>([](ref<File> file)                                                                 //
+                                {                                                                                  //
+                                    lateref<File::Error> error;                                                    //
+                                    if (file->cast<File::Error>().isNotNull(error))                                //
+                                    {                                                                              //
+                                        return Future<ref<String>>::value(                                         //
+                                            String::formatFromString("File open failed: {} ", error->openCode())); //
+                                    }                                                                              //
+                                    return file->read();                                                           // read file content
+                                })                                                                                 //
+            ->then<int>([this](ref<String> value)                                                                  //
+                        {                                                                                          //
+                            auto root = RootWidget::of(context);                                                   //
+                            root->cout->writeLine("File content: ");                                               // put the content to stdout
+                            root->cout->writeLine(value);                                                          //
+                            root->exit();                                                                          //
+                            return 0;                                                                              //
+                        });
     }
 
     ref<Widget> build(ref<BuildContext>) override

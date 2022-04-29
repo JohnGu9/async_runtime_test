@@ -16,14 +16,15 @@ struct _MyWidgetState : State<MyWidget>
         super::initState();
         _notifier = Object::create<ValueNotifier<bool>>(false);
         _timer = Timer::periodic(
-            Duration(2000), [this](ref<Timer>)
-            {
+            Duration(2000), [this](ref<Timer>) //
+            {                                  //
                 _notifier->setValue(!_notifier->value);
                 if (_notifier->getValue() == false)
                 {
                     std::cout << "Request Exit" << std::endl;
                     RootWidget::of(context)->exit();
-                } });
+                }
+            });
         _timer->start();
     }
 

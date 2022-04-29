@@ -41,7 +41,7 @@ FutureOr<int> appendFile(ref<File> file)
 {
     return file->writeAll({"OK\n", "NOT OK\n", "OK\n", "NOT OK\n"})
         ->then<int>([file](const int &)
-               { return file->writeAll({"A\n", "B\n", "C\n", "D\n"}); })
+                    { return file->writeAll({"A\n", "B\n", "C\n", "D\n"}); })
         ->then<int>([file](const int &)
                     { return file->close(); });
 }
@@ -60,10 +60,11 @@ FutureOr<int> readFile(ref<File> file)
     else
     {
         return file->stat()
-            ->then<ref<String>>([file](ref<File::Stat> stat)
-                                {
+            ->then<ref<String>>([file](ref<File::Stat> stat) //
+                                {                            //
                                     stat->toStringStream(std::cout);
-                                    return file->read(); })
+                                    return file->read();
+                                })
             ->then<int>([file](ref<String> value)
                         {
                             std::cout << value << std::endl;

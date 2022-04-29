@@ -50,23 +50,28 @@ class _MyWidgetState : public State<MyWidget>
             Object::create<Child>(0),
             Object::create<Child>(1)};
         _count = 1;
-        _timer = Timer::periodic(Duration::fromSeconds(1), [this](ref<Timer>)
-                                 {
-            if (++_count > 5)
-            {
-                _timer->cancel();
-                setState([this] { _children->pop_back(); });
-                _timer = Timer::periodic(Duration::fromSeconds(1), [this] (ref<Timer>){
-                    if (_children->empty())
-                        RootWidget::of(context)->exit();
-                    else
-                        setState([this] { _children->pop_back(); });
-                });
-            }
-            else
-            {
-                setState([this] { _children->emplace_back(Object::create<Child>(_count)); });
-            } });
+        _timer = Timer::periodic(Duration::fromSeconds(1), [this](ref<Timer>) //
+                                 {                                            //
+                                     if (++_count > 5)
+                                     {
+                                         _timer->cancel();
+                                         setState([this]
+                                                  { _children->pop_back(); });
+                                         _timer = Timer::periodic(Duration::fromSeconds(1), [this](ref<Timer>) //
+                                                                  {                                            //
+                                                                      if (_children->empty())
+                                                                          RootWidget::of(context)->exit();
+                                                                      else
+                                                                          setState([this]
+                                                                                   { _children->pop_back(); });
+                                                                  });
+                                     }
+                                     else
+                                     {
+                                         setState([this]
+                                                  { _children->emplace_back(Object::create<Child>(_count)); });
+                                     }
+                                 });
         _timer->start();
     }
 
