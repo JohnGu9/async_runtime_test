@@ -46,7 +46,7 @@ class _MyWidgetState : public State<MyWidget>
     }
 };
 
-ref<State<>> MyWidget::createState()
+inline ref<State<>> MyWidget::createState()
 {
     return Object::create<_MyWidgetState>();
 }

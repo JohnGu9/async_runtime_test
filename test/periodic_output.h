@@ -5,7 +5,7 @@
 class PeriodicOutput : public StatefulWidget
 {
 public:
-    PeriodicOutput(ref<Widget> child, Logger::Handler handler, option<Key> key = nullptr)
+    PeriodicOutput(ref<Widget> child, ref<LoggerHandler> handler, option<Key> key = nullptr)
         : StatefulWidget(key), child(child), handler(handler) {}
 
     finalref<Widget> child;
@@ -25,11 +25,12 @@ class _PeriodicOutputState : public State<PeriodicOutput>
         // but here, widget explicitly require a logger
         // use the widget handle rather than use logger from context
         widget->handler->writeLine("initState");
-        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000),
-                                 [this]
+        _timer = Timer::periodic(Duration::fromMilliseconds(1000),
+                                 [this](ref<Timer>)
                                  {
                                      widget->handler->writeLine("Timer callback");
                                  });
+        _timer->start();
     }
 
     void dispose() override

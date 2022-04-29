@@ -54,9 +54,6 @@ add_executable(test_fundamental_file test/test_fundamental/file.cpp)
 target_link_libraries(test_fundamental_file async_runtime)
 
 # widget
-add_executable(test_widget_my_widget test/test_widget/my_widget.cpp)
-target_link_libraries(test_widget_my_widget async_runtime)
-
 add_executable(test_widget_stateless_widget test/test_widget/stateless_widget.cpp)
 target_link_libraries(test_widget_stateless_widget async_runtime)
 

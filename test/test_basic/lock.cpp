@@ -2,8 +2,7 @@
 #include <ctime>
 #include <iostream>
 #include <iomanip>
-#include "async_runtime/object.h"
-#include "async_runtime/fundamental/async.h"
+#include "async_runtime/fundamental/thread_pool.h"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #pragma warning(disable : 4996)

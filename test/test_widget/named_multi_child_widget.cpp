@@ -54,7 +54,7 @@ class _MyWidgetState : public State<MyWidget>
                                  {
             if (_count > 10)
             {
-                Process::of(context)->exit();
+                RootWidget::of(context)->exit();
                 return;
             }
             setState([this] {

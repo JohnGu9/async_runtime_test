@@ -35,9 +35,9 @@ class __BubbleNotificationState : public State<_BubbleNotification>
     void initState() override
     {
         super::initState();
-        _timer = Timer::periodic(self(), Duration::fromMilliseconds(1000), [this] {
-            MessageNotification::fromString("Bubble message test")->dispatch(context);
-        });
+        _timer = Timer::periodic(Duration::fromMilliseconds(1000), [this](ref<Timer>)
+                                 { MessageNotification::fromString("Bubble message test")->dispatch(context); });
+        _timer->start();
     }
 
     void dispose() override
@@ -61,7 +61,8 @@ inline ref<Widget> NotificationTest::build(ref<BuildContext> context)
 {
     return Object::create<NotificationListener<MessageNotification>>(
         Object::create<_BubbleNotification>(),
-        [context](ref<MessageNotification> notification) {
+        [context](ref<MessageNotification> notification)
+        {
             LogInfo(notification->message);
             return true;
         });
