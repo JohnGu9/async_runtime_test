@@ -8,18 +8,6 @@ int main()
     return 0;
 }
 
-int onTimeout()
-{
-    std::cout << "Future timeout" << std::endl;
-    return 0;
-}
-
-int timeoutCallback(const int &)
-{
-    std::cout << "Future::timeout callback" << std::endl;
-    return 0;
-}
-
 void task()
 {
     // handle tell the event loop not to close before it was disposed
