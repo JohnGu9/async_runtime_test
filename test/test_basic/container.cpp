@@ -1,7 +1,7 @@
 #include "async_runtime.h"
 #include <iostream>
 
-int main()
+void test_list()
 {
     std::cout << "list test" << std::endl;
     ref<List<int>> list = {1, 2, 2, 3};
@@ -10,13 +10,15 @@ int main()
         std::cout << element << ' ';
     std::cout << std::endl;
     std::cout << "forEach List: ";
-    list->forEach([](const int &element) {
-        std::cout << element << ' ';
-    });
+    list->forEach([](const int &element)
+                  { std::cout << element << ' '; });
     std::cout << std::endl
               << "index: 1, element: " << list[1] << std::endl
               << std::endl;
+}
 
+void test_set()
+{
     std::cout << "set test" << std::endl;
     ref<Set<int>> set = {1, 2, 2, 3};
     std::cout << "Loop Set: ";
@@ -24,12 +26,14 @@ int main()
         std::cout << element << ' ';
     std::cout << std::endl;
     std::cout << "forEach Set: ";
-    set->forEach([](const int &element) {
-        std::cout << element << ' ';
-    });
+    set->forEach([](const int &element)
+                 { std::cout << element << ' '; });
     std::cout << std::endl
               << std::endl;
+}
 
+void test_map()
+{
     std::cout << "map test" << std::endl;
     lateref<Map<ref<String>, std::string>> map;
     // map = {}; // compile error
@@ -45,10 +49,15 @@ int main()
         std::cout << element.first << " : " << element.second << std::endl;
     std::cout << std::endl;
     std::cout << "forEach Map: ";
-    map->forEach([](const std::pair<const ref<String>, std::string> &element) {
-        std::cout << element.first << " : " << element.second << std::endl;
-    });
+    map->forEach([](const std::pair<const ref<String>, std::string> &element)
+                 { std::cout << element.first << " : " << element.second << std::endl; });
     std::cout << "A value is " << map["A"] << std::endl;
+}
 
+int main()
+{
+    test_list();
+    test_set();
+    test_map();
     return EXIT_SUCCESS;
 }

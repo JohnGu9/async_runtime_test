@@ -1,5 +1,5 @@
-#define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
+#include <iostream>
 
 class Child : public StatefulWidget
 {
@@ -17,12 +17,12 @@ class _ChildState : public State<Child>
     void didWidgetUpdated(ref<Child> oldWidget) override
     {
         super::didWidgetUpdated(oldWidget);
-        LogInfo("Child count change from [{}] to [{}]", oldWidget->count, widget->count);
+        std::cout << "Child count change from [" << oldWidget->count << "] to [" << widget->count << "]" << std::endl;
     }
 
     ref<Widget> build(ref<BuildContext> context) override
     {
-        LogInfo("Child count is " << widget->count);
+        std::cout << "Child count is " << widget->count << std::endl;
         return LeafWidget::factory();
     }
 };
@@ -47,19 +47,22 @@ class _MyWidgetState : public State<MyWidget>
     {
         super::initState();
         _count = 0;
-        _timer = Timer::periodic(
-            self(), Duration(1000), [this] {
-                if (!mounted)
-                    return;
-                if (_count > 5)
-                {
-                    _timer->cancel();
-                    LogInfo("Timer cancel");
-                    Process::of(context)->exit();
-                    return;
-                }
-                setState([this] { _count++; });
-            });
+        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) //
+                                 {                                  //
+                                     if (!mounted)
+                                         return;
+                                     if (_count > 5)
+                                     {
+                                         _timer->cancel();
+                                         std::cout << "Timer cancel" << std::endl;
+                                         RootWidget::of(context)->exit();
+                                         return;
+                                     }
+                                     else
+                                         setState([this]
+                                                  { _count++; });
+                                 });
+        _timer->start();
     }
 
     void dispose() override
@@ -81,5 +84,6 @@ inline ref<State<>> MyWidget::createState()
 
 int main()
 {
-    return runApp(Object::create<MyWidget>());
+    runApp(Object::create<MyWidget>());
+    return 0;
 }

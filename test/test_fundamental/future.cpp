@@ -1,44 +1,37 @@
-#define ASYNC_RUNTIME_DISABLE_CONSOLE
-#include "async_runtime.h"
+#include "async_runtime/fundamental/async.h"
+#include <iostream>
 
-class FutureTest : public StatefulWidget
-{
-    ref<State<>> createState() override;
-};
-
-class _FutureTestState : public State<FutureTest>
-{
-    void initState() override
-    {
-        Future<void>::race(/* state */self(), /* futures */{
-                                       Future<void>::delay(self(), Duration(2000), [this] { LogInfo("Future#0 completed"); })->timeout(Duration(1000))->than([this] { LogInfo("Future#0 timeout"); }),
-                                       Future<void>::delay(self(), Duration(2000), [this] { LogInfo("Future#1 completed"); }),
-                                       Future<void>::delay(self(), Duration(3000), [this] { LogInfo("Future#2 completed"); }),
-                                   })
-            ->than([this] { LogInfo("Future::race completed"); /* the future complete with the first completed future */ })
-            ->than([this] {
-                Future<void>::wait(/* state */self(), /* futures */{
-                                               Future<void>::delay(self(), Duration(2000), [this] { LogInfo("Future#3 completed"); }),
-                                               Future<void>::delay(self(), Duration(2000), [this] { LogInfo("Future#4 completed"); }),
-                                               Future<void>::delay(self(), Duration(3000), [this] { LogInfo("Future#5 completed"); }),
-                                           })
-                    ->than([this] { LogInfo("Future::wait completed"); /* the future complete with the last completed future */ })
-                    ->than([this] { Process::of(context)->exit(); });
-            });
-    }
-
-    ref<Widget> build(ref<BuildContext>) override
-    {
-        return LeafWidget::factory();
-    }
-};
-
-ref<State<>> FutureTest::createState()
-{
-    return Object::create<_FutureTestState>();
-}
-
+void task();
 int main()
 {
-    return runApp(Object::create<FutureTest>());
+    EventLoop::run(task);
+    return 0;
+}
+
+void task()
+{
+    // handle tell the event loop not to close before it was disposed
+    auto handle = EventLoop::Handle::create();
+
+    // future is not handle, the callback will be missing call when event loop close before future complete
+    auto completer = Object::create<Completer<int>>();
+    completer->then<int>([handle](const int &) //
+                         {                     //
+                             std::cout << "completer callback" << std::endl;
+                             // dispose handle
+                             handle->dispose();
+                             // now event loop has no alive handle that loop will be closed as soon as possible
+                             return 0;
+                         });
+    Future<int>::delay(5000, [completer] //
+                       {                 //
+                           std::cout << "delay future callback" << std::endl;
+                           completer->complete(0);
+                           return 0;
+                       })
+        ->timeout(3000, [] //
+                  {        //
+                      std::cout << "future timeout callback" << std::endl;
+                      return 0;
+                  });
 }
