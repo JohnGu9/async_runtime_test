@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # add lib
 add_subdirectory(async_runtime)
 # add include path
-include_directories(${ASYNC_RUNTIME_INCLUDE_DIR})
+include_directories(async_runtime/include)
 message(STATUS "Using Async Runtime include: ${ASYNC_RUNTIME_INCLUDE_DIR}")
 message(STATUS "Using Async Runtime libraries: async_runtime")
 
@@ -38,6 +38,9 @@ add_executable(test_basic_string test/test_basic/string.cpp)
 target_link_libraries(test_basic_string async_runtime)
 
 # fundamental
+add_executable(test_fundamental_event_loop test/test_fundamental/event_loop.cpp)
+target_link_libraries(test_fundamental_event_loop async_runtime)
+
 add_executable(test_fundamental_future test/test_fundamental/future.cpp)
 target_link_libraries(test_fundamental_future async_runtime)
 
@@ -50,30 +53,27 @@ target_link_libraries(test_fundamental_timer async_runtime)
 add_executable(test_fundamental_file test/test_fundamental/file.cpp)
 target_link_libraries(test_fundamental_file async_runtime)
 
-add_executable(test_fundamental_logger test/test_fundamental/logger.cpp)
-target_link_libraries(test_fundamental_logger async_runtime)
+add_executable(test_fundamental_udp test/test_fundamental/udp.cpp)
+target_link_libraries(test_fundamental_udp async_runtime)
 
-add_executable(test_fundamental_http test/test_fundamental/http.cpp)
-target_link_libraries(test_fundamental_http async_runtime)
+add_executable(test_fundamental_tcp test/test_fundamental/tcp.cpp)
+target_link_libraries(test_fundamental_tcp async_runtime)
 
 # widget
-add_executable(test_widget_my_widget test/test_widget/my_widget.cpp)
-target_link_libraries(test_widget_my_widget async_runtime)
-
 add_executable(test_widget_stateless_widget test/test_widget/stateless_widget.cpp)
 target_link_libraries(test_widget_stateless_widget async_runtime)
 
 add_executable(test_widget_stateful_widget test/test_widget/stateful_widget.cpp)
 target_link_libraries(test_widget_stateful_widget async_runtime)
 
+add_executable(test_widget_logger_widget test/test_widget/logger_widget.cpp)
+target_link_libraries(test_widget_logger_widget async_runtime)
+
 add_executable(test_widget_multi_child_widget test/test_widget/multi_child_widget.cpp)
 target_link_libraries(test_widget_multi_child_widget async_runtime)
 
 add_executable(test_widget_named_multi_child_widget test/test_widget/named_multi_child_widget.cpp)
 target_link_libraries(test_widget_named_multi_child_widget async_runtime)
-
-add_executable(test_widget_process test/test_widget/process.cpp)
-target_link_libraries(test_widget_process async_runtime)
 
 add_executable(test_widget_value_listenable_builder test/test_widget/value_listenable_builder.cpp)
 target_link_libraries(test_widget_value_listenable_builder async_runtime)

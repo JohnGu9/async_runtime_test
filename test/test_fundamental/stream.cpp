@@ -1,65 +1,32 @@
-#define ASYNC_RUNTIME_DISABLE_CONSOLE
-#include "async_runtime.h"
+#include "async_runtime/fundamental/async.h"
+#include <iostream>
 
-class StreamTest : public StatefulWidget
-{
-    ref<State<>> createState() override;
-};
-
-class _StreamTestState : public State<StreamTest>
-{
-    using super = State<StreamTest>;
-
-    int _counter;
-    lateref<StreamController<int>> _streamController;
-    lateref<BroadcastStreamController<int>> _broadcastStreamController;
-    lateref<StreamSubscription<int>> _streamSubscription;
-    lateref<Timer> _timer;
-
-    void initState() override
-    {
-        super::initState();
-        _counter = 0;
-        _streamController = Object::create<StreamController<int>>(/* state */ self());
-        _broadcastStreamController = Object::create<BroadcastStreamController<int>>(/* state */ self());
-        _streamController->stream->listen([this](const int &value)
-                                          { _broadcastStreamController->sink(value); });
-        _streamController->stream->onClose([this]
-                                           { _broadcastStreamController->close(); });
-
-        Timer::delay(self(), Duration(1500), [this]
-                     {
-                         LogInfo("Start broadcast");
-                         _streamSubscription = _broadcastStreamController->stream->listen([this](const int &value)
-                                                                                          { LogInfo("value: {}", value); });
-                     });
-        _timer = Timer::periodic(self(), Duration(500), [this]
-                                 {
-                                     _streamController->sink(_counter++);
-                                     if (_counter >= 5)
-                                         Process::of(context)->exit();
-                                 });
-    }
-
-    void dispose() override
-    {
-        _streamController->close();
-        _timer->cancel();
-        super::dispose();
-    }
-
-    ref<Widget> build(ref<BuildContext> context) override
-    {
-        return LeafWidget::factory();
-    }
-};
-
-inline ref<State<>> StreamTest::createState()
-{
-    return Object::create<_StreamTestState>();
-}
-
+void task();
 int main()
 {
-    return runApp(Object::create<StreamTest>());
+    EventLoop::run(task);
+    return 0;
+}
+
+static int counter = 0;
+void task()
+{
+    // stream is not handle, the callback will be missing call when event loop close before stream closed
+    auto controller = Object::create<StreamController<ref<String>>>();
+    controller->sink("Hello");
+    controller->sink("World");
+    std::cout << "Sink data before listen" << std::endl;
+    auto subscription = controller->listen([](const ref<String> &value)
+                                           { std::cout << "Read: " << value << std::endl; });
+
+    // but timer has handle
+    // event loop close after timer cancel
+    Timer::periodic(1000, [controller](const ref<Timer> timer) //
+                    {                                          //
+                        if (++counter > 5)
+                            timer->cancel();
+                        else
+                            controller->sink(counter);
+                    })
+        ->start();
 }

@@ -1,103 +1,73 @@
-#define ASYNC_RUNTIME_DISABLE_CONSOLE
-#include "async_runtime.h"
+#include "async_runtime/fundamental/file.h"
+#include <iostream>
 
-struct MyWidget : StatefulWidget
-{
-    ref<State<>> createState() override;
-};
+static const auto FILENAME = "test_file.txt";
 
-struct _MyWidgetState : State<MyWidget>
-{
-    using super = State<MyWidget>;
-    lateref<File> _file;
-
-    void _readWriteFile()
-    {
-        _file->exists()
-            /* check file exists */
-            ->than<long long>([this](const bool &exists) -> FutureOr<long long>
-                              {
-                                  LogInfo("File exists: " << exists);
-                                  if (exists)
-                                      return {_file->size()};
-                                  else
-                                      return {0};
-                              })
-            /* print file size */
-            ->than<void>([this](const long long &size) -> FutureOr<void>
-                         {
-                             LogInfo("File size: " << size);
-                             return {};
-                         })
-            /* overwrite file */
-            ->than<void>([this]() -> FutureOr<void>
-                         {
-                             LogInfo("File override ");
-                             std::stringstream ss;
-                             for (size_t i = 0; i < 500; i++)
-                                 ss << "[" << i << "] This is app log. " << std::endl;
-                             return {_file->overwrite(ss.str() /* build ref<String> from std::string */)};
-                         })
-            /* read file */
-            ->than([this]
-                   {
-                       LogInfo("File readWordAsStream: ");
-                       std::shared_ptr<size_t> amountOfWords = std::make_shared<size_t>(0); // async api run code out of current scope, make sure the resource live longer than the async task
-                       auto stream = _file->readWordAsStream();
-                       stream->listen([amountOfWords](const ref<String> &word)
-                                      { (*amountOfWords)++; });
-                       stream->asFuture()
-                           ->than<ref<String>>([this, amountOfWords]() -> FutureOr<ref<String>>
-                                               {
-                                                   LogInfo("File stream close with amount of word: {}. ", *amountOfWords);
-                                                   LogInfo("File read: ");
-                                                   return {_file->read()};
-                                               })
-                           /* remove file */
-                           ->than<int>([this](const ref<String> &value) -> FutureOr<int>
-                                       {
-                                           LogInfo(std::endl
-                                                   << value);
-                                           LogInfo("To remove file: \"{}\"", _file->path);
-                                           return {_file->remove()};
-                                       })
-                           /* check remove file state */
-                           ->than<void>([this](const int &code) -> FutureOr<void>
-                                        {
-                                            LogInfo("Remove code: " << code);
-                                            Process::of(context)->exit();
-                                            return {};
-                                        });
-                   });
-    }
-
-    void initState() override
-    {
-        super::initState();
-        _file = File::fromPath(/* state */ self(),
-                               /* path */ "app.log");
-        _readWriteFile();
-    }
-
-    void dispose() override
-    {
-        _file->dispose();
-        LogInfo("dispose");
-        super::dispose();
-    }
-
-    ref<Widget> build(ref<BuildContext>) override
-    {
-        return LeafWidget::factory();
-    }
-};
-
-inline ref<State<StatefulWidget>> MyWidget::createState()
-{
-    return Object::create<_MyWidgetState>();
-}
+void task();
+FutureOr<int> writeFile(ref<File> file);
+FutureOr<int> appendFile(ref<File> file);
+FutureOr<int> readFile(ref<File> file);
 
 int main()
 {
-    return runApp(Object::create<MyWidget>());
+    EventLoop::run(task);
+    return 0;
+}
+
+void task()
+{
+    File::unlink(FILENAME)
+        ->then<ref<File>>([](const int &)
+                          { return File::fromPath(FILENAME, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR); })
+        ->then<int>(writeFile)
+        ->then<ref<File>>([](const int &)
+                          { return File::fromPath(FILENAME, O_WRONLY | O_APPEND, 0); })
+        ->then<int>(appendFile)
+        ->then<ref<File>>([](const int &)
+                          { return File::fromPath(FILENAME, O_RDONLY, 0); })
+        ->then<int>(readFile);
+}
+
+FutureOr<int> writeFile(ref<File> file)
+{
+    // unlikely have error
+    // so I skip error checking :)
+    return file->write("This is a useless file for testing. \n")
+        ->then<int>([file](const int &)
+                    { return file->close(); });
+}
+
+FutureOr<int> appendFile(ref<File> file)
+{
+    return file->writeAll({"OK\n", "NOT OK\n", "OK\n", "NOT OK\n"})
+        ->then<int>([file](const int &)
+                    { return file->writeAll({"A\n", "B\n", "C\n", "D\n"}); })
+        ->then<int>([file](const int &)
+                    { return file->close(); });
+}
+
+FutureOr<int> readFile(ref<File> file)
+{
+    // also unlikely have error
+    // but I have to demo error-checking :(
+    // File::Error is also a File object that doesn't implement any function but [openCode] or [error]
+    lateref<File::Error> error;
+    if (file->cast<File::Error>().isNotNull(error)) // [[unlikely]]
+    {
+        std::cout << "File open failed with code" << error->openCode() << std::endl;
+        return 0;
+    }
+    else
+    {
+        return file->stat()
+            ->then<ref<String>>([file](ref<File::Stat> stat) //
+                                {                            //
+                                    stat->toStringStream(std::cout);
+                                    return file->read();
+                                })
+            ->then<int>([file](ref<String> value)
+                        {
+                            std::cout << value << std::endl;
+                            return file->close(); });
+    }
 }

@@ -1,4 +1,3 @@
-#define ASYNC_RUNTIME_DISABLE_CONSOLE
 #include "async_runtime.h"
 
 struct Child : StatefulWidget
@@ -51,15 +50,15 @@ class _MyWidgetState : public State<MyWidget>
             {"child2", Object::create<Child>("child2")},
         };
         _count = _children->size();
-        _timer = Timer::periodic(self(), Duration(1000), [this]
-                                 {
+        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) //
+                                 {                                  //
                                      if (_count > 10)
                                      {
-                                         Process::of(context)->exit();
+                                         RootWidget::of(context)->exit();
                                          return;
                                      }
-                                     setState([this]
-                                              {
+                                     setState([this] //
+                                              {      //
                                                   static finalref<String> name = "child";
                                                   ++_count;
                                                   auto iter = _children->find(name + (_count - 3));
@@ -70,6 +69,7 @@ class _MyWidgetState : public State<MyWidget>
                                                   _children[name + _count] = Object::create<Child>(name + _count);
                                               });
                                  });
+        _timer->start();
     }
 
     void dispose() override
@@ -91,5 +91,6 @@ inline ref<State<>> MyWidget::createState()
 
 int main()
 {
-    return runApp(Object::create<MyWidget>());
+    runApp(Object::create<MyWidget>());
+    return 0;
 }
