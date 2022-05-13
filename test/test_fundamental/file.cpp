@@ -2,6 +2,10 @@
 #include <iostream>
 
 static const auto FILENAME = "test_file.txt";
+#ifdef _WIN32
+static const auto S_IRUSR = _S_IREAD;
+static const auto S_IWUSR = _S_IWRITE;
+#endif
 
 void task();
 FutureOr<int> writeFile(ref<File> file);
