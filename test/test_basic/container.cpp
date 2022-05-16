@@ -13,7 +13,15 @@ void test_list()
     list->forEach([](const int &element)
                   { std::cout << element << ' '; });
     std::cout << std::endl
-              << "index: 1, element: " << list[1] << std::endl
+              << "index: 1, element: " << list[1] << std::endl;
+
+    std::cout << "forEach Mapped List: ";
+    auto mapped = list->map<std::string>([](const int &value)
+                                         { return std::to_string(value + 1); });
+    mapped->forEach([](const std::string &element)
+                    { std::cout << element << ' '; });
+    std::cout << std::endl
+              << "index: 1, element: " << mapped[1] << std::endl
               << std::endl;
 }
 
@@ -28,6 +36,13 @@ void test_set()
     std::cout << "forEach Set: ";
     set->forEach([](const int &element)
                  { std::cout << element << ' '; });
+    std::cout << std::endl;
+
+    std::cout << "forEach Mapped Set: ";
+    auto mapped = set->map<std::string>([](const int &value)
+                                        { return std::to_string(value + 1); });
+    mapped->forEach([](const std::string &element)
+                    { std::cout << element << ' '; });
     std::cout << std::endl
               << std::endl;
 }
@@ -48,10 +63,17 @@ void test_map()
     for (auto &element : map)
         std::cout << element.first << " : " << element.second << std::endl;
     std::cout << std::endl;
-    std::cout << "forEach Map: ";
-    map->forEach([](const std::pair<const ref<String>, std::string> &element)
-                 { std::cout << element.first << " : " << element.second << std::endl; });
+    std::cout << "forEach Map: " << std::endl;
+    map->forEach([](const std::pair<const ref<String>, std::string> &pair)
+                 { std::cout << pair.first << " : " << pair.second << std::endl; });
     std::cout << "A value is " << map["A"] << std::endl;
+
+    std::cout << "forEach Mapped Set: " << std::endl;
+    auto mapped = map->map<std::string>([](const std::string &value)
+                                        { return value + " mapped"; });
+    mapped->forEach([](const std::pair<const ref<String>, std::string> &pair)
+                    { std::cout << pair.first << " : " << pair.second << std::endl; });
+    std::cout << std::endl;
 }
 
 int main()
