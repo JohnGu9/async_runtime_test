@@ -23,24 +23,19 @@ void task()
 
     server0->startRecv()->listen([server0](const ref<RecvMessage> &message) //
                                  {                                          //
-                                     const auto server = server0;           // copy ref from heap to stack
-                                                                            // in Windows, it does not automatically lock the resource inside lambda while lambda function is execing
-                                                                            // if the function make its own ref count to 0 while function is execing, you will lose all resource inside lambda
-
-                                     server->close();
+                                     server0->close();
                                      std::cout << "Message recv by server0 - " << message->content << std::endl;
                                  });
 
     server1->startRecv()->listen([server1](const ref<RecvMessage> &message) //
                                  {                                          //
-                                     const auto server = server1;           // copy ref from heap to stack
                                      std::cout << "Message recv by server1 - " << message->content << std::endl;
-                                     server->stopRecv();
-                                     server->send("Message send from server1", reinterpret_cast<const struct sockaddr *>(&s0))
-                                         ->then<int>([server](const int &status) //
+                                     server1->stopRecv();
+                                     server1->send("Message send from server1", reinterpret_cast<const struct sockaddr *>(&s0))
+                                         ->then<int>([server1](const int &status) //
                                                      {                           //
                                                          std::cout << "Send status from server1 - " << status << std::endl;
-                                                         server->close();
+                                                         server1->close();
                                                          return 0;
                                                      });
                                  });
