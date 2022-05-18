@@ -5,13 +5,15 @@ project(async_runtime_test)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+macro(SET_OPTION option value)
+  set(${option} ${value} CACHE INTERNAL "" FORCE)
+endmacro()
+
 # add lib
+SET_OPTION(ASYNC_RUNTIME_WITH_IO ON)
 add_subdirectory(async_runtime)
 # add include path
 include_directories(async_runtime/include)
-message(STATUS "Using Async Runtime include: ${ASYNC_RUNTIME_INCLUDE_DIR}")
-message(STATUS "Using Async Runtime libraries: async_runtime")
-
 
 # test globally
 add_executable(test test/test.cpp)
@@ -53,11 +55,12 @@ target_link_libraries(test_fundamental_timer async_runtime)
 add_executable(test_fundamental_file test/test_fundamental/file.cpp)
 target_link_libraries(test_fundamental_file async_runtime)
 
-add_executable(test_fundamental_udp test/test_fundamental/udp.cpp)
-target_link_libraries(test_fundamental_udp async_runtime)
+# io
+add_executable(test_io_udp test/test_io/udp.cpp)
+target_link_libraries(test_io_udp async_runtime)
 
-add_executable(test_fundamental_tcp test/test_fundamental/tcp.cpp)
-target_link_libraries(test_fundamental_tcp async_runtime)
+add_executable(test_io_tcp test/test_io/tcp.cpp)
+target_link_libraries(test_io_tcp async_runtime)
 
 # widget
 add_executable(test_widget_stateless_widget test/test_widget/stateless_widget.cpp)
