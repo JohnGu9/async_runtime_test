@@ -21,24 +21,26 @@ void task()
     const auto server0 = Udp::from(reinterpret_cast<sockaddr *>(&s0), 0);
     const auto server1 = Udp::from(reinterpret_cast<sockaddr *>(&s1), 0);
 
-    server0->startRecv()->listen([server0](const ref<RecvMessage> &message) //
-                                 {                                          //
-                                     server0->close();
-                                     std::cout << "Message recv by server0 - " << message->content << std::endl;
-                                 });
+    server0->startRecv()->listen(
+        [server0](const ref<RecvMessage> &message) //
+        {                                          //
+            server0->close();
+            std::cout << "Message recv by server0 - " << message->content << std::endl;
+        });
 
-    server1->startRecv()->listen([server1](const ref<RecvMessage> &message) //
-                                 {                                          //
-                                     std::cout << "Message recv by server1 - " << message->content << std::endl;
-                                     server1->stopRecv();
-                                     server1->send("Message send from server1", reinterpret_cast<sockaddr *>(&s0))
-                                         ->then<int>([server1](const int &status) //
-                                                     {                            //
-                                                         std::cout << "Send status from server1 - " << status << std::endl;
-                                                         server1->close();
-                                                         return 0;
-                                                     });
-                                 });
+    server1->startRecv()->listen(
+        [server1](const ref<RecvMessage> &message) //
+        {                                          //
+            std::cout << "Message recv by server1 - " << message->content << std::endl;
+            server1->stopRecv();
+            server1->send("Message send from server1", reinterpret_cast<sockaddr *>(&s0))
+                ->then<int>([server1](const int &status) //
+                            {                            //
+                                std::cout << "Send status from server1 - " << status << std::endl;
+                                server1->close();
+                                return 0;
+                            });
+        });
 
     server0->send("Message send from server0", reinterpret_cast<const struct sockaddr *>(&s1))
         ->then<int>([](const int &status) //

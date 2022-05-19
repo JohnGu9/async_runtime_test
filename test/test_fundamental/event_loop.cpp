@@ -1,7 +1,7 @@
 #include "async_runtime/fundamental/event_loop.h"
 #include <iostream>
+#include <mutex>
 #include <thread>
-#include  <mutex>
 
 void task();
 int main()
@@ -21,13 +21,14 @@ void task()
     bool done = false;
 
     std::cout << "EventLoop master waiting worker task to complete " << std::this_thread::get_id() << std::endl;
-    auto workerLoop = EventLoop::createEventLoopOnNewThread([&done, &cv] //
-                                                            {            //
-                                                                std::cout << "EventLoop worker started " << std::this_thread::get_id() << std::endl;
-                                                                std::cout << "EventLoop worker task done " << std::this_thread::get_id() << std::endl;
-                                                                done = true;
-                                                                cv.notify_all();
-                                                            });
+    auto workerLoop = EventLoop::createEventLoopOnNewThread(
+        [&done, &cv] //
+        {            //
+            std::cout << "EventLoop worker started " << std::this_thread::get_id() << std::endl;
+            std::cout << "EventLoop worker task done " << std::this_thread::get_id() << std::endl;
+            done = true;
+            cv.notify_all();
+        });
     cv.wait(lock, [&done]
             { return done; });
     lock.unlock();
@@ -44,7 +45,7 @@ void task()
 
     {
         std::unique_lock<std::mutex> lk(mutex);
-        std::cout << "EventLoop master closeing worker loop " << std::this_thread::get_id() << std::endl;
+        std::cout << "EventLoop master closing worker loop " << std::this_thread::get_id() << std::endl;
     }
 
     // [EventLoop::createEventLoopOnNewThread] will build a never stop event loop until you close it from other thread
