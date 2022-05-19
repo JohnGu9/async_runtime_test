@@ -1,5 +1,19 @@
 #include "async_runtime.h"
 
+static void stringNonNullAndNullable();
+static void stringCompare();
+static void stringTemplate();
+static void stringSplit();
+
+int main()
+{
+    stringNonNullAndNullable();
+    stringCompare();
+    stringTemplate();
+    stringSplit();
+    return EXIT_SUCCESS;
+}
+
 static void stringNonNullAndNullable()
 {
     ref<String> nonNullString = "nonNullString";
@@ -72,13 +86,13 @@ static void stringTemplate()
     ref<String> formattedString =
         ref<String>("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ")
             ->format("Kiddy", "rain", 26, true); // match "{}"
-    std::cout << formattedString << std::endl;    // Hello, Kiddy! It's rain today. Temperature is 26 degree. The answer is true.
+    std::cout << formattedString << std::endl;   // Hello, Kiddy! It's rain today. Temperature is 26 degree. The answer is true.
 
     /**
      * @brief init from String::formatFromString
      */
     formattedString = String::formatFromString("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ",
-                                              "Kiddy", "rain", 26, true);
+                                               "Kiddy", "rain", 26, true);
     std::cout << formattedString << std::endl;
 
     /**
@@ -99,7 +113,7 @@ static void stringTemplate()
     std::cout << formattedString << std::endl;                                                // Hello, Kiddy! It's rain today.
 }
 
-void stringSplit()
+static void stringSplit()
 {
     ref<String> value = "A B C  D    E";
     auto list = value->split(" ");   // unlike python, the empty string will be ignored
@@ -110,13 +124,4 @@ void stringSplit()
     }
     assert(list->size() == 5);
     std::cout << "list length: " << list->size() << std::endl;
-}
-
-int main()
-{
-    stringNonNullAndNullable();
-    stringCompare();
-    stringTemplate();
-    stringSplit();
-    return EXIT_SUCCESS;
 }

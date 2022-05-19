@@ -1,7 +1,18 @@
 #include "async_runtime.h"
 #include <iostream>
 
-void testList()
+static void testList();
+static void testSet();
+static void testMap();
+int main()
+{
+    testList();
+    testSet();
+    testMap();
+    return EXIT_SUCCESS;
+}
+
+static void testList()
 {
     std::cout << "list test" << std::endl;
 
@@ -26,7 +37,7 @@ void testList()
               << std::endl;
 }
 
-void testSet()
+static void testSet()
 {
     std::cout << "set test" << std::endl;
 
@@ -48,8 +59,7 @@ void testSet()
     std::cout << std::endl
               << std::endl;
 }
-
-void testMap()
+static void testMap()
 {
     std::cout << "map test" << std::endl;
 
@@ -79,12 +89,4 @@ void testMap()
     mapped->forEach([](const std::pair<const ref<String>, std::string> &pair)
                     { std::cout << pair.first << " : " << pair.second << std::endl; });
     std::cout << std::endl;
-}
-
-int main()
-{
-    testList();
-    testSet();
-    testMap();
-    return EXIT_SUCCESS;
 }

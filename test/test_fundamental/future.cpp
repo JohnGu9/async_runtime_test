@@ -11,6 +11,60 @@ int main()
     return 0;
 }
 
+static void printTime();
+static FutureOr<int> testFutureToEventLoop();
+static FutureOr<int> testFutureWait();
+static FutureOr<int> testFutureRace();
+
+void task()
+{
+    // handle tell the event loop not to close before it was disposed
+    auto handle = EventLoop::Handle::create();
+
+    // future is not handle, the callback will be missing call when event loop close before future complete
+    auto completer = Object::create<Completer<int>>();
+    completer->then<int>([handle] { //
+        std::cout << "completer callback" << std::endl;
+        // dispose handle
+        handle->dispose();
+        // now event loop has no alive handle that loop will be closed as soon as possible
+        return 0;
+    });
+
+    std::cout << "Current thread: " << std::this_thread::get_id() << std::endl;
+    printTime();
+    Future<int>::value(0)
+        ->then<int>(testFutureToEventLoop)
+        ->then(printTime)
+        ->then<int>(testFutureWait)
+        ->then(printTime)
+        ->then<int>(testFutureRace)
+        ->then(printTime)
+        ->then([completer] { //
+            auto future = Future<int>::delay(5000, 0)
+                              ->then([]
+                                     { std::cout << "delay future callback" << std::endl; })
+                              ->then(printTime)
+                              ->then([completer]
+                                     { completer->complete(0); });
+
+            future->timeout(3000, [] {                       // timeout api would not cancel the previous future, but just give you a new future
+                      std::cout << "must call" << std::endl; // wait shorted than origin future will get the value from the function
+                      return 1;                              // ensure a return value
+                  })
+                ->then([](const int &value /* 1 */)
+                       { std::cout << "future timeout [3000] callback with value " << value << std::endl; })
+                ->then(printTime);
+
+            future->timeout(6000, [] {                        //
+                      std::cout << "never call" << std::endl; // wait longer than origin future will get the value from origin future
+                      return 2;                               // here will never call
+                  })
+                ->then([](const int &value /* 0 */)
+                       { std::cout << "future timeout [6000] callback with value " << value << std::endl; });
+        });
+}
+
 static std::time_t now;
 static void printTime()
 {
@@ -61,53 +115,4 @@ static FutureOr<int> testFutureRace()
 
                 return 0;
             });
-}
-
-void task()
-{
-    // handle tell the event loop not to close before it was disposed
-    auto handle = EventLoop::Handle::create();
-
-    // future is not handle, the callback will be missing call when event loop close before future complete
-    auto completer = Object::create<Completer<int>>();
-    completer->then<int>([handle] { //
-        std::cout << "completer callback" << std::endl;
-        // dispose handle
-        handle->dispose();
-        // now event loop has no alive handle that loop will be closed as soon as possible
-        return 0;
-    });
-
-    std::cout << "Current thread: " << std::this_thread::get_id() << std::endl;
-    printTime();
-    Future<int>::value(0)
-        ->then<int>(testFutureToEventLoop)
-        ->then(printTime)
-        ->then<int>(testFutureWait)
-        ->then(printTime)
-        ->then<int>(testFutureRace)
-        ->then(printTime)
-        ->then([completer] { //
-            auto future = Future<int>::delay(5000, 0)
-                              ->then([]
-                                     { std::cout << "delay future callback" << std::endl; })
-                              ->then(printTime)
-                              ->then([completer]
-                                     { completer->complete(0); });
-
-            future->timeout(3000, [] {                       // timeout api would not cancel the previous future, but just give you a new future
-                      std::cout << "must call" << std::endl; // wait shorted than origin future will get the value from the function
-                      return 1;                              // ensure a return value
-                  })
-                ->then([](const int &value /* 1 */)
-                       { std::cout << "future timeout [3000] callback with value " << value << std::endl; })
-                ->then(printTime);
-
-            future->timeout(6000, [] {                        //
-                      std::cout << "never call" << std::endl; // wait longer than origin future will get the value from origin future
-                      return 2;                               // here will never call
-                  })
-                ->then([](const int &value /* 0 */)
-                       { std::cout << "future timeout [6000] callback with value " << value << std::endl; });
-        });
 }

@@ -4,15 +4,15 @@
 static const auto FILENAME = "test_file.txt";
 
 void task();
-FutureOr<int> writeFile(ref<File> file);
-FutureOr<int> appendFile(ref<File> file);
-FutureOr<int> readFile(ref<File> file);
-
 int main()
 {
     EventLoop::run(task);
     return 0;
 }
+
+static FutureOr<int> writeFile(ref<File> file);
+static FutureOr<int> appendFile(ref<File> file);
+static FutureOr<int> readFile(ref<File> file);
 
 void task()
 {
@@ -32,7 +32,7 @@ void task()
         ->then<int>(readFile);
 }
 
-FutureOr<int> writeFile(ref<File> file)
+static FutureOr<int> writeFile(ref<File> file)
 {
     // unlikely have error
     // so I skip error checking :)
@@ -41,7 +41,7 @@ FutureOr<int> writeFile(ref<File> file)
                     { return file->close(); });
 }
 
-FutureOr<int> appendFile(ref<File> file)
+static FutureOr<int> appendFile(ref<File> file)
 {
     return file->writeAll({"OK\n", "NOT OK\n", "OK\n", "NOT OK\n"})
         ->then<int>([file](const int &)
@@ -50,7 +50,7 @@ FutureOr<int> appendFile(ref<File> file)
                     { return file->close(); });
 }
 
-FutureOr<int> readFile(ref<File> file)
+static FutureOr<int> readFile(ref<File> file)
 {
     // also unlikely have error
     // but I have to demo error-checking :(
