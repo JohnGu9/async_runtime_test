@@ -19,18 +19,18 @@ void task()
     assert(uv_ip4_addr("127.0.0.1", 10001, &s0) == 0);
     assert(uv_ip4_addr("127.0.0.1", 10002, &s1) == 0);
 
-    auto server0 = Tcp::from(reinterpret_cast<const struct sockaddr *>(&s0), 0);
-    auto server1 = Tcp::from(reinterpret_cast<const struct sockaddr *>(&s1), 0);
-    auto server0RecvComfirm = Object::create<Completer<int>>();
-    auto server1RecvComfirm = Object::create<Completer<int>>();
-    auto allRecComfirm = server0RecvComfirm
-                             ->then<int>([server0RecvComfirm, server1RecvComfirm](const int &) //
+    auto server0 = Tcp::from(reinterpret_cast<sockaddr *>(&s0), 0);
+    auto server1 = Tcp::from(reinterpret_cast<sockaddr *>(&s1), 0);
+    auto server0RecvConfirm = Object::create<Completer<int>>();
+    auto server1RecvConfirm = Object::create<Completer<int>>();
+    auto allRecConfirm = server0RecvConfirm
+                             ->then<int>([server0RecvConfirm, server1RecvConfirm](const int &) //
                                          {                                                     //
-                                             ref<Future<int>> future = server1RecvComfirm;
+                                             ref<Future<int>> future = server1RecvConfirm;
                                              return future;
                                          }); // @TODO: add [Future::wait] and [Future::race] api
 
-    allRecComfirm->then<int>([server0, server1](const int &) //
+    allRecConfirm->then<int>([server0, server1](const int &) //
                              {                               //
                                  server0->close();
                                  server1->close();
@@ -38,16 +38,16 @@ void task()
                              });
 
     auto stream = server0->listen();
-    stream->listen([server0RecvComfirm, allRecComfirm](ref<Tcp::Connection> connection) //
+    stream->listen([server0RecvConfirm, allRecConfirm](ref<Tcp::Connection> connection) //
                    {                                                                    //
                        connection->startRead()
-                           ->listen([server0RecvComfirm](ref<String> message) //
+                           ->listen([server0RecvConfirm](ref<String> message) //
                                     {                                         //
-                                        server0RecvComfirm->complete(0);
+                                        server0RecvConfirm->complete(0);
                                         std::cout << "server0 recv message - " << message << std::endl;
                                     });
 
-                       allRecComfirm->then<int>([connection](const int &) //
+                       allRecConfirm->then<int>([connection](const int &) //
                                                 {                         //
                                                     return connection->shutdown();
                                                 });
@@ -59,17 +59,17 @@ void task()
                                        });
                    });
 
-    server1->connect(reinterpret_cast<const struct sockaddr *>(&s0))
-        ->then<int>([allRecComfirm, server1RecvComfirm](ref<Tcp::Connection> connection) //
+    server1->connect(reinterpret_cast<sockaddr *>(&s0))
+        ->then<int>([allRecConfirm, server1RecvConfirm](ref<Tcp::Connection> connection) //
                     {                                                                    //
                         connection->startRead()
-                            ->listen([connection, server1RecvComfirm](ref<String> message) //
+                            ->listen([connection, server1RecvConfirm](ref<String> message) //
                                      {                                                     //
-                                         server1RecvComfirm->complete(0);
+                                         server1RecvConfirm->complete(0);
                                          std::cout << "server0 recv message - " << message << std::endl;
                                      });
 
-                        allRecComfirm->then<int>([connection](const int &) //
+                        allRecConfirm->then<int>([connection](const int &) //
                                                  {                         //
                                                      return connection->shutdown();
                                                  });

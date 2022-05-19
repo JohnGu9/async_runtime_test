@@ -2,10 +2,6 @@
 #include <iostream>
 
 static const auto FILENAME = "test_file.txt";
-#ifdef _WIN32
-static const auto S_IRUSR = _S_IREAD;
-static const auto S_IWUSR = _S_IWRITE;
-#endif
 
 void task();
 FutureOr<int> writeFile(ref<File> file);
@@ -20,6 +16,10 @@ int main()
 
 void task()
 {
+#ifdef _WIN32
+    static const auto S_IRUSR = _S_IREAD;
+    static const auto S_IWUSR = _S_IWRITE;
+#endif
     File::unlink(FILENAME)
         ->then<ref<File>>([](const int &)
                           { return File::fromPath(FILENAME, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR); })
@@ -54,11 +54,11 @@ FutureOr<int> readFile(ref<File> file)
 {
     // also unlikely have error
     // but I have to demo error-checking :(
-    // File::Error is also a File object that doesn't implement any function but [openCode] or [error]
+    // File::Error is also a File object that doesn't implement any function but [error]
     lateref<File::Error> error;
     if (file->cast<File::Error>().isNotNull(error)) // [[unlikely]]
     {
-        std::cout << "File open failed with code" << error->openCode() << std::endl;
+        std::cout << "File open failed with code" << error->error() << std::endl;
         return 0;
     }
     else
