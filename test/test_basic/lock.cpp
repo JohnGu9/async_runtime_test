@@ -10,8 +10,8 @@
 
 static inline void currentTime()
 {
-    const auto timenow = std::time(nullptr);
-    std::cout << std::ctime(&timenow) << std::endl;
+    const auto timeNow = std::time(nullptr);
+    std::cout << std::ctime(&timeNow) << std::endl;
 }
 
 int main()

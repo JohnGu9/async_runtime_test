@@ -1,9 +1,10 @@
 #include "async_runtime.h"
 #include <iostream>
 
-void test_list()
+void testList()
 {
     std::cout << "list test" << std::endl;
+
     ref<List<int>> list = {1, 2, 2, 3};
     std::cout << "Loop List: ";
     for (auto &element : list)
@@ -25,9 +26,10 @@ void test_list()
               << std::endl;
 }
 
-void test_set()
+void testSet()
 {
     std::cout << "set test" << std::endl;
+
     ref<Set<int>> set = {1, 2, 2, 3};
     std::cout << "Loop Set: ";
     for (auto &element : set)
@@ -47,9 +49,10 @@ void test_set()
               << std::endl;
 }
 
-void test_map()
+void testMap()
 {
     std::cout << "map test" << std::endl;
+
     lateref<Map<ref<String>, std::string>> map;
     // map = {}; // compile error
     // use Object::create<Map<ref<String>, std::string>>>() to create a empty map
@@ -59,10 +62,12 @@ void test_map()
     };
     map["K"] = "B";
     map["A"] = "C++";
+
     std::cout << "Loop Map: ";
     for (auto &element : map)
         std::cout << element.first << " : " << element.second << std::endl;
     std::cout << std::endl;
+
     std::cout << "forEach Map: " << std::endl;
     map->forEach([](const std::pair<const ref<String>, std::string> &pair)
                  { std::cout << pair.first << " : " << pair.second << std::endl; });
@@ -78,8 +83,8 @@ void test_map()
 
 int main()
 {
-    test_list();
-    test_set();
-    test_map();
+    testList();
+    testSet();
+    testMap();
     return EXIT_SUCCESS;
 }

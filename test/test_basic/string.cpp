@@ -1,6 +1,6 @@
 #include "async_runtime.h"
 
-int main()
+static void stringNonNullAndNullable()
 {
     ref<String> nonNullString = "nonNullString";
     option<String> nullableString = "nullableString";
@@ -39,11 +39,10 @@ int main()
     ref<String> notReallyNullString = reallyNullString.isNotNullElse([]
                                                                      { return "notReallyNullString"; });
     std::cout << notReallyNullString << std::endl;
+}
 
-    /**
-     * @brief String compare
-     *
-     */
+static void stringCompare()
+{
     ref<String> string0 = "Hello World";
     ref<String> string1 = "Hello World";
     assert(string0 == string1);
@@ -63,55 +62,61 @@ int main()
     assert(!(string2 == string4));
     assert(string4 == nullptr);
     assert(!(string4 != nullptr));
+}
 
-    /**
-     * @brief String template
-     * format String from source and arguments
-     */
-
+static void stringTemplate()
+{
     /**
      * @brief init from String::format
      */
-    ref<String> formatedString =
+    ref<String> formattedString =
         ref<String>("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ")
             ->format("Kiddy", "rain", 26, true); // match "{}"
-    std::cout << formatedString << std::endl;    // Hello, Kiddy! It's rain today. Temperature is 26 degree. The answer is true.
+    std::cout << formattedString << std::endl;    // Hello, Kiddy! It's rain today. Temperature is 26 degree. The answer is true.
 
     /**
      * @brief init from String::formatFromString
      */
-    formatedString = String::formatFromString("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ",
+    formattedString = String::formatFromString("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ",
                                               "Kiddy", "rain", 26, true);
-    std::cout << formatedString << std::endl;
+    std::cout << formattedString << std::endl;
 
     /**
      * @brief init from String::formatFromIterator
      */
     auto str = std::string("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ");
-    formatedString = String::formatFromIterator(str.begin(), str.end(), "Kiddy", "rain", 26, true);
-    std::cout << formatedString << std::endl;
+    formattedString = String::formatFromIterator(str.begin(), str.end(), "Kiddy", "rain", 26, true);
+    std::cout << formattedString << std::endl;
 
     /**
      * @brief String format exception case (String format would not throw any error)
      * more arguments or less arguments
      */
-    formatedString = ref<String>("Hello, {}! It's {} today. Temperature is {} degree. ")->format("Kiddy", "rain"); // less arguments is fine
-    std::cout << formatedString << std::endl;                                                                      // Hello, Kiddy! It's rain today. Temperature is {} degree.
+    formattedString = ref<String>("Hello, {}! It's {} today. Temperature is {} degree. ")->format("Kiddy", "rain"); // less arguments is fine
+    std::cout << formattedString << std::endl;                                                                      // Hello, Kiddy! It's rain today. Temperature is {} degree.
 
-    formatedString = ref<String>("Hello, {}! It's {} today. ")->format("Kiddy", "rain", 26); // more arguments is fine but with error message on console
-    std::cout << formatedString << std::endl;                                                // Hello, Kiddy! It's rain today.
+    formattedString = ref<String>("Hello, {}! It's {} today. ")->format("Kiddy", "rain", 26); // more arguments is fine but with error message on console
+    std::cout << formattedString << std::endl;                                                // Hello, Kiddy! It's rain today.
+}
 
-    /**
-     * @brief String::split
-     *
-     */
-
-    auto list = formatedString->split(" ");
-    for (const auto &element : list)
+void stringSplit()
+{
+    ref<String> value = "A B C  D    E";
+    auto list = value->split(" ");   // unlike python, the empty string will be ignored
+    for (const auto &element : list) // so only [5] elements in [list]
     {
+        assert(element->length() > 0);
         std::cout << element << std::endl;
     }
     assert(list->size() == 5);
     std::cout << "list length: " << list->size() << std::endl;
+}
+
+int main()
+{
+    stringNonNullAndNullable();
+    stringCompare();
+    stringTemplate();
+    stringSplit();
     return EXIT_SUCCESS;
 }
