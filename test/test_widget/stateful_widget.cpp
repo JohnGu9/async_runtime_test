@@ -47,21 +47,20 @@ class _MyWidgetState : public State<MyWidget>
     {
         super::initState();
         _count = 0;
-        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) //
-                                 {                                  //
-                                     if (!mounted)
-                                         return;
-                                     if (_count > 5)
-                                     {
-                                         _timer->cancel();
-                                         std::cout << "Timer cancel" << std::endl;
-                                         RootWidget::of(context)->exit();
-                                         return;
-                                     }
-                                     else
-                                         setState([this]
-                                                  { _count++; });
-                                 });
+        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) { //
+            if (!mounted)
+                return;
+            if (_count > 5)
+            {
+                _timer->cancel();
+                std::cout << "Timer cancel" << std::endl;
+                RootWidget::of(context)->exit();
+                return;
+            }
+            else
+                setState([this]
+                         { _count++; });
+        });
         _timer->start();
     }
 

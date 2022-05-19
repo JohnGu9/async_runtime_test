@@ -50,25 +50,23 @@ class _MyWidgetState : public State<MyWidget>
             {"child2", Object::create<Child>("child2")},
         };
         _count = _children->size();
-        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) //
-                                 {                                  //
-                                     if (_count > 10)
-                                     {
-                                         RootWidget::of(context)->exit();
-                                         return;
-                                     }
-                                     setState([this] //
-                                              {      //
-                                                  static finalref<String> name = "child";
-                                                  ++_count;
-                                                  auto iter = _children->find(name + (_count - 3));
-                                                  if (iter != _children->end())
-                                                      _children->erase(iter);
-                                                  else
-                                                      LogInfo("Can't find: " << (name + (_count - 3)));
-                                                  _children[name + _count] = Object::create<Child>(name + _count);
-                                              });
-                                 });
+        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) { //
+            if (_count > 10)
+            {
+                RootWidget::of(context)->exit();
+                return;
+            }
+            setState([this] { //
+                static finalref<String> name = "child";
+                ++_count;
+                auto iter = _children->find(name + (_count - 3));
+                if (iter != _children->end())
+                    _children->erase(iter);
+                else
+                    LogInfo("Can't find: " << (name + (_count - 3)));
+                _children[name + _count] = Object::create<Child>(name + _count);
+            });
+        });
         _timer->start();
     }
 

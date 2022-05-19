@@ -64,14 +64,13 @@ FutureOr<int> readFile(ref<File> file)
     else
     {
         return file->stat()
-            ->then<ref<String>>([file](ref<File::Stat> stat) //
-                                {                            //
-                                    stat->toStringStream(std::cout);
-                                    return file->read();
-                                })
-            ->then<int>([file](ref<String> value)
-                        {
-                            std::cout << value << std::endl;
-                            return file->close(); });
+            ->then<ref<String>>([file](ref<File::Stat> stat) { //
+                stat->toStringStream(std::cout);
+                return file->read();
+            })
+            ->then<int>([file](ref<String> value) { //
+                std::cout << value << std::endl;
+                return file->close();
+            });
     }
 }

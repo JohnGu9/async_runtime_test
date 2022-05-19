@@ -21,14 +21,12 @@ void task()
     bool done = false;
 
     std::cout << "EventLoop master waiting worker task to complete " << std::this_thread::get_id() << std::endl;
-    auto workerLoop = EventLoop::createEventLoopOnNewThread(
-        [&done, &cv] //
-        {            //
-            std::cout << "EventLoop worker started " << std::this_thread::get_id() << std::endl;
-            std::cout << "EventLoop worker task done " << std::this_thread::get_id() << std::endl;
-            done = true;
-            cv.notify_all();
-        });
+    auto workerLoop = EventLoop::createEventLoopOnNewThread([&done, &cv] { //
+        std::cout << "EventLoop worker started " << std::this_thread::get_id() << std::endl;
+        std::cout << "EventLoop worker task done " << std::this_thread::get_id() << std::endl;
+        done = true;
+        cv.notify_all();
+    });
     cv.wait(lock, [&done]
             { return done; });
     lock.unlock();
@@ -37,11 +35,10 @@ void task()
     // if you want to post task to other event loop, please use [EventLoop::callSoonThreadSafe]
     // [EventLoop::callSoonThreadSafe] is async that it will immediately return
     // Task will exec as soon as possible but not now
-    workerLoop->callSoonThreadSafe([&mutex] //
-                                   {        //
-                                       std::unique_lock<std::mutex> lk(mutex);
-                                       std::cout << "EventLoop worker task call from [callSoonThreadSafe] " << std::this_thread::get_id() << std::endl;
-                                   });
+    workerLoop->callSoonThreadSafe([&mutex] { //
+        std::unique_lock<std::mutex> lk(mutex);
+        std::cout << "EventLoop worker task call from [callSoonThreadSafe] " << std::this_thread::get_id() << std::endl;
+    });
 
     {
         std::unique_lock<std::mutex> lk(mutex);

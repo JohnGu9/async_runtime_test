@@ -61,8 +61,7 @@ inline ref<Widget> NotificationTest::build(ref<BuildContext> context)
 {
     return Object::create<NotificationListener<MessageNotification>>(
         /* child */ Object::create<_BubbleNotification>(),
-        /* onNotification */ [context](ref<MessageNotification> notification)
-        {
+        /* onNotification */ [context](ref<MessageNotification> notification) { //
             LogInfo(notification->message);
             return true;
         });

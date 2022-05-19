@@ -16,11 +16,12 @@ class _MyWidgetState : public State<MyWidget>
     {
         super::initState();
         _completer = Object::create<Completer<int>>();
-        _completer->then<int>([this](const int &)
-                              { return Future<int>::delay(Duration(1000), [this]
-                                                          { 
-                                                        RootWidget::of(context)->exit(); 
-                                                        return 0; }); });
+        _completer->then<int>([this](const int &) {            //
+            return Future<int>::delay(Duration(1000), [this] { //
+                RootWidget::of(context)->exit();
+                return 0;
+            });
+        });
         Timer::delay(Duration(2000), [this](ref<Timer>)
                      { _completer->complete(123); })
             ->start();
@@ -30,8 +31,7 @@ class _MyWidgetState : public State<MyWidget>
     {
         return Object::create<FutureBuilder<int>>(
             _completer,
-            [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot)
-            {
+            [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) { //
                 std::cout << AsyncSnapshot<>::ConnectionState::toString(snapshot->state) << ' ';
                 if (snapshot->hasData())
                 {
