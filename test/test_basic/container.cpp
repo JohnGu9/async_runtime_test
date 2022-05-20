@@ -17,10 +17,8 @@ static void testList()
     std::cout << "list test" << std::endl;
 
     ref<List<int>> list = {1, 2, 2, 3};
-    std::cout << "Loop List: ";
-    for (auto &element : list)
-        std::cout << element << ' ';
-    std::cout << std::endl;
+    std::cout << list << std::endl;
+
     std::cout << "forEach List: ";
     list->forEach([](const int &element)
                   { std::cout << element << ' '; });
@@ -42,10 +40,8 @@ static void testSet()
     std::cout << "set test" << std::endl;
 
     ref<Set<int>> set = {1, 2, 2, 3};
-    std::cout << "Loop Set: ";
-    for (auto &element : set)
-        std::cout << element << ' ';
-    std::cout << std::endl;
+    std::cout << set << std::endl;
+
     std::cout << "forEach Set: ";
     set->forEach([](const int &element)
                  { std::cout << element << ' '; });
@@ -73,10 +69,7 @@ static void testMap()
     map["K"] = "B";
     map["A"] = "C++";
 
-    std::cout << "Loop Map: ";
-    for (auto &element : map)
-        std::cout << element.first << " : " << element.second << std::endl;
-    std::cout << std::endl;
+    std::cout << map << std::endl;
 
     std::cout << "forEach Map: " << std::endl;
     map->forEach([](const std::pair<const ref<String>, std::string> &pair)
