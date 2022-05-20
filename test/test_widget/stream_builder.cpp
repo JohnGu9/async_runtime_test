@@ -10,27 +10,41 @@ public:
 class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
-    lateref<Completer<int>> _completer;
+    lateref<StreamController<int>> _controller;
+    lateref<Timer> _timer;
+    int _counter = 0;
 
     void initState() override
     {
         super::initState();
-        _completer = Object::create<Completer<int>>();
-        _completer->then<int>([this] {                         //
-            return Future<int>::delay(Duration(1000), [this] { //
-                RootWidget::of(context)->exit();
-                return 0;
-            });
+        _controller = Object::create<StreamController<int>>();
+        _timer = Timer::periodic(1000, [this] { //
+            std::cout << "Sink data: " << _counter << std::endl;
+            _controller->sink(_counter++);
+            if (this->_counter > 5)
+            {
+                _timer->cancel();
+                _controller->close();
+                Future<int>::delay(500, [this] { //
+                    RootWidget::of(context)->exit();
+                    return 0;
+                });
+            }
         });
-        Timer::delay(Duration(2000), [this]
-                     { _completer->complete(123); })
-            ->start();
+        _timer->start();
+    }
+
+    void dispose() override
+    {
+        _timer->cancel();
+        _controller->close();
+        super::dispose();
     }
 
     ref<Widget> build(ref<BuildContext>) override
     {
-        return Object::create<FutureBuilder<int>>(
-            _completer,
+        return Object::create<StreamBuilder<int>>(
+            _controller,
             [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) { //
                 std::cout << AsyncSnapshot<>::ConnectionState::toString(snapshot->state) << ' ';
                 if (snapshot->hasData())

@@ -43,7 +43,7 @@ struct _MyWidgetState : State<MyWidget>
     }
 };
 
-ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
+inline ref<State<>> MyWidget::createState() { return Object::create<_MyWidgetState>(); }
 
 int main()
 {

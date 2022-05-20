@@ -1,6 +1,6 @@
 #include "async_runtime.h"
 
-static const auto FILENAME = "logger_widget_test.txt";
+static const auto FILENAME = "logger_widget_test.log";
 
 class MyWidget : public StatefulWidget
 {
