@@ -16,13 +16,13 @@ class _MyWidgetState : public State<MyWidget>
     {
         super::initState();
         _completer = Object::create<Completer<int>>();
-        _completer->then<int>([this](const int &) {            //
+        _completer->then<int>([this] {                         //
             return Future<int>::delay(Duration(1000), [this] { //
                 RootWidget::of(context)->exit();
                 return 0;
             });
         });
-        Timer::delay(Duration(2000), [this](ref<Timer>)
+        Timer::delay(Duration(2000), [this]
                      { _completer->complete(123); })
             ->start();
     }

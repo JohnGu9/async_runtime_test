@@ -15,8 +15,8 @@ class _MyWidgetState : public State<MyWidget>
     void initState() override
     {
         super::initState();
-        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) { //
-            if (!mounted)                                             // [[unlikely]]
+        _timer = Timer::periodic(Duration(1000), [this] { //
+            if (!mounted)                                 // [[unlikely]]
                 return;
 
             // just output logger handler

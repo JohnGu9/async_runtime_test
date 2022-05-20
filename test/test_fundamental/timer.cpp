@@ -11,10 +11,14 @@ int main()
 void task()
 {
     // timer has event loop handle that event loop would not close before all timers be canceled
-    auto timer0 = Timer::periodic(1000, [](const ref<Timer> &)
+
+    // Timer::periodic
+    auto timer0 = Timer::periodic(1000, []
                                   { std::cout << "timer0 " << std::endl; });
     timer0->start();
-    Timer::delay(10000, [timer0](const ref<Timer> &) { //
+
+    // Timer::delay
+    Timer::delay(10000, [timer0] { // after 10s, cancel the periodic timer
         timer0->cancel();
         std::cout << "timer1 " << std::endl;
     })

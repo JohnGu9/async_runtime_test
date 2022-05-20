@@ -47,7 +47,7 @@ class _MyWidgetState : public State<MyWidget>
     {
         super::initState();
         _count = 0;
-        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) { //
+        _timer = Timer::periodic(Duration(1000), [this] { //
             if (!mounted)
                 return;
             if (_count > 5)

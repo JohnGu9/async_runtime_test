@@ -15,7 +15,7 @@ struct _MyWidgetState : State<MyWidget>
     {
         super::initState();
         _notifier = Object::create<ValueNotifier<bool>>(false);
-        _timer = Timer::periodic(Duration(2000), [this](ref<Timer>) { //
+        _timer = Timer::periodic(Duration(2000), [this] { //
             _notifier->setValue(!_notifier->value);
             if (_notifier->getValue() == false)
             {
@@ -32,17 +32,14 @@ struct _MyWidgetState : State<MyWidget>
         super::dispose();
     }
 
-    Function<ref<Widget>(ref<BuildContext>, bool, option<Widget>)> builder =
-        [](ref<BuildContext> _, bool value, option<Widget> child)
-    {
-        std::cout << "current value: " << value << std::endl;
-        return LeafWidget::factory();
-    };
-
     ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<ValueListenableBuilder<bool>>(
-            _notifier, builder);
+            _notifier,
+            [](ref<BuildContext> _, bool value, option<Widget> child) { //
+                std::cout << "current value: " << value << std::endl;
+                return LeafWidget::factory();
+            });
     }
 };
 

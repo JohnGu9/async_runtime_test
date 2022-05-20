@@ -50,7 +50,7 @@ class _MyWidgetState : public State<MyWidget>
             {"child2", Object::create<Child>("child2")},
         };
         _count = _children->size();
-        _timer = Timer::periodic(Duration(1000), [this](ref<Timer>) { //
+        _timer = Timer::periodic(Duration(1000), [this] { //
             if (_count > 10)
             {
                 RootWidget::of(context)->exit();

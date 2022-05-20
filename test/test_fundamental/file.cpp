@@ -21,13 +21,13 @@ void task()
     static const auto S_IWUSR = _S_IWRITE;
 #endif
     File::unlink(FILENAME)
-        ->then<ref<File>>([](const int &)
+        ->then<ref<File>>([]
                           { return File::fromPath(FILENAME, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR); })
         ->then<int>(writeFile)
-        ->then<ref<File>>([](const int &)
+        ->then<ref<File>>([]
                           { return File::fromPath(FILENAME, O_WRONLY | O_APPEND, 0); })
         ->then<int>(appendFile)
-        ->then<ref<File>>([](const int &)
+        ->then<ref<File>>([]
                           { return File::fromPath(FILENAME, O_RDONLY, 0); })
         ->then<int>(readFile);
 }
@@ -37,16 +37,16 @@ static FutureOr<int> writeFile(ref<File> file)
     // unlikely have error
     // so I skip error checking :)
     return file->write("This is a useless file for testing. \n")
-        ->then<int>([file](const int &)
+        ->then<int>([file]
                     { return file->close(); });
 }
 
 static FutureOr<int> appendFile(ref<File> file)
 {
     return file->writeAll({"OK\n", "NOT OK\n", "OK\n", "NOT OK\n"})
-        ->then<int>([file](const int &)
+        ->then<int>([file]
                     { return file->writeAll({"A\n", "B\n", "C\n", "D\n"}); })
-        ->then<int>([file](const int &)
+        ->then<int>([file]
                     { return file->close(); });
 }
 

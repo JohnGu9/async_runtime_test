@@ -32,8 +32,8 @@ class _RebuildTestState : public State<RebuildTest>
     {
         super::initState();
         _count = 0;
-        _timer = Timer::periodic(Duration::fromMilliseconds(1000), [this](ref<Timer>) { //
-            setState([this] {                                                           //
+        _timer = Timer::periodic(Duration::fromMilliseconds(1000), [this] { //
+            setState([this] {                                               //
                 _count++;
                 if (_count > 5)
                 {
