@@ -23,11 +23,7 @@ void task()
     auto server1 = Tcp::from(reinterpret_cast<sockaddr *>(&s1), 0);
     auto server0RecvConfirm = Object::create<Completer<int>>();
     auto server1RecvConfirm = Object::create<Completer<int>>();
-    auto allRecConfirm = server0RecvConfirm->then<int>([server0RecvConfirm, server1RecvConfirm] { //
-        ref<Future<int>> future = server1RecvConfirm;
-        return future;
-    }); // @TODO: add [Future::wait] and [Future::race] api
-
+    auto allRecConfirm = Future<>::wait<int, int>(server0RecvConfirm, server1RecvConfirm);
     allRecConfirm->then<int>([server0, server1] { //
         server0->close();
         server1->close();
