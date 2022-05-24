@@ -113,7 +113,7 @@ class _LoggerSwitchState : public State<LoggerSwitch>
         case cout:
             return Logger::cout(widget->child);
         case file:
-            return Logger::file(FILENAME, widget->child);
+            return Logger::file(widget->child, FILENAME);
         default:
             return LeafWidget::factory();
         }
