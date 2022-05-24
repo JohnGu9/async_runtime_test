@@ -1,13 +1,16 @@
 #include "async_runtime.h"
 
 static void stringNonNullAndNullable();
+static void stringConnect();
 static void stringCompare();
 static void stringTemplate();
 static void stringSplit();
 
 int main()
 {
+    std::cout << std::boolalpha;
     stringNonNullAndNullable();
+    stringConnect();
     stringCompare();
     stringTemplate();
     stringSplit();
@@ -55,6 +58,19 @@ static void stringNonNullAndNullable()
     std::cout << notReallyNullString << std::endl;
 }
 
+static void stringConnect()
+{
+    ref<String> string0 = "Connect";
+    ref<String> string1 = " to ";
+    ref<String> string2 = "World";
+
+    ref<String> connect0 = String::connect(string0, string1, string2); // maybe better performance
+    ref<String> connect1 = string0 + string1 + string2;
+
+    std::cout << connect0 << std::endl;
+    std::cout << connect1 << std::endl;
+}
+
 static void stringCompare()
 {
     ref<String> string0 = "Hello World";
@@ -92,14 +108,14 @@ static void stringTemplate()
      * @brief init from String::formatFromString
      */
     formattedString = String::formatFromString("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ",
-                                               "Kiddy", "rain", 26, true);
+                                               "Kiddy", "rain", 26, true); // maybe better performance
     std::cout << formattedString << std::endl;
 
     /**
      * @brief init from String::formatFromIterator
      */
     auto str = std::string("Hello, {}! It's {} today. Temperature is {} degree. The answer is {}. ");
-    formattedString = String::formatFromIterator(str.begin(), str.end(), "Kiddy", "rain", 26, true);
+    formattedString = String::formatFromIterator(str.begin(), str.end(), "Kiddy", "rain", 26, true); // maybe better performance
     std::cout << formattedString << std::endl;
 
     /**
@@ -123,5 +139,7 @@ static void stringSplit()
         std::cout << element << std::endl;
     }
     assert(list->size() == 5);
+    std::cout << "list connect: " << String::connect(list[0], list[1], list[2], list[3], list[4]) << std::endl;
+    std::cout << "list[0] == 'A': " << (list[0] == "A") << std::endl;
     std::cout << "list length: " << list->size() << std::endl;
 }
