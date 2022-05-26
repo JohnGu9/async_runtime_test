@@ -1,4 +1,4 @@
-#include "value_key.h"
+#include "lifecycle_notify_widget.h"
 
 class MyWidget : public StatefulWidget
 {
@@ -36,7 +36,7 @@ class _MyWidgetState : public State<MyWidget>
 
     ref<Widget> build(ref<BuildContext>) override
     {
-        return Object::create<Child>(Object::create<ValueKey<ref<String>>>(text));
+        return Object::create<LifecycleNotifyWidget>(Object::create<ValueKey<ref<String>>>(text));
     }
 };
 
