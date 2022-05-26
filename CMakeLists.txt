@@ -26,44 +26,45 @@ else()
 add_definitions(-Wall)
 endif()
 
+#object
+add_executable(test_object_container test/test_object/container.cpp)
+target_link_libraries(test_object_container async_runtime_object)
+
+add_executable(test_object_string test/test_object/string.cpp)
+target_link_libraries(test_object_string async_runtime_object)
+
+add_executable(test_object_function test/test_object/function.cpp)
+target_link_libraries(test_object_function async_runtime_object)
+
 # basic
-add_executable(test_basic_callback test/test_basic/callback.cpp)
-target_link_libraries(test_basic_callback async_runtime)
+add_executable(test_utilities_callback test/test_utilities/callback.cpp)
+target_link_libraries(test_utilities_callback async_runtime_utilities)
 
-add_executable(test_basic_lock test/test_basic/lock.cpp)
-target_link_libraries(test_basic_lock async_runtime)
-
-add_executable(test_basic_container test/test_basic/container.cpp)
-target_link_libraries(test_basic_container async_runtime)
-
-add_executable(test_basic_string test/test_basic/string.cpp)
-target_link_libraries(test_basic_string async_runtime)
-
-add_executable(test_basic_function test/test_basic/function.cpp)
-target_link_libraries(test_basic_function async_runtime)
+add_executable(test_utilities_lock test/test_utilities/lock.cpp)
+target_link_libraries(test_utilities_lock async_runtime_fundamental)
 
 # fundamental
 add_executable(test_fundamental_event_loop test/test_fundamental/event_loop.cpp)
-target_link_libraries(test_fundamental_event_loop async_runtime)
+target_link_libraries(test_fundamental_event_loop async_runtime_fundamental)
 
 add_executable(test_fundamental_future test/test_fundamental/future.cpp)
-target_link_libraries(test_fundamental_future async_runtime)
+target_link_libraries(test_fundamental_future async_runtime_fundamental)
 
 add_executable(test_fundamental_stream test/test_fundamental/stream.cpp)
-target_link_libraries(test_fundamental_stream async_runtime)
+target_link_libraries(test_fundamental_stream async_runtime_fundamental)
 
 add_executable(test_fundamental_timer test/test_fundamental/timer.cpp)
-target_link_libraries(test_fundamental_timer async_runtime)
+target_link_libraries(test_fundamental_timer async_runtime_fundamental)
 
 add_executable(test_fundamental_file test/test_fundamental/file.cpp)
-target_link_libraries(test_fundamental_file async_runtime)
+target_link_libraries(test_fundamental_file async_runtime_fundamental)
 
 # io
 add_executable(test_io_udp test/test_io/udp.cpp)
-target_link_libraries(test_io_udp async_runtime)
+target_link_libraries(test_io_udp async_runtime_fundamental)
 
 add_executable(test_io_tcp test/test_io/tcp.cpp)
-target_link_libraries(test_io_tcp async_runtime)
+target_link_libraries(test_io_tcp async_runtime_fundamental)
 
 # widget
 add_executable(test_widget_stateless_widget test/test_widget/stateless_widget.cpp)
