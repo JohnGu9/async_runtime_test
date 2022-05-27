@@ -8,14 +8,16 @@ int main(const int argc, char **args)
     Function<void()> fn = [&notifier] { //
         info_print("Value changed to " << notifier->value);
     };
+    assert(notifier->getValue() == false);
 
     notifier->addListener(fn);
 
     std::cout << "add same function will not call twice when [notifyListeners]" << std::endl;
-    notifier->addListener(fn); // not valid
+    notifier->addListener(fn); // not valid but no error
 
     std::cout << "Change value (only call function once)" << std::endl;
     notifier->setValue(true);
+    assert(notifier->getValue() == true);
 
     std::cout << "Not change value" << std::endl;
     notifier->setValue(true);
@@ -29,6 +31,5 @@ int main(const int argc, char **args)
 
     std::cout << "Invalid access after dispose() and cause assert exception. " << std::endl;
     notifier->setValue(false);
-
     return EXIT_SUCCESS;
 }

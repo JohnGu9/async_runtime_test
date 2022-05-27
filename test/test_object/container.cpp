@@ -17,6 +17,11 @@ static void testList()
     std::cout << "list test" << std::endl;
 
     ref<List<int>> list = {1, 2, 2, 3};
+    assert(list->size() == 4);
+    assert(list[0] == 1);
+    assert(list[1] == 2);
+    assert(list[2] == 2);
+    assert(list[3] == 3);
     std::cout << list << std::endl;
 
     std::cout << "forEach List: ";
@@ -40,6 +45,7 @@ static void testSet()
     std::cout << "set test" << std::endl;
 
     ref<Set<int>> set = {1, 2, 2, 3};
+    assert(set->size() == 3);
     std::cout << set << std::endl;
 
     std::cout << "forEach Set: ";
@@ -68,7 +74,10 @@ static void testMap()
     };
     map["K"] = "B";
     map["A"] = "C++";
-
+    assert(map->size() == 3);
+    assert(map["A"] == "C++");
+    assert(map["C"] == "D");
+    assert(map["K"] == "B");
     std::cout << map << std::endl;
 
     std::cout << "forEach Map: " << std::endl;
@@ -79,6 +88,10 @@ static void testMap()
     std::cout << "forEach Mapped Set: " << std::endl;
     auto mapped = map->map<std::string>([](const std::string &value)
                                         { return value + " mapped"; });
+    assert(mapped->size() == 3);
+    assert(mapped["A"] == "C++ mapped");
+    assert(mapped["C"] == "D mapped");
+    assert(mapped["K"] == "B mapped");
     mapped->forEach([](const std::pair<const ref<String>, std::string> &pair)
                     { std::cout << pair.first << " : " << pair.second << std::endl; });
     std::cout << std::endl;

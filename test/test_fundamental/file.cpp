@@ -36,6 +36,7 @@ static FutureOr<int> writeFile(ref<File> file)
 {
     // unlikely have error
     // so I skip error checking :)
+    assert(file->error() > -1);
     return file->write("This is a useless file for testing. \n")
         ->then<int>([file]
                     { return file->close(); });
@@ -43,6 +44,7 @@ static FutureOr<int> writeFile(ref<File> file)
 
 static FutureOr<int> appendFile(ref<File> file)
 {
+    assert(file->error() > -1);
     return file->writeAll({"OK\n", "NOT OK\n", "OK\n", "NOT OK\n"})
         ->then<int>([file]
                     { return file->writeAll({"A\n", "B\n", "C\n", "D\n"}); })
@@ -69,6 +71,17 @@ static FutureOr<int> readFile(ref<File> file)
                 return file->read();
             })
             ->then<int>([file](ref<String> value) { //
+                auto except = "This is a useless file for testing. \n"
+                              "OK\n"
+                              "NOT OK\n"
+                              "OK\n"
+                              "NOT OK\n"
+                              "A\n"
+                              "B\n"
+                              "C\n"
+                              "D\n";
+
+                assert(value == except);
                 std::cout << value << std::endl;
                 return file->close();
             });

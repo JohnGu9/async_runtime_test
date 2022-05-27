@@ -14,6 +14,8 @@ int main()
 
 static struct sockaddr_in s0;
 static struct sockaddr_in s1;
+#define SERVER0_MESSAGE "Message send from server0"
+#define SERVER1_MESSAGE "Message send from server1"
 void task()
 {
     assert(uv_ip4_addr("127.0.0.1", 10001, &s0) == 0);
@@ -35,16 +37,18 @@ void task()
         connection->startRead()
             ->listen([server0RecvConfirm](ref<String> message) { //
                 server0RecvConfirm->complete(0);
+                assert(message == SERVER1_MESSAGE);
                 std::cout << "server0 recv message - " << message << std::endl;
+            });
+        connection->write(SERVER0_MESSAGE)
+            ->then<int>([](const int &status) { //
+                assert(status == 0);
+                std::cout << "server0 send message status - " << status << std::endl;
+                return 0;
             });
         allRecConfirm->then<int>([connection] { //
             return connection->shutdown();
         });
-        connection->write("Message send from server0")
-            ->then<int>([](const int &status) { //
-                std::cout << "server0 send message status - " << status << std::endl;
-                return 0;
-            });
     });
 
     server1->connect(reinterpret_cast<sockaddr *>(&s0))
@@ -52,14 +56,16 @@ void task()
             connection->startRead()
                 ->listen([connection, server1RecvConfirm](ref<String> message) { //
                     server1RecvConfirm->complete(0);
+                    assert(message == SERVER0_MESSAGE);
                     std::cout << "server0 recv message - " << message << std::endl;
                 });
-            allRecConfirm->then<int>([connection] { //
-                return connection->shutdown();
-            });
-            connection->write("Message send from server1")->then<int>([](const int &status) { //
+            connection->write(SERVER1_MESSAGE)->then<int>([](const int &status) { //
+                assert(status == 0);
                 std::cout << "server1 send message status - " << status << std::endl;
                 return 0;
+            });
+            allRecConfirm->then<int>([connection] { //
+                return connection->shutdown();
             });
 
             return 0;
