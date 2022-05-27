@@ -75,8 +75,10 @@ static void stringCompare()
 {
     ref<String> string0 = "Hello World";
     ref<String> string1 = "Hello World";
+    ref<String> string5 = "  Hello World  ";
     assert(string0 == string1);
     assert(!(string0 != string1));
+    assert(string0 == string5->trim());
 
     option<String> string2 = "Hello World";
     option<String> string3 = "Hello World";
