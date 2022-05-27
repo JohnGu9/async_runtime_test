@@ -22,6 +22,10 @@ static void testList()
     assert(list[1] == 2);
     assert(list[2] == 2);
     assert(list[3] == 3);
+    assert(list->contain(1));
+    assert(list->contain(2));
+    assert(list->contain(3));
+    assert(!list->contain(4));
     std::cout << list << std::endl;
 
     std::cout << "forEach List: ";
@@ -46,6 +50,10 @@ static void testSet()
 
     ref<Set<int>> set = {1, 2, 2, 3};
     assert(set->size() == 3);
+    assert(set->contain(1));
+    assert(set->contain(2));
+    assert(set->contain(3));
+    assert(!set->contain(4));
     std::cout << set << std::endl;
 
     std::cout << "forEach Set: ";
@@ -70,14 +78,20 @@ static void testMap()
     // use Object::create<Map<ref<String>, std::string>>>() to create a empty map
     map = {
         {"A", "B"},
+        {"B", "C"},
         {"C", "D"},
     };
     map["K"] = "B";
     map["A"] = "C++";
+    map->remove("B");
     assert(map->size() == 3);
     assert(map["A"] == "C++");
     assert(map["C"] == "D");
     assert(map["K"] == "B");
+    assert(map->contain("A"));
+    assert(map->contain("C"));
+    assert(map->contain("K"));
+    assert(!map->contain("B"));
     std::cout << map << std::endl;
 
     std::cout << "forEach Map: " << std::endl;

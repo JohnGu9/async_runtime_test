@@ -36,9 +36,9 @@ target_link_libraries(test_object_string async_runtime_object)
 add_executable(test_object_function test/test_object/function.cpp)
 target_link_libraries(test_object_function async_runtime_object)
 
-# basic
-add_executable(test_utilities_callback test/test_utilities/callback.cpp)
-target_link_libraries(test_utilities_callback async_runtime_utilities)
+# utilities
+add_executable(test_utilities_value_notifier test/test_utilities/value_notifier.cpp)
+target_link_libraries(test_utilities_value_notifier async_runtime_utilities)
 
 add_executable(test_utilities_lock test/test_utilities/lock.cpp)
 target_link_libraries(test_utilities_lock async_runtime_fundamental)
