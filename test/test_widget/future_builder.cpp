@@ -32,9 +32,12 @@ class _MyWidgetState : public State<MyWidget>
         return Object::create<FutureBuilder<int>>(
             _completer,
             [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) { //
+                assert(snapshot->state != AsyncSnapshot<std::nullptr_t>::ConnectionState::none);
                 std::cout << AsyncSnapshot<>::ConnectionState::toString(snapshot->state) << ' ';
                 if (snapshot->hasData())
                 {
+                    assert(snapshot->state == AsyncSnapshot<std::nullptr_t>::ConnectionState::done);
+                    assert(snapshot->data() == 123);
                     std::cout << snapshot->data() << std::endl;
                 }
                 else
