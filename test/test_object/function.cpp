@@ -4,9 +4,22 @@
 class A
 {
 public:
-    A() { std::cout << "A constructor" << std::endl; }
-    ~A() { std::cout << "A destructor" << std::endl; }
+    static size_t instance_amount;
+    static size_t construct_times;
+    A()
+    {
+        std::cout << "A constructor" << std::endl;
+        instance_amount++;
+        construct_times++;
+    }
+    ~A()
+    {
+        std::cout << "A destructor" << std::endl;
+        instance_amount--;
+    }
 };
+size_t A::instance_amount = 0;
+size_t A::construct_times = 0;
 
 int main()
 {
@@ -16,8 +29,13 @@ int main()
         Function<void(const A &)> lvalue = [](const A &) { //
         };
         lvalue(a);
+        assert(A::instance_amount == 1);
+        assert(A::construct_times == 1);
         std::cout << "function exited" << std::endl;
     }
+
+    assert(A::instance_amount == 0);
+    assert(A::construct_times == 1);
     std::cout << "testing lvalue completed " << std::endl
               << std::endl;
 
@@ -26,8 +44,12 @@ int main()
         Function<void(A &&)> rvalue = [](A &&) { //
         };
         rvalue(A());
+        assert(A::instance_amount == 0);
+        assert(A::construct_times == 2);
         std::cout << "function exited" << std::endl;
     }
+
+    assert(A::construct_times == 2);
     std::cout << "testing rvalue completed " << std::endl;
 
     return EXIT_SUCCESS;

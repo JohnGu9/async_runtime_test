@@ -5,6 +5,7 @@ static void stringConnect();
 static void stringCompare();
 static void stringTemplate();
 static void stringSplit();
+static void stringMap();
 
 int main()
 {
@@ -14,6 +15,7 @@ int main()
     stringCompare();
     stringTemplate();
     stringSplit();
+    stringMap();
     return EXIT_SUCCESS;
 }
 
@@ -31,11 +33,10 @@ static void stringNonNullAndNullable()
     /**
      * @brief to print option<String>, please check the null situation
      */
-    lateref<String> lateString;
-    if (nullableString.isNotNull(lateString))
-    {
-        std::cout << lateString << std::endl;
-    }
+
+    nullableString.ifNotNull([](ref<String> nonNullString) { //
+        std::cout << nonNullString << std::endl;
+    });
 
     /**
      * @brief If you can assert. But it may intro null reference into program again.
@@ -144,4 +145,31 @@ static void stringSplit()
     std::cout << "list connect: " << String::connect(list[0], list[1], list[2], list[3], list[4]) << std::endl;
     std::cout << "list[0] == 'A': " << (list[0] == "A") << std::endl;
     std::cout << "list length: " << list->size() << std::endl;
+}
+
+static void stringMap()
+{
+    ref<Map<option<String>, int>> map = {
+        {"A", 1},
+        {"B", 2},
+    };
+
+    map[nullptr] = 3;
+    assert(map->size() == 3);
+    assert(map["A"] == 1);
+    assert(map["B"] == 2);
+    assert(map[nullptr] == 3);
+
+    std::cout << map << std::endl;
+
+    map["A"] = 5;
+    map["C"] = 3;
+    map[nullptr] = 4;
+    assert(map->size() == 4);
+    assert(map["A"] == 5);
+    assert(map["B"] == 2);
+    assert(map["C"] == 3);
+    assert(map[nullptr] == 4);
+
+    std::cout << map << std::endl;
 }
