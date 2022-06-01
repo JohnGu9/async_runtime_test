@@ -95,6 +95,10 @@ static void stringCompare()
     assert(!(string2 == string4));
     assert(string4 == nullptr);
     assert(!(string4 != nullptr));
+
+    // down cast
+    ref<Object> object = string0;
+    assert(object == string1);
 }
 
 static void stringTemplate()
