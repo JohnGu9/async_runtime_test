@@ -60,9 +60,11 @@ class _MyWidgetState : public State<MyWidget>
                     if (_children->empty())
                         RootWidget::of(context)->exit();
                     else
-                        setState([this]
-                                 { _children->pop_back(); });
+                        setState([this] { //
+                            _children->pop_back();
+                        });
                 });
+                _timer->start();
             }
             else
             {

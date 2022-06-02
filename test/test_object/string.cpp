@@ -151,10 +151,10 @@ static void stringSplit()
     }
     assert(list->size() == 5);
     assert(list[0] == "A");
-    assert(list[0] == "B");
-    assert(list[0] == "C");
-    assert(list[0] == "D");
-    assert(list[0] == "E");
+    assert(list[1] == "B");
+    assert(list[2] == "C");
+    assert(list[3] == "D");
+    assert(list[4] == "E");
 
     std::cout << "list connect: " << String::connect(list[0], list[1], list[2], list[3], list[4]) << std::endl;
     std::cout << "list[0] == 'A': " << (list[0] == "A") << std::endl;
