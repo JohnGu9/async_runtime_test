@@ -1,5 +1,5 @@
 #include "async_runtime/object/object.h"
-#include <iostream>
+#include <assert.h>
 
 class A
 {

@@ -1,5 +1,5 @@
 #include "async_runtime/fundamental/file.h"
-#include <iostream>
+#include <assert.h>
 
 static const auto FILENAME = "test_file.txt";
 

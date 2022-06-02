@@ -1,4 +1,5 @@
 #include "async_runtime.h"
+#include <assert.h>
 
 class MyWidget : public StatefulWidget
 {

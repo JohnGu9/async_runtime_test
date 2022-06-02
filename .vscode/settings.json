@@ -122,6 +122,7 @@
         "forward_list": "cpp",
         "__bits": "cpp",
         "variant": "cpp",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "xmemory0": "cpp"
     }
 }

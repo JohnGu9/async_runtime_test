@@ -2,7 +2,6 @@
 #include <chrono>
 #include <ctime>
 #include <iomanip>
-#include <iostream>
 
 #ifdef _WIN32
 #pragma warning(disable : 4996)

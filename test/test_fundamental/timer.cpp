@@ -1,6 +1,6 @@
 #include "async_runtime/fundamental/timer.h"
+#include <assert.h>
 #include <ctime>
-#include <iostream>
 
 void task();
 int main()

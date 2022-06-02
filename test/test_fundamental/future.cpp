@@ -1,7 +1,7 @@
 #include "async_runtime/fundamental/async.h"
+#include <assert.h>
 #include <chrono>
 #include <ctime>
-#include <iostream>
 #include <thread>
 
 void task();

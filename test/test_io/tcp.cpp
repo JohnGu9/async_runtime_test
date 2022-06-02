@@ -1,5 +1,5 @@
 #include "async_runtime/io/tcp.h"
-#include <iostream>
+#include <assert.h>
 extern "C"
 {
 #include <uv.h>

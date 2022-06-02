@@ -1,5 +1,4 @@
 #include "async_runtime/fundamental/async.h"
-#include <iostream>
 
 void task();
 int main()

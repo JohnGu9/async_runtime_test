@@ -1,6 +1,6 @@
 #include "async_runtime/utilities/value_notifier.h"
 #include "async_runtime/utilities/console_format.h"
-#include <iostream>
+#include <assert.h>
 
 int main(const int argc, char **args)
 {
@@ -25,10 +25,11 @@ int main(const int argc, char **args)
     std::cout << "Remove Listener and change value" << std::endl;
     notifier->removeListener(fn);
     notifier->setValue(false);
+    std::cout << "Listener no more called" << std::endl;
 
     std::cout << "Dispose" << std::endl;
     notifier->dispose();
-    
+
     try
     {
         std::cout << "Invalid access after dispose() and cause assert exception. " << std::endl;

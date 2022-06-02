@@ -1,4 +1,5 @@
 #include "async_runtime/object/object.h"
+#include <assert.h>
 
 static void stringNonNullAndNullable();
 static void stringConnect();
