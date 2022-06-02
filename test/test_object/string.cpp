@@ -147,10 +147,15 @@ static void stringSplit()
     auto list = value->split(" ");   // unlike python, the empty string will be ignored
     for (const auto &element : list) // so only [5] elements in [list]
     {
-        assert(element->length() > 0);
         std::cout << element << std::endl;
     }
     assert(list->size() == 5);
+    assert(list[0] == "A");
+    assert(list[0] == "B");
+    assert(list[0] == "C");
+    assert(list[0] == "D");
+    assert(list[0] == "E");
+
     std::cout << "list connect: " << String::connect(list[0], list[1], list[2], list[3], list[4]) << std::endl;
     std::cout << "list[0] == 'A': " << (list[0] == "A") << std::endl;
     std::cout << "list length: " << list->size() << std::endl;
@@ -177,6 +182,7 @@ static void stringCaseTransform()
 
 static void stringMap()
 {
+    /* option<String> is totally fine as Map's key */
     ref<Map<option<String>, int>> map = {
         {"A", 1},
         {"B", 2},

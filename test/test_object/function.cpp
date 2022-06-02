@@ -52,5 +52,12 @@ int main()
     assert(A::construct_times == 2);
     std::cout << "testing rvalue completed " << std::endl;
 
+    lateref<Fn<void()>> fn;
+    fn = [] { //
+        std::cout << std::endl
+                  << "Hello world" << std::endl;
+    };
+    fn();
+
     return EXIT_SUCCESS;
 }
