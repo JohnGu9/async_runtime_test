@@ -1,5 +1,5 @@
-#include "async_runtime/utilities/console_format.h"
 #include "async_runtime/utilities/value_notifier.h"
+#include "async_runtime/utilities/console_format.h"
 #include <iostream>
 
 int main(const int argc, char **args)
@@ -28,8 +28,16 @@ int main(const int argc, char **args)
 
     std::cout << "Dispose" << std::endl;
     notifier->dispose();
+    
+    try
+    {
+        std::cout << "Invalid access after dispose() and cause assert exception. " << std::endl;
+        notifier->setValue(false);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 
-    std::cout << "Invalid access after dispose() and cause assert exception. " << std::endl;
-    notifier->setValue(false);
     return EXIT_SUCCESS;
 }

@@ -5,6 +5,8 @@ static void stringConnect();
 static void stringCompare();
 static void stringTemplate();
 static void stringSplit();
+static void stringSubString();
+static void stringCaseTransform();
 static void stringMap();
 
 int main()
@@ -15,6 +17,8 @@ int main()
     stringCompare();
     stringTemplate();
     stringSplit();
+    stringSubString();
+    stringCaseTransform();
     stringMap();
     return EXIT_SUCCESS;
 }
@@ -85,8 +89,8 @@ static void stringCompare()
     option<String> string3 = "Hello World";
     option<String> string4 = nullptr;
     // with ref<String>
-    assert(string2.assertNotNull() == string0);
-    assert(!(string2.assertNotNull() != string0));
+    assert(string2 == string0);
+    assert(!(string2 != string0));
     // with option<String>
     assert(string2 == string3);
     assert(!(string2 != string3));
@@ -149,6 +153,25 @@ static void stringSplit()
     std::cout << "list connect: " << String::connect(list[0], list[1], list[2], list[3], list[4]) << std::endl;
     std::cout << "list[0] == 'A': " << (list[0] == "A") << std::endl;
     std::cout << "list length: " << list->size() << std::endl;
+}
+
+static void stringSubString()
+{
+    ref<String> base = "  .Hello..  ";
+    ref<String> trimSpace = base->trim();
+    ref<String> trimDot = trimSpace->trim(".");
+    assert(trimSpace == ".Hello..");
+    assert(trimDot == "Hello");
+    assert(trimSpace->findLastNotOf('o', 5) == 4);
+}
+
+static void stringCaseTransform()
+{
+    ref<String> origin = "Abc.;'213";
+    auto upper = origin->toUpperCase();
+    auto lower = origin->toLowerCase();
+    assert(upper == "ABC.;'213");
+    assert(lower == "abc.;'213");
 }
 
 static void stringMap()

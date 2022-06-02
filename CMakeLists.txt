@@ -5,6 +5,9 @@ project(async_runtime_test)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# max compatibility
+add_compile_definitions(ASYNC_RUNTIME_STATE_API_PUBLIC)
+
 macro(SET_OPTION option value)
   set(${option} ${value} CACHE INTERNAL "" FORCE)
 endmacro()
