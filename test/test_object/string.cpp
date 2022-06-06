@@ -1,5 +1,6 @@
 #include "async_runtime/object/object.h"
 #include <assert.h>
+#include <map>
 
 static void stringNonNullAndNullable();
 static void stringConnect();
@@ -9,6 +10,7 @@ static void stringSplit();
 static void stringSubString();
 static void stringCaseTransform();
 static void stringMap();
+static void stringStdMap();
 
 int main()
 {
@@ -21,6 +23,7 @@ int main()
     stringSubString();
     stringCaseTransform();
     stringMap();
+    stringStdMap();
     return EXIT_SUCCESS;
 }
 
@@ -206,4 +209,28 @@ static void stringMap()
     assert(map[nullptr] == 4);
 
     std::cout << map << std::endl;
+}
+
+static void stringStdMap()
+{
+    /* option<String> is totally fine as Map's key */
+    std::map<option<String>, int> map = {
+        {"A", 1},
+        {"B", 2},
+    };
+
+    map[nullptr] = 3;
+    assert(map.size() == 3);
+    assert(map["A"] == 1);
+    assert(map["B"] == 2);
+    assert(map[nullptr] == 3);
+
+    map["A"] = 5;
+    map["C"] = 3;
+    map[nullptr] = 4;
+    assert(map.size() == 4);
+    assert(map["A"] == 5);
+    assert(map["B"] == 2);
+    assert(map["C"] == 3);
+    assert(map[nullptr] == 4);
 }
