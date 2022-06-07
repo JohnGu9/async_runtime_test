@@ -1,5 +1,9 @@
 #include "async_runtime.h"
 
+#ifdef _WIN32
+#pragma warning(disable : 4573)
+#endif
+
 static const auto FILENAME = "logger_widget_test.log";
 
 class MyWidget : public StatefulWidget
@@ -89,12 +93,11 @@ class _LoggerSwitchState : public State<LoggerSwitch>
                 return File::fromPath(FILENAME, O_RDONLY, 0);                               // open the log file
             })                                                                              //
             ->then<ref<String>>([](ref<File> file) {                                        //
-                lateref<File::Error> error;                                                 //
-                if (file->cast<File::Error>().isNotNull(error))                             //
-                {                                                                           //
+                option<File::Error> error = file->cast<File::Error>();                      //
+                if_not_null(error)                                                          //
                     return Future<ref<String>>::value(                                      //
                         String::formatFromString("File open failed: {} ", error->error())); //
-                }                                                                           //
+                end_if();                                                                   //
                 return file->read();                                                        // read file content
             })                                                                              //
             ->then<int>([this](ref<String> value) {                                         //

@@ -57,13 +57,13 @@ static FutureOr<int> readFile(ref<File> file)
     // also unlikely have error
     // but I have to demo error-checking :(
     // File::Error is also a File object that doesn't implement any function but [error]
-    lateref<File::Error> error;
-    if (file->cast<File::Error>().isNotNull(error)) // [[unlikely]]
+    option<File::Error> error = file->cast<File::Error>();
+    if_not_null(error) // [[unlikely]]
     {
         std::cout << "File open failed with code" << error->error() << std::endl;
         return 0;
     }
-    else
+    else_end()
     {
         return file->stat()
             ->then<ref<String>>([file](ref<File::Stat> stat) { //
@@ -86,4 +86,5 @@ static FutureOr<int> readFile(ref<File> file)
                 return file->close();
             });
     }
+    end_if()
 }

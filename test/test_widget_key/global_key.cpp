@@ -11,11 +11,14 @@ class _MyWidgetState : public State<MyWidget>
     ref<GlobalKey<LifecycleNotifyWidget, _LifecycleNotifyWidgetState>> key =
         Object::create<GlobalKey<LifecycleNotifyWidget, _LifecycleNotifyWidgetState>>();
 
+    option<_LifecycleNotifyWidgetState> _lastState;
+
     void initState() override
     {
         super::initState();
         Future<int>::delay(1000, 0)
-            ->then([this] {       //
+            ->then([this] { //
+                this->_lastState = key->getCurrentState();
                 setState([this] { //
                     std::cout << "Get widget from GlobalKey: " << key->getCurrentWidget().assertNotNull() << std::endl;
                     std::cout << "not change GlobalKey" << std::endl;
@@ -23,7 +26,8 @@ class _MyWidgetState : public State<MyWidget>
             })
             ->then<int>([]
                         { return Future<int>::delay(1000, 0); })
-            ->then([this] {       //
+            ->then([this] { //
+                assert(this->_lastState == key->getCurrentState());
                 setState([this] { //
                     std::cout << "Get widget from GlobalKey: " << key->getCurrentWidget().assertNotNull() << std::endl;
                     std::cout << "change GlobalKey" << std::endl;
@@ -33,6 +37,7 @@ class _MyWidgetState : public State<MyWidget>
             ->then<int>([]
                         { return Future<int>::delay(1000, 0); })
             ->then([this] { //
+                assert(this->_lastState != key->getCurrentState());
                 std::cout << "Get widget from GlobalKey: " << key->getCurrentWidget().assertNotNull() << std::endl;
                 RootWidget::of(context)->exit();
             });

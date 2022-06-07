@@ -65,6 +65,24 @@ static void stringNonNullAndNullable()
     ref<String> notReallyNullString = reallyNullString.isNotNullElse([]
                                                                      { return "notReallyNullString"; });
     std::cout << notReallyNullString << std::endl;
+
+    if_not_null(reallyNullString)
+    {
+        std::cout << "Marco wrapper [reallyNullString]: " << reallyNullString << std::endl;
+    }
+    else_if_not_null(nullableString)
+    {
+        std::cout << "Marco wrapper [nullableString]: " << nullableString << std::endl;
+    }
+    else_if(true)
+    {
+        std::cout << "Else if case" << std::endl;
+    }
+    else_end()
+    {
+        std::cout << "Else case" << std::endl;
+    }
+    end_if()
 }
 
 static void stringConnect()
@@ -105,8 +123,10 @@ static void stringCompare()
     assert(!(string4 != nullptr));
 
     // down cast
-    ref<Object> object = string0;
-    assert(object == string1);
+    ref<Object> object0 = string0;
+    option<Object> object1 = string0;
+    assert(object0 == string1);
+    assert(object1 == string1);
 }
 
 static void stringTemplate()
