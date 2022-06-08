@@ -36,11 +36,6 @@ static void stringNonNullAndNullable()
     ref<String> nonNullString = "nonNullString";
     option<String> nullableString = "nullableString";
     std::cout << nonNullString << std::endl;
-    /**
-     * std::cout << nullableString << std::endl;
-     *            ^^^^^^^^^^^^^^^^^
-     * error: option<String> can't print. Only ref<String> can print
-     */
 
     /**
      * @brief to print option<String>, please check the null situation
@@ -63,10 +58,10 @@ static void stringNonNullAndNullable()
      */
 
     /**
-     * @brief use [ref::isNotNullElse] api to ensure a not null ref
+     * @brief use [ref::ifNotNullElse] api to ensure a not null ref
      *
      */
-    ref<String> notReallyNullString = reallyNullString.isNotNullElse([]
+    ref<String> notReallyNullString = reallyNullString.ifNotNullElse([]
                                                                      { return "notReallyNullString"; });
     std::cout << notReallyNullString << std::endl;
 
@@ -76,6 +71,7 @@ static void stringNonNullAndNullable()
     }
     else_if_not_null(nullableString)
     {
+        // inside block [nullableString] is ref<String>
         std::cout << "Marco wrapper [nullableString]: " << nullableString << std::endl;
     }
     else_if(true)
