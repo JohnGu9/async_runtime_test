@@ -12,6 +12,7 @@ static void stringCaseTransform();
 static void stringMap();
 static void stringStdMap();
 static void stringReplace();
+static void stringReverse();
 
 int main()
 {
@@ -26,6 +27,7 @@ int main()
     stringMap();
     stringStdMap();
     stringReplace();
+    stringReverse();
     return EXIT_SUCCESS;
 }
 
@@ -262,4 +264,21 @@ static void stringReplace()
     ref<String> base = "this is a test string.";
     auto string0 = base->replace(9, 5, "n example");
     assert(string0 == "this is an example string.");
+
+    std::cout << "String::replace" << std::endl;
+    std::cout << string0 << std::endl;
+}
+
+static void stringReverse()
+{
+    ref<String> base = "ABCDE";
+    ref<String> sub = base->substr(1, 3);
+    ref<String> reverse0 = base->reverse();
+    ref<String> reverse1 = sub->reverse();
+    assert(reverse0 == "EDCBA");
+    assert(reverse1 == "DCB");
+
+    std::cout << "String::reverse" << std::endl;
+    std::cout << reverse0 << std::endl;
+    std::cout << reverse1 << std::endl;
 }
