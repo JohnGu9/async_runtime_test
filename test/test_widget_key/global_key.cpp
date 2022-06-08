@@ -8,8 +8,8 @@ class MyWidget : public StatefulWidget
 class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
-    ref<GlobalKey<LifecycleNotifyWidget, _LifecycleNotifyWidgetState>> key =
-        Object::create<GlobalKey<LifecycleNotifyWidget, _LifecycleNotifyWidgetState>>();
+    ref<GlobalKey<_LifecycleNotifyWidgetState>> key =
+        Object::create<GlobalKey<_LifecycleNotifyWidgetState>>();
 
     option<_LifecycleNotifyWidgetState> _lastState;
 
@@ -31,7 +31,7 @@ class _MyWidgetState : public State<MyWidget>
                 setState([this] { //
                     std::cout << "Get widget from GlobalKey: " << key->getCurrentWidget().assertNotNull() << std::endl;
                     std::cout << "change GlobalKey" << std::endl;
-                    key = Object::create<GlobalKey<LifecycleNotifyWidget, _LifecycleNotifyWidgetState>>(); // change the GlobalKey will make target widget's subtree rebuild
+                    key = Object::create<GlobalKey<_LifecycleNotifyWidgetState>>(); // change the GlobalKey will make target widget's subtree rebuild
                 });
             })
             ->then<int>([]
