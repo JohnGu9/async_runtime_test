@@ -11,6 +11,7 @@ static void stringSubString();
 static void stringCaseTransform();
 static void stringMap();
 static void stringStdMap();
+static void stringReplace();
 
 int main()
 {
@@ -24,6 +25,7 @@ int main()
     stringCaseTransform();
     stringMap();
     stringStdMap();
+    stringReplace();
     return EXIT_SUCCESS;
 }
 
@@ -253,4 +255,11 @@ static void stringStdMap()
     assert(map["B"] == 2);
     assert(map["C"] == 3);
     assert(map[nullptr] == 4);
+}
+
+static void stringReplace()
+{
+    ref<String> base = "this is a test string.";
+    auto string0 = base->replace(9, 5, "n example");
+    assert(string0 == "this is an example string.");
 }
