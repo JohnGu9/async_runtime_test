@@ -1,4 +1,5 @@
 #include "lifecycle_notify_widget.h"
+#include <assert.h>
 
 class MyWidget : public StatefulWidget
 {
