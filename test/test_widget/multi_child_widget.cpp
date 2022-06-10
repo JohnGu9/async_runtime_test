@@ -55,13 +55,13 @@ class _MyWidgetState : public State<MyWidget>
             {
                 _timer->cancel();
                 setState([this]
-                         { _children->pop_back(); });
+                         { _children->popBack(); });
                 _timer = Timer::periodic(Duration::fromSeconds(1), [this] { //
-                    if (_children->empty())
+                    if (_children->isEmpty())
                         RootWidget::of(context)->exit();
                     else
                         setState([this] { //
-                            _children->pop_back();
+                            _children->popBack();
                         });
                 });
                 _timer->start();
@@ -69,7 +69,7 @@ class _MyWidgetState : public State<MyWidget>
             else
             {
                 setState([this]
-                         { _children->emplace_back(Object::create<Child>(_count)); });
+                         { _children->emplaceBack(Object::create<Child>(_count)); });
             }
         });
         _timer->start();
