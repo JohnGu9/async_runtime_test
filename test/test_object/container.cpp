@@ -93,6 +93,8 @@ static void testMap()
     assert(map->contain("K"));
     assert(!map->contain("B"));
     std::cout << map << std::endl;
+    std::cout << map->keys() << std::endl;
+    std::cout << map->values() << std::endl;
 
     std::cout << "forEach Map: " << std::endl;
     map->forEach([](const std::pair<const ref<String>, std::string> &pair)
