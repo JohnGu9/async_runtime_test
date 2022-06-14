@@ -167,11 +167,8 @@ static void stringTemplate()
 static void stringSplit()
 {
     ref<String> value = "A B C  D    E";
-    auto list = value->split(" ");   // unlike python, the empty string will be ignored
-    for (const auto &element : list) // so only [5] elements in [list]
-    {
-        std::cout << element << std::endl;
-    }
+    auto list = value->split(" "); // unlike python, the empty string will be ignored
+    std::cout << list << std::endl;
     assert(list->size() == 5);
     assert(list[0] == "A");
     assert(list[1] == "B");
@@ -277,4 +274,5 @@ static void stringReverse()
     std::cout << "String::reverse" << std::endl;
     std::cout << reverse0 << std::endl;
     std::cout << reverse1 << std::endl;
+    std::cout << sub->toReserve() << std::endl;
 }
