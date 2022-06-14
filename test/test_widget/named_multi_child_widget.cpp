@@ -59,7 +59,7 @@ class _MyWidgetState : public State<MyWidget>
             setState([this] { //
                 static finalref<String> name = "child";
                 ++_count;
-                auto iter = _children->find(name + (_count - 3));
+                auto iter = _children->findKey(name + (_count - 3));
                 if (iter != _children->end())
                     _children->erase(iter);
                 else
