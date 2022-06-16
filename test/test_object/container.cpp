@@ -73,15 +73,15 @@ static void testMap()
 {
     std::cout << "map test" << std::endl;
 
-    lateref<Map<ref<String>, std::string>> map;
     // map = {}; // compile error
-    // use Object::create<Map<ref<String>, std::string>>>() to create a empty map
-    map = {
+    // use Map<ref<String>, lateref<String>>::create() to create a empty map
+    // ref<String> can't be the Value type of Map for now
+    ref<Map<ref<String>, lateref<String>>> map = {
         {"A", "B"},
         {"B", "C"},
         {"C", "D"},
     };
-    map["K"] = "B";
+    map->insert("K", "B");
     map["A"] = "C++";
     map->removeKey("B");
     assert(map->size() == 3);
@@ -97,18 +97,18 @@ static void testMap()
     std::cout << map->values() << std::endl;
 
     std::cout << "forEach Map: " << std::endl;
-    map->forEach([](const std::pair<const ref<String>, std::string> &pair)
+    map->forEach([](const std::pair<const ref<String>, ref<String>> &pair)
                  { std::cout << pair.first << " : " << pair.second << std::endl; });
     std::cout << "A value is " << map["A"] << std::endl;
 
     std::cout << "forEach Mapped Set: " << std::endl;
-    auto mapped = map->map<std::string>([](const std::string &value)
-                                        { return value + " mapped"; });
+    auto mapped = map->map<lateref<String>>([](const ref<String> &value)
+                                            { return value + " mapped"; });
     assert(mapped->size() == 3);
     assert(mapped["A"] == "C++ mapped");
     assert(mapped["C"] == "D mapped");
     assert(mapped["K"] == "B mapped");
-    mapped->forEach([](const std::pair<const ref<String>, std::string> &pair)
+    mapped->forEach([](const std::pair<const ref<String>, ref<String>> &pair)
                     { std::cout << pair.first << " : " << pair.second << std::endl; });
     std::cout << std::endl;
 }
