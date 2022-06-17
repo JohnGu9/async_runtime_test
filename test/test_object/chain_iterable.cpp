@@ -1,4 +1,5 @@
 #include "async_runtime/object/object.h"
+#include <algorithm>
 #include <assert.h>
 
 int main()
@@ -11,4 +12,5 @@ int main()
 
     ref<List<int>> expect = {1, 2, 3, 4, 5, 6, 7};
     assert(std::equal(chain->begin(), chain->end(), expect->begin()));
+    return EXIT_SUCCESS;
 }
