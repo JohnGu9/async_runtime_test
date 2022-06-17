@@ -45,14 +45,17 @@ static void printTime()
 
 static FutureOr<int> testFutureToEventLoop()
 {
-    std::cout << "Current thread: " << std::this_thread::get_id() << std::endl;
+    const auto mainThreadId = std::this_thread::get_id();
+    std::cout << "Current thread: " << mainThreadId << std::endl;
 
     // future is non handle, hold a handle tell system that still some tasks is working
     // if not holding a handle here, there is no more handle in event loop and event loop will close itself
     auto handle = EventLoop::Handle::create();
     auto worker = EventLoop::createEventLoopOnNewThread([] {});
-    return Future<int>::toEventLoop([] { // post a task to another event loop
-               std::cout << "Current thread: " << std::this_thread::get_id() << std::endl;
+    return Future<int>::toEventLoop([mainThreadId] { // post a task to another event loop
+               const auto workerThreadId = std::this_thread::get_id();
+               assert(mainThreadId != workerThreadId);
+               std::cout << "Current thread: " << workerThreadId << std::endl;
                std::cout << "Doing hard job..." << std::endl;
                std::this_thread::sleep_for(std::chrono::seconds(3));
                std::cout << "Hard Job done" << std::endl;
