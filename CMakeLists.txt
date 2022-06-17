@@ -39,6 +39,9 @@ target_link_libraries(test_object_chain_iterable async_runtime_object)
 add_executable(test_object_iterator_wrapper_iterable test/test_object/iterator_wrapper_iterable.cpp)
 target_link_libraries(test_object_iterator_wrapper_iterable async_runtime_object)
 
+add_executable(test_object_map_iterable test/test_object/map_iterable.cpp)
+target_link_libraries(test_object_map_iterable async_runtime_object)
+
 
 add_executable(test_object_string test/test_object/string.cpp)
 target_link_libraries(test_object_string async_runtime_object)
