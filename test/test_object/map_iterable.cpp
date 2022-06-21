@@ -16,7 +16,7 @@ int main()
         Object::create<A>(2),
         Object::create<A>(3),
     };
-    auto mapped = MapIterable<ref<A>, int>::from(list, [](const ref<A> &origin)
+    auto mapped = MapIterable<ref<A>, int>::from(list, [](const ref<A> &origin) -> const int &  
                                                  { return origin->value; });
     auto expect = {1, 2, 3};
     assert(std::equal(mapped->begin(), mapped->end(), expect.begin()));
