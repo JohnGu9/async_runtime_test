@@ -15,6 +15,7 @@ endmacro()
 # add lib
 SET_OPTION(ASYNC_RUNTIME_WITH_IO ON)
 add_subdirectory(async_runtime)
+
 # add include path
 include_directories(async_runtime/include)
 
@@ -24,17 +25,20 @@ target_link_libraries(test async_runtime)
 
 # test case
 if(WIN32)
-add_definitions(/wd4100 /wd4458)
+  add_definitions(/wd4100 /wd4458)
 else()
-add_definitions(-Wall)
+  add_definitions(-Wall)
 endif()
 
-#object
+# object
 add_executable(test_object_container test/test_object/container.cpp)
 target_link_libraries(test_object_container async_runtime_object)
 
 add_executable(test_object_map test/test_object/map.cpp)
 target_link_libraries(test_object_map async_runtime_object)
+
+add_executable(test_object_iterable test/test_object/iterable.cpp)
+target_link_libraries(test_object_iterable async_runtime_object)
 
 add_executable(test_object_chain_iterable test/test_object/chain_iterable.cpp)
 target_link_libraries(test_object_chain_iterable async_runtime_object)
@@ -44,7 +48,6 @@ target_link_libraries(test_object_iterator_wrapper_iterable async_runtime_object
 
 add_executable(test_object_map_iterable test/test_object/map_iterable.cpp)
 target_link_libraries(test_object_map_iterable async_runtime_object)
-
 
 add_executable(test_object_string test/test_object/string.cpp)
 target_link_libraries(test_object_string async_runtime_object)
