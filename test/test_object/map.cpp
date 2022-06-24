@@ -83,6 +83,7 @@ static void testLateInit()
 {
     lateref<Map<int, ref<String>>> map;
     map = Map<int, ref<String>>::create();
+    map = Object::create<HashMap<int, ref<String>>>();
     map = {{1, "1"}, {2, "2"}};
     assert(map[1] == "1");
     assert(map->size() == 2);
