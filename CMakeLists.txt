@@ -52,6 +52,9 @@ target_link_libraries(test_object_map_iterable async_runtime_object)
 add_executable(test_object_cached_map_iterable test/test_object/cached_map_iterable.cpp)
 target_link_libraries(test_object_cached_map_iterable async_runtime_object)
 
+add_executable(test_object_range_iterable test/test_object/range_iterable.cpp)
+target_link_libraries(test_object_range_iterable async_runtime_object)
+
 add_executable(test_object_string test/test_object/string.cpp)
 target_link_libraries(test_object_string async_runtime_object)
 
