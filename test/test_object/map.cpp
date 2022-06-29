@@ -96,14 +96,14 @@ class A : public Object
 static void testMixKey()
 {
     ref<Map<ref<Object>, int>> map = Map<ref<Object>, int>::create();
-    map[ref<String>("1")] = 1;
+    map[Object::create<String>("1")] = 1;
     map[Object::create<A>()] = 123;
-    map[ref<String>("2")] = 2;
+    map[Object::create<String>("2")] = 2;
     assert(map->size() == 3);
 
     std::cout << map << std::endl;
 
-    map[ref<String>("2")] = 4;
+    map[Object::create<String>("2")] = 4;
     map[Object::create<A>()] = 321;
     assert(map->size() == 4);
 
