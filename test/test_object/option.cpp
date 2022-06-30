@@ -1,5 +1,3 @@
-#pragma once
-
 #include "async_runtime/object/object.h"
 #include <assert.h>
 
