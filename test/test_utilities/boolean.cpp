@@ -6,10 +6,14 @@ int main()
     ref<Boolean> b = true;
 
     assert(a == b);
+    assert(a == true);
+    assert(b == true);
 
     b = false;
 
     assert(a != b);
+    assert(a == true);
+    assert(b != true);
 
     std::cout << a << std::endl
               << b << std::endl;

@@ -127,6 +127,13 @@ static void stringCompare()
     option<Object> object1 = string0;
     assert(object0 == string1);
     assert(object1 == string1);
+
+    auto cstring = "Hello World";
+    std::string stdString = "Hello World";
+    assert(string0 == cstring);
+    assert(string0 == stdString);
+    assert(string2 == cstring);
+    assert(string2 == stdString);
 }
 
 static void stringTemplate()
