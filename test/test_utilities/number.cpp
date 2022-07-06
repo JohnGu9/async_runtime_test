@@ -47,6 +47,9 @@ static void integer_test()
     assert(i == 10);
     assert(l == 10);
     assert(ll == 10);
+
+    assert(i < 100);
+    assert(i > 1);
 }
 
 static void float_test()
@@ -57,4 +60,7 @@ static void float_test()
 
     assert(f == 10.0f);
     assert(d == 10.0);
+
+    assert(f > 1);
+    assert(d < 100);
 }
