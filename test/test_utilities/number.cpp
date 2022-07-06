@@ -1,4 +1,5 @@
 #include "async_runtime/utilities/number.h"
+#include <map>
 
 static void integer_test();
 static void float_test();
@@ -17,6 +18,15 @@ int main()
         {key, value},
     };
     std::cout << map << std::endl;
+
+    std::map<option<Number>, ref<Number>> m = {
+        {1, 1},
+        {1.2, 1.2},
+        {-10, -10},
+        {nullptr, 10000},
+    };
+    for (const auto &pair : m)
+        std::cout << pair.first << " : " << pair.second << std::endl;
 
     integer_test();
     float_test();
