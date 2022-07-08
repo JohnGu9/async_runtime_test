@@ -63,28 +63,25 @@ static FutureOr<int> readFile(ref<File> file)
         std::cout << "File open failed with code" << error->error() << std::endl;
         return 0;
     }
-    else_end()
-    {
-        return file->stat()
-            ->then<ref<String>>([file](ref<File::Stat> stat) { //
-                stat->toStringStream(std::cout);
-                return file->read();
-            })
-            ->then<int>([file](ref<String> value) { //
-                auto except = "This is a useless file for testing. \n"
-                              "OK\n"
-                              "NOT OK\n"
-                              "OK\n"
-                              "NOT OK\n"
-                              "A\n"
-                              "B\n"
-                              "C\n"
-                              "D\n";
+    end_if();
+    return file->stat()
+        ->then<ref<String>>([file](ref<File::Stat> stat) { //
+            stat->toStringStream(std::cout);
+            return file->read();
+        })
+        ->then<int>([file](ref<String> value) { //
+            auto except = "This is a useless file for testing. \n"
+                          "OK\n"
+                          "NOT OK\n"
+                          "OK\n"
+                          "NOT OK\n"
+                          "A\n"
+                          "B\n"
+                          "C\n"
+                          "D\n";
 
-                assert(value == except);
-                std::cout << value << std::endl;
-                return file->close();
-            });
-    }
-    end_if()
+            assert(value == except);
+            std::cout << value << std::endl;
+            return file->close();
+        });
 }

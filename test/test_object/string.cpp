@@ -195,7 +195,7 @@ static void stringSubString()
     ref<String> trimDot = trimSpace->trim(".");
     assert(trimSpace == ".Hello..");
     assert(trimDot == "Hello");
-    assert(trimSpace->findLastNotOf('o', 5) == 4);
+    assert(trimSpace->findLastNotOf("o", 5) == 4);
 }
 
 static void stringCaseTransform()
