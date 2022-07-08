@@ -17,6 +17,7 @@ int main()
         {d, i},
         {key, value},
     };
+    map[i] = i;
     std::cout << map << std::endl;
 
     std::map<option<Number>, ref<Number>> m = {
@@ -50,17 +51,24 @@ static void integer_test()
 
     assert(i < 100);
     assert(i > 1);
+    assert(i < 100.0f);
+    assert(i > 1.0);
 }
 
 static void float_test()
 {
     ref<Number> f = 10.0f;
     ref<Number> d = 10.0;
+    ref<Number> ld = 10.0l;
+
     assert(f == d);
+    assert(d == ld);
 
     assert(f == 10.0f);
     assert(d == 10.0);
+    assert(ld == 10.0l);
 
     assert(f > 1);
-    assert(d < 100);
+    assert(d < 100.0l);
+    assert(ld < 10.2);
 }
