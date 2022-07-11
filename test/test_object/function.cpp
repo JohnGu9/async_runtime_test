@@ -21,6 +21,28 @@ public:
 size_t A::instance_amount = 0;
 size_t A::construct_times = 0;
 
+class B : public Object
+{
+public:
+    B()
+    {
+        std::cout << "B constructor" << std::endl;
+    }
+    ~B()
+    {
+        std::cout << "B destructor" << std::endl;
+    }
+    void call()
+    {
+        std::cout << "B call " << (size_t)this << std::endl;
+    }
+
+    Function<void()> bindCall()
+    {
+        return BIND_FUNCTION(call);
+    }
+};
+
 int main()
 {
     std::cout << "testing lvalue: " << std::endl;
@@ -55,9 +77,25 @@ int main()
     lateref<Fn<void()>> fn;
     fn = [] { //
         std::cout << std::endl
-                  << "Hello world" << std::endl;
+                  << "Hello world" << std::endl
+                  << std::endl;
     };
     fn();
+
+    {
+        Function<void()> fn = [] {};
+        {
+            auto b = Object::create<B>();
+            fn = b->bindCall();
+        }
+        fn();
+        {
+            auto b = Object::create<B>();
+            fn = Function<void()>::bind(&B::call, b.get());
+        }
+        fn();
+    }
+    std::cout << "testing bind completed " << std::endl;
 
     return EXIT_SUCCESS;
 }
