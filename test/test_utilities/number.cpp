@@ -3,6 +3,8 @@
 
 static void integer_test();
 static void float_test();
+static void literals_test();
+
 int main()
 {
     ref<Number> i = 10;
@@ -31,6 +33,7 @@ int main()
 
     integer_test();
     float_test();
+    literals_test();
 }
 
 static void integer_test()
@@ -71,4 +74,13 @@ static void float_test()
     assert(f > 1);
     assert(d < 100.0l);
     assert(ld < 10.2);
+}
+
+static void literals_test()
+{
+    auto a = 1.2_Number;
+    auto b = 10_Number;
+
+    assert(a == 1.2l);
+    assert(b == 10);
 }
