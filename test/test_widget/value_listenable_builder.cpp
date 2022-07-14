@@ -7,7 +7,7 @@ struct MyWidget : StatefulWidget
 
 struct _MyWidgetState : State<MyWidget>
 {
-    using super = ::State<MyWidget>;
+    using super = State<MyWidget>;
     lateref<Timer> _timer;
     lateref<ValueNotifier<bool>> _notifier;
 

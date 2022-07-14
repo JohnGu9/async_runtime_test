@@ -13,6 +13,7 @@ static void stringMap();
 static void stringStdMap();
 static void stringReplace();
 static void stringReverse();
+static void stringLiterals();
 
 int main()
 {
@@ -28,6 +29,7 @@ int main()
     stringStdMap();
     stringReplace();
     stringReverse();
+    stringLiterals();
     return EXIT_SUCCESS;
 }
 
@@ -193,6 +195,9 @@ static void stringSubString()
     ref<String> base = "  .Hello..  ";
     ref<String> trimSpace = base->trim();
     ref<String> trimDot = trimSpace->trim(".");
+    std::cout << "base: " << base << '"' << std::endl;
+    std::cout << "trimSpace: " << trimSpace << '"' << std::endl;
+    std::cout << "trimDot: " << trimDot << '"' << std::endl;
     assert(trimSpace == ".Hello..");
     assert(trimDot == "Hello");
     assert(trimSpace->findLastNotOf("o", 5) == 4);
@@ -282,4 +287,17 @@ static void stringReverse()
     std::cout << reverse0 << std::endl;
     std::cout << reverse1 << std::endl;
     std::cout << sub->toReserve() << std::endl;
+}
+
+static void stringLiterals()
+{
+    auto f = []
+    {
+        return "Literals String"_String;
+    };
+    auto a = f();
+    auto b = f();
+    std::cout << a << std::endl;
+    assert(a.get() == b.get()); // Literals always return the same object
+    assert(a->length() == strlen("Literals String"));
 }

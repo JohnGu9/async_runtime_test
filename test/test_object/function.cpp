@@ -91,7 +91,7 @@ int main()
         fn();
         {
             auto b = Object::create<B>();
-            fn = Function<void()>::bind(&B::call, b.get());
+            fn = Function<void()>::bind<>(&B::call, b.get());
         }
         fn();
     }
