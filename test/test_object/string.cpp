@@ -300,4 +300,7 @@ static void stringLiterals()
     std::cout << a << std::endl;
     assert(a.get() == b.get()); // Literals always return the same object
     assert(a->length() == strlen("Literals String"));
+
+    auto c = 11_String;
+    std::cout << "Literals fallback String: " << c << std::endl;
 }
