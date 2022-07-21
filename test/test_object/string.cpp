@@ -195,12 +195,16 @@ static void stringSubString()
     ref<String> base = "  .Hello..  ";
     ref<String> trimSpace = base->trim();
     ref<String> trimDot = trimSpace->trim(".");
-    std::cout << "base: " << base << '"' << std::endl;
-    std::cout << "trimSpace: " << trimSpace << '"' << std::endl;
-    std::cout << "trimDot: " << trimDot << '"' << std::endl;
+    ref<String> trimAll = base->trim(" .");
+    std::cout << "base: " << base << '"' << std::endl
+              << "trimSpace: " << trimSpace << '"' << std::endl
+              << "trimDot: " << trimDot << '"' << std::endl
+              << "trimAll: " << trimAll << '"' << std::endl;
+
     assert(trimSpace == ".Hello..");
     assert(trimDot == "Hello");
     assert(trimSpace->findLastNotOf("o", 5) == 4);
+    assert(trimAll == "Hello");
 }
 
 static void stringCaseTransform()
@@ -302,5 +306,6 @@ static void stringLiterals()
     assert(a->length() == strlen("Literals String"));
 
     auto c = 11_String;
-    std::cout << "Literals fallback String: " << c << std::endl;
+    assert(c == "11");
+    std::cout << "Literals Fallback String: " << c << std::endl;
 }
