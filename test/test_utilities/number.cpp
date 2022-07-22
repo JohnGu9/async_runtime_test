@@ -1,4 +1,5 @@
 #include "async_runtime/utilities/number.h"
+#include <assert.h>
 #include <map>
 
 static void integer_test();

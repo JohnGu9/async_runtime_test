@@ -1,4 +1,5 @@
 #include "async_runtime/utilities/boolean.h"
+#include <assert.h>
 
 int main()
 {
