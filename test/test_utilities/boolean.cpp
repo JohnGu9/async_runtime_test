@@ -19,10 +19,8 @@ int main()
     std::cout << a << std::endl
               << b << std::endl;
 
-    a = 0_Boolean;
-    assert(a == false);
-    a = 1_Boolean;
-    assert(a == true);
+    assert(0_Boolean == false);
+    assert(1_Boolean == true);
 
     return EXIT_SUCCESS;
 }

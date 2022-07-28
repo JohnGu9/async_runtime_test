@@ -26,14 +26,16 @@ static void testList()
     std::cout << list << std::endl;
 
     std::cout << "forEach List: ";
-    list->forEach([](const int &element)
-                  { std::cout << element << ' '; });
+    list->forEach([](const int &element) { //
+        std::cout << element << ' ';
+    });
     std::cout << std::endl
               << "index: 1, element: " << list[1] << std::endl;
 
     std::cout << "Mapped List: ";
-    auto mapped = list->map<std::string>([](const int &value)
-                                         { return std::to_string(value + 1); });
+    auto mapped = list->map<std::string>([](const int &value) { //
+        return std::to_string(value + 1);
+    });
     auto expect0 = {"2", "3", "3", "4"};
     assert(std::equal(mapped->begin(), mapped->end(), expect0.begin()));
 
@@ -54,13 +56,15 @@ static void testSet()
     std::cout << set << std::endl;
 
     std::cout << "forEach Set: ";
-    set->forEach([](const int &element)
-                 { std::cout << element << ' '; });
+    set->forEach([](const int &element) { //
+        std::cout << element << ' ';
+    });
     std::cout << std::endl;
 
     std::cout << "Mapped Set: ";
-    auto mapped = set->map<std::string>([](const int &value)
-                                        { return std::to_string(value + 1); });
+    auto mapped = set->map<std::string>([](const int &value) { //
+        return std::to_string(value + 1);
+    });
     for (const auto &element : {"2", "3", "4"})
         assert(mapped->contains(element));
 

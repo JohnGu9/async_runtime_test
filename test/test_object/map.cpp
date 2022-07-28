@@ -41,13 +41,15 @@ static void testBasic()
     std::cout << map->values() << std::endl;
 
     std::cout << "forEach Map: " << std::endl;
-    map->forEach([](const ref<Pair<const ref<String>, ref<String>>> &pair)
-                 { std::cout << pair->first << " : " << pair->second << std::endl; });
+    map->forEach([](const ref<Pair<const ref<String>, ref<String>>> &pair) { //
+        std::cout << pair->first << " : " << pair->second << std::endl;
+    });
     std::cout << "A value is " << map["A"] << std::endl;
 
     std::cout << "Mapped Map: " << std::endl;
-    auto mapped = map->map<ref<String>>([](const ref<Pair<const ref<String>, ref<String>>> &pair)
-                                        { return pair->second + " mapped"; });
+    auto mapped = map->map<ref<String>>([](const ref<Pair<const ref<String>, ref<String>>> &pair) { //
+        return pair->second + " mapped";
+    });
     assert(mapped->size() == 3);
     assert(mapped["A"] == "C++ mapped");
     assert(mapped["C"] == "D mapped");

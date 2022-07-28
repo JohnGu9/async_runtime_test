@@ -48,13 +48,9 @@ class _MyWidgetState : public State<MyWidget>
             [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) { //
                 std::cout << AsyncSnapshot<>::ConnectionState::toString(snapshot->state) << ' ';
                 if (snapshot->hasData())
-                {
                     std::cout << snapshot->data() << std::endl;
-                }
                 else
-                {
                     std::cout << std::endl;
-                }
                 return LeafWidget::factory();
             });
     }

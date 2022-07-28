@@ -125,6 +125,9 @@ target_link_libraries(test_widget_future_builder async_runtime)
 add_executable(test_widget_stream_builder test/test_widget/stream_builder.cpp)
 target_link_libraries(test_widget_stream_builder async_runtime)
 
+add_executable(test_widget_inherited_widget test/test_widget/inherited_widget.cpp)
+target_link_libraries(test_widget_inherited_widget async_runtime)
+
 # widget key
 add_executable(test_widget_key_value_key test/test_widget_key/value_key.cpp)
 target_link_libraries(test_widget_key_value_key async_runtime)

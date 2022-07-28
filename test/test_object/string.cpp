@@ -63,8 +63,9 @@ static void stringNonNullAndNullable()
      * @brief use [ref::ifNotNullElse] api to ensure a not null ref
      *
      */
-    ref<String> notReallyNullString = reallyNullString.ifNotNullElse([]
-                                                                     { return "notReallyNullString"; });
+    ref<String> notReallyNullString = reallyNullString.ifNotNullElse([] { //
+        return "notReallyNullString";
+    });
     std::cout << notReallyNullString << std::endl;
 
     if_not_null(reallyNullString)

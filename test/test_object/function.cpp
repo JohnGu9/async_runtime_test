@@ -39,16 +39,22 @@ public:
 
     Function<void()> bindCall()
     {
-        return BIND_FUNCTION(call);
+        return BIND_FUNCTION(call); // bind this and B::call
     }
 };
 
 int main()
 {
     std::cout << "testing lvalue: " << std::endl;
+
+    assert(A::instance_amount == 0);
+    assert(A::construct_times == 0);
+
     {
         A a;
         Function<void(const A &)> lvalue = [](const A &) { //
+            assert(A::instance_amount == 1);
+            assert(A::construct_times == 1);
         };
         lvalue(a);
         assert(A::instance_amount == 1);
@@ -64,6 +70,8 @@ int main()
     std::cout << "testing rvalue: " << std::endl;
     {
         Function<void(A &&)> rvalue = [](A &&) { //
+            assert(A::instance_amount == 1);
+            assert(A::construct_times == 2);
         };
         rvalue(A());
         assert(A::instance_amount == 0);

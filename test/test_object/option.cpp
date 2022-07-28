@@ -21,7 +21,8 @@ int main()
 
     std::cout << f << std::endl
               << e << std::endl
-              << f.ifNotNullElse([&]
-                                 { return r; })
+              << f.ifNotNullElse([&] { //
+                     return r;
+                 })
               << std::endl;
 }

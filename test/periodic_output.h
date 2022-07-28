@@ -1,5 +1,4 @@
 #pragma once
-
 #include "async_runtime.h"
 
 class PeriodicOutput : public StatefulWidget

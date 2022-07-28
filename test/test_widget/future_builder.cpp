@@ -23,8 +23,9 @@ class _MyWidgetState : public State<MyWidget>
                 return 0;
             });
         });
-        Timer::delay(Duration(2000), [this]
-                     { _completer->complete(123); })
+        Timer::delay(Duration(2000), [this] { //
+            _completer->complete(123);
+        })
             ->start();
     }
 

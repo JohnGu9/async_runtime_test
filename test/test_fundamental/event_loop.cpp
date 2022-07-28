@@ -28,8 +28,9 @@ void task()
         done = true;
         cv.notify_all();
     });
-    cv.wait(lock, [&done]
-            { return done; });
+    cv.wait(lock, [&done] { //
+        return done;
+    });
     lock.unlock();
     std::cout << "EventLoop master notices that worker task was completed " << std::this_thread::get_id() << std::endl;
 

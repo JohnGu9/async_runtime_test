@@ -15,8 +15,9 @@ void task()
     auto start = time(nullptr);
 
     // Timer::periodic
-    auto timer0 = Timer::periodic(1000, []
-                                  { std::cout << "timer0 " << std::endl; });
+    auto timer0 = Timer::periodic(1000, [] { //
+        std::cout << "timer0 " << std::endl;
+    });
     timer0->start();
 
     // Timer::delay

@@ -18,8 +18,9 @@ int main()
         Object::create<A>(2),
         Object::create<A>(3),
     };
-    auto mapped = CachedMapIterable<ref<A>, int>::from(list, [](const ref<A> &origin) -> int
-                                                       { return origin->value(); });
+    auto mapped = CachedMapIterable<ref<A>, int>::from(list, [](const ref<A> &origin) -> int { //
+        return origin->value();
+    });
     auto expect = {2, 3, 4};
     assert(std::equal(mapped->begin(), mapped->end(), expect.begin()));
     std::cout << mapped << std::endl;
