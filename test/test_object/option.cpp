@@ -8,6 +8,8 @@ class A : public Object
 int main()
 {
     ref<A> r = Object::create<A>();
+    ref<A> b = r;
+    assert(b.get());
 
     option<A> f = r;
     option<A> e = nullptr;

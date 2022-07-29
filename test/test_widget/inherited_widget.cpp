@@ -48,7 +48,7 @@ public:
                 RootWidget::of(context)->exit();
                 return;
             }
-            this->setState([this] { //
+            this->setState([] { //
                 ++thisValue;
             });
         });
