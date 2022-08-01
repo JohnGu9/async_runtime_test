@@ -64,6 +64,9 @@ target_link_libraries(test_object_function async_runtime_object)
 add_executable(test_object_option test/test_object/option.cpp)
 target_link_libraries(test_object_option async_runtime_object)
 
+add_executable(test_object_ref_operator_forward test/test_object/ref_operator_forward.cpp)
+target_link_libraries(test_object_ref_operator_forward async_runtime_object)
+
 # utilities
 add_executable(test_utilities_value_notifier test/test_utilities/value_notifier.cpp)
 target_link_libraries(test_utilities_value_notifier async_runtime_utilities)
