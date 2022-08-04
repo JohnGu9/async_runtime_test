@@ -35,6 +35,9 @@ int main()
 
 static void stringNonNullAndNullable()
 {
+    ref<String> a = {'a', 'b', 'c'};
+    std::cout << a << std::endl;
+
     ref<String> nonNullString = "nonNullString";
     option<String> nullableString = "nullableString";
     std::cout << nonNullString << std::endl;
