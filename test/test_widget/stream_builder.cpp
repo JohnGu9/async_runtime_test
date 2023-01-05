@@ -26,7 +26,7 @@ class _MyWidgetState : public State<MyWidget>
                 _timer->cancel();
                 _controller->close();
                 Future<int>::delay(500, [this] { //
-                    RootWidget::of(context)->exit();
+                    exitApp(context);
                     return 0;
                 });
             }

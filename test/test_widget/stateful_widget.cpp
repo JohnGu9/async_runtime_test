@@ -53,7 +53,7 @@ class _MyWidgetState : public State<MyWidget>
             {
                 _timer->cancel();
                 std::cout << "Timer cancel" << std::endl;
-                RootWidget::of(context)->exit();
+                exitApp(context);
                 return;
             }
             else

@@ -40,7 +40,7 @@ class _PeriodicOutputState : public State<PeriodicOutput>
     ref<Widget> build(ref<BuildContext>) override
     {
         widget->handler->writeLine("build");
-        return this->widget->child;
+        return widget->child;
     }
 };
 

@@ -13,7 +13,7 @@ struct _ChildState : State<Child>
 
     void dispose() override
     {
-        LogInfo("dispose " << this->widget->name);
+        LogInfo("dispose " << widget->name);
         super::dispose();
     }
 
@@ -53,7 +53,7 @@ class _MyWidgetState : public State<MyWidget>
         _timer = Timer::periodic(Duration(1000), [this] { //
             if (_count > 10)
             {
-                RootWidget::of(context)->exit();
+                exitApp(context);
                 return;
             }
             setState([this] { //

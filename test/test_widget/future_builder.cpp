@@ -19,7 +19,7 @@ class _MyWidgetState : public State<MyWidget>
         _completer = Object::create<Completer<int>>();
         _completer->then<int>([this] {                         //
             return Future<int>::delay(Duration(1000), [this] { //
-                RootWidget::of(context)->exit();
+                exitApp(context);
                 return 0;
             });
         });

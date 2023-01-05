@@ -40,7 +40,7 @@ class _MyWidgetState : public State<MyWidget>
             ->then([this] { //
                 assert(this->_lastState != key->getCurrentState());
                 std::cout << "Get widget from GlobalKey: " << key->getCurrentWidget().assertNotNull() << std::endl;
-                RootWidget::of(context)->exit();
+                exitApp(context);
             });
     }
 

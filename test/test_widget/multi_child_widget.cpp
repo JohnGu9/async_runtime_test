@@ -58,7 +58,7 @@ class _MyWidgetState : public State<MyWidget>
                          { _children->popBack(); });
                 _timer = Timer::periodic(Duration::fromSeconds(1), [this] { //
                     if (_children->isEmpty())
-                        RootWidget::of(context)->exit();
+                        exitApp(context);
                     else
                         setState([this] { //
                             _children->popBack();

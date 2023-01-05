@@ -20,7 +20,7 @@ struct _MyWidgetState : State<MyWidget>
             if (_notifier->getValue() == false)
             {
                 std::cout << "Request Exit" << std::endl;
-                RootWidget::of(context)->exit();
+                exitApp(context);
             }
         });
         _timer->start();

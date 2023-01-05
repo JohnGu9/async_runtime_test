@@ -4,6 +4,11 @@
 #pragma warning(disable : 4573)
 #endif
 
+#ifdef _WIN32
+static const auto S_IRUSR = _S_IREAD;
+static const auto S_IWUSR = _S_IWRITE;
+#endif
+
 static const auto FILENAME = "logger_widget_test.log";
 
 class MyWidget : public StatefulWidget
@@ -20,9 +25,6 @@ class _MyWidgetState : public State<MyWidget>
     {
         super::initState();
         _timer = Timer::periodic(Duration(1000), [this] { //
-            if (!mounted)                                 // [[unlikely]]
-                return;
-
             // just output logger handler
             Logger::of(context)->writeLine("Logger::of(context)");  // root widget wrap a default logger context that output message to console
             LogInfo("LogInfo stream like " << 123 << ' ' << "abc"); // implicitly use context's logger
@@ -64,62 +66,62 @@ public:
 
 class _LoggerSwitchState : public State<LoggerSwitch>
 {
-    enum Now
-    {
-        cout,
-        file,
-        none
-    };
+
     using super = State<LoggerSwitch>;
-    Now _now = cout;
+    option<File> _file;
 
     void initState() override
     {
         super::initState();
-        _now = cout;                                                                        // output log to stdout
-        Future<int>::delay(Duration(2500), [this] {                                         // delay 2.5s
-            setState([this] {                                                               //
-                _now = file;                                                                //
-            });                                                                             // switch to output log to file
-            return 0;                                                                       //
-        })                                                                                  //
-            ->then<int>([] {                                                                //
-                return Future<int>::delay(Duration(2500), 0);                               //
-            })                                                                              // delay 2.5s
-            ->then<ref<File>>([this] {                                                      //
-                setState([this] {                                                           //
-                    _now = none;                                                            //
-                });                                                                         // switch no child
-                return File::fromPath(FILENAME, O_RDONLY, 0);                               // open the log file
-            })                                                                              //
-            ->then<ref<String>>([](ref<File> file) {                                        //
-                option<File::Error> error = file->cast<File::Error>();                      //
-                if_not_null(error)                                                          //
-                    return Future<ref<String>>::value(                                      //
-                        String::formatFromString("File open failed: {} ", error->error())); //
-                end_if();                                                                   //
-                return file->read();                                                        // read file content
-            })                                                                              //
-            ->then<int>([this](ref<String> value) {                                         //
-                auto root = RootWidget::of(context);                                        //
-                root->cout->writeLine("File content: ");                                    // put the content to stdout
-                root->cout->writeLine(value);                                               //
-                root->exit();                                                               //
-                return 0;                                                                   //
+        std::cout << "Logger output to cout" << std::endl; // output log to stdout
+        Future<int>::delay(Duration(2500), 0)
+            ->then<ref<File>>([] { //
+                return File::fromPath(FILENAME, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
+            })
+            ->then<int>([this](const ref<File> &file) { //
+                setState([this, file] {                 //
+                    std::cout << "Logger output to file" << std::endl;
+                    _file = file;
+                });
+                return 0;
+            })
+            ->then<int>([] { //
+                return Future<int>::delay(Duration(2500), 0);
+            })
+            ->then<int>([this] { //
+                exitApp(context);
+                return 0;
             });
+    }
+
+    void dispose() override
+    {
+        if_not_null(_file)
+        {
+            _file->close()->then<ref<File>>([] { //
+                              return File::fromPath(FILENAME, O_RDONLY, S_IRUSR);
+                          })
+                ->then<int>([](const ref<File> &file) { //
+                    return file->read()
+                        ->then<int>([file](const ref<String> &str) { //
+                            std::cout << "File content: " << std::endl
+                                      << str << std::endl;
+                            return file->close();
+                        });
+                });
+        }
+        end_if();
+        super::dispose();
     }
 
     ref<Widget> build(ref<BuildContext>) override
     {
-        switch ((_now))
+        if_not_null(_file)
         {
-        case cout:
-            return Logger::cout(widget->child);
-        case file:
-            return Logger::file(widget->child, FILENAME);
-        default:
-            return LeafWidget::factory();
+            return Logger::file(widget->child, _file);
         }
+        end_if();
+        return Logger::cout(widget->child);
     }
 };
 

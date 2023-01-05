@@ -31,7 +31,7 @@ class _MyWidgetState : public State<MyWidget>
             ->then<int>([]
                         { return Future<int>::delay(1000, 0); })
             ->then([this]
-                   { RootWidget::of(context)->exit(); });
+                   { exitApp(context); });
     }
 
     ref<Widget> build(ref<BuildContext>) override

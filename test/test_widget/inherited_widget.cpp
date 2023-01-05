@@ -45,7 +45,7 @@ public:
         _timer = Timer::periodic(1000, [this] { //
             if (thisValue == 2)
             {
-                RootWidget::of(context)->exit();
+                exitApp(context);
                 return;
             }
             this->setState([] { //
