@@ -93,10 +93,10 @@ target_link_libraries(test_fundamental_stream async_runtime_fundamental)
 add_executable(test_fundamental_timer test/test_fundamental/timer.cpp)
 target_link_libraries(test_fundamental_timer async_runtime_fundamental)
 
-add_executable(test_fundamental_file test/test_fundamental/file.cpp)
-target_link_libraries(test_fundamental_file async_runtime_fundamental)
-
 # io
+add_executable(test_io_file test/test_io/file.cpp)
+target_link_libraries(test_io_file async_runtime_fundamental)
+
 add_executable(test_io_udp test/test_io/udp.cpp)
 target_link_libraries(test_io_udp async_runtime_fundamental)
 
