@@ -93,6 +93,9 @@ target_link_libraries(test_fundamental_stream async_runtime_fundamental)
 add_executable(test_fundamental_timer test/test_fundamental/timer.cpp)
 target_link_libraries(test_fundamental_timer async_runtime_fundamental)
 
+add_executable(test_fundamental_async_thread_pool test/test_fundamental/async_thread_pool.cpp)
+target_link_libraries(test_fundamental_async_thread_pool async_runtime_fundamental)
+
 # io
 add_executable(test_io_file test/test_io/file.cpp)
 target_link_libraries(test_io_file async_runtime_fundamental)

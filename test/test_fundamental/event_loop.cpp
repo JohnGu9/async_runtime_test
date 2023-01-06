@@ -4,14 +4,14 @@
 #include <mutex>
 #include <thread>
 
-void task();
+static void task();
 int main()
 {
     EventLoop::run(task);
     return 0;
 }
 
-void task()
+static void task()
 {
     std::cout << "EventLoop master started " << std::this_thread::get_id() << std::endl;
 
