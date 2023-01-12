@@ -1,3 +1,4 @@
+#include "async_runtime/utilities/lock.h"
 #include "async_runtime/fundamental/thread_pool.h"
 #include <chrono>
 #include <ctime>

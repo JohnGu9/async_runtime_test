@@ -10,6 +10,7 @@ int main()
 
 static void task()
 {
+    auto handler = EventLoop::Handle::create();
     auto pool = AsyncThreadPool::single();
     Future<int>::delay(Duration(1000), 0)
         ->then<int>([pool] {  //
@@ -33,8 +34,9 @@ static void task()
                 return 0;
             });
         })
-        ->then<int>([pool] { //
+        ->then<int>([pool, handler] { //
             pool->dispose();
+            handler->dispose();
             return 0;
         });
 }
