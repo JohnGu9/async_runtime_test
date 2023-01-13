@@ -15,8 +15,9 @@ void task()
     controller->sink("Hello");
     controller->sink("World");
     std::cout << "Sink data before listen" << std::endl;
-    auto subscription = controller->listen([](const ref<String> &value)
-                                           { std::cout << "Read: " << value << std::endl; });
+    auto subscription = controller->listen([](const ref<String> &value) { //
+        std::cout << "Read: " << value << std::endl;
+    });
 
     // but timer has handle
     // event loop close after timer cancel

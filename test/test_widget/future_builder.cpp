@@ -11,28 +11,26 @@ public:
 class _MyWidgetState : public State<MyWidget>
 {
     using super = State<MyWidget>;
-    lateref<Completer<int>> _completer;
+    lateref<Future<int>> _future;
 
     void initState() override
     {
         super::initState();
-        _completer = Object::create<Completer<int>>();
-        _completer->then<int>([this] {                         //
-            return Future<int>::delay(Duration(1000), [this] { //
+        _future = Future<int>::delay(Duration(1000), 123);
+        _future
+            ->then<int>([] { //
+                return Future<int>::delay(Duration(1000), 0);
+            })
+            ->then<int>([this] { //
                 exitApp(context);
                 return 0;
             });
-        });
-        Timer::delay(Duration(2000), [this] { //
-            _completer->complete(123);
-        })
-            ->start();
     }
 
     ref<Widget> build(ref<BuildContext>) override
     {
         return Object::create<FutureBuilder<int>>(
-            _completer,
+            _future,
             [](ref<BuildContext>, ref<AsyncSnapshot<int>> snapshot) { //
                 assert(snapshot->state != AsyncSnapshot<>::ConnectionState::none);
                 std::cout << AsyncSnapshot<>::ConnectionState::toString(snapshot->state) << ' ';

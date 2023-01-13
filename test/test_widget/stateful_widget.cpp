@@ -47,8 +47,8 @@ class _MyWidgetState : public State<MyWidget>
         super::initState();
         _count = 0;
         _timer = Timer::periodic(Duration(1000), [this] { //
-            if (!mounted)
-                return;
+            if (!mounted)                                 // timer will be cancel when state dispose
+                return;                                   // so this state mounted check is useless
             if (_count > 5)
             {
                 _timer->cancel();
@@ -57,8 +57,11 @@ class _MyWidgetState : public State<MyWidget>
                 return;
             }
             else
-                setState([this]
-                         { _count++; });
+            {
+                setState([this] { // callback in setState would not be called immediately
+                    _count++;     // only be called right before build
+                });
+            }
         });
         _timer->start();
     }

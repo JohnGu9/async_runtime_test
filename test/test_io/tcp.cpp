@@ -57,13 +57,14 @@ void task()
                 ->listen([connection, server1RecvConfirm](ref<String> message) { //
                     server1RecvConfirm->complete(0);
                     assert(message == SERVER0_MESSAGE);
-                    std::cout << "server0 recv message - " << message << std::endl;
+                    std::cout << "server1 recv message - " << message << std::endl;
                 });
-            connection->write(SERVER1_MESSAGE)->then<int>([](const int &status) { //
-                assert(status == 0);
-                std::cout << "server1 send message status - " << status << std::endl;
-                return 0;
-            });
+            connection->write(SERVER1_MESSAGE)
+                ->then<int>([](const int &status) { //
+                    assert(status == 0);
+                    std::cout << "server1 send message status - " << status << std::endl;
+                    return 0;
+                });
             allRecConfirm->then<int>([connection] { //
                 return connection->shutdown();
             });

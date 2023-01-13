@@ -26,7 +26,7 @@ void task()
         })
         ->then<int>(writeFile)
         ->then<ref<File>>([] { //
-            return File::fromPath(FILENAME, O_WRONLY | O_APPEND, 0);
+            return File::fromPath(FILENAME, O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
         })
         ->then<int>(appendFile)
         ->then<ref<File>>([] { //

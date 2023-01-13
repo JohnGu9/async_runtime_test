@@ -33,6 +33,7 @@ class _MyWidgetState : public State<MyWidget>
             // just output to stdout
             RootWidget::of(context)->cout->writeLine("RootWidget::of(context)->cout"); // root widget's cout is thread safe
             std::cout << "std::cout" << std::endl;                                     // it's also ok to use std::cout to print in master event loop
+            std::cout << std::endl;
             return;
         });
         _timer->start();
@@ -74,9 +75,12 @@ class _LoggerSwitchState : public State<LoggerSwitch>
     {
         super::initState();
         std::cout << "Logger output to cout" << std::endl; // output log to stdout
-        Future<int>::delay(Duration(2500), 0)
-            ->then<ref<File>>([] { //
-                return File::fromPath(FILENAME, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
+
+        Future<>::wait(
+            Future<int>::delay(Duration(2500), 0),
+            File::fromPath(FILENAME, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR))
+            ->then<ref<File>>([](const ref<Future<>::Package<int, ref<File>>> &package) { //
+                return package->getValue<1>();
             })
             ->then<int>([this](const ref<File> &file) { //
                 setState([this, file] {                 //
@@ -105,7 +109,8 @@ class _LoggerSwitchState : public State<LoggerSwitch>
                 ->then<int>([](const ref<File> &file) { //
                     return file->read()
                         ->then<int>([file](const ref<String> &str) { //
-                            std::cout << "File content: " << std::endl
+                            std::cout << std::endl
+                                      << "File content: " << std::endl
                                       << str << std::endl;
                             return file->close();
                         });
