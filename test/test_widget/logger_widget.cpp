@@ -98,9 +98,10 @@ class _LoggerSwitchState : public State<LoggerSwitch>
     {
         if_not_null(_file)
         {
-            _file->close()->then<ref<File>>([] { //
-                              return File::fromPath(FILENAME, O_RDONLY, S_IRUSR);
-                          })
+            _file->close()
+                ->then<ref<File>>([] { //
+                    return File::fromPath(FILENAME, O_RDONLY, 0);
+                })
                 ->then<int>([](const ref<File> &file) { //
                     return file->read()
                         ->then<int>([file](const ref<String> &str) { //
