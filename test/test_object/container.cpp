@@ -2,20 +2,10 @@
 #include <algorithm>
 #include <assert.h>
 
-static void testList();
-static void testSet();
-int main()
-{
-    testList();
-    testSet();
-    return EXIT_SUCCESS;
-}
-
-static void testList()
+static void testList(ref<List<int>> list)
 {
     std::cout << "list test" << std::endl;
 
-    ref<List<int>> list = {1, 2, 2, 3};
     assert(list->size() == 4);
 
     auto expect = {1, 2, 2, 3};
@@ -33,7 +23,7 @@ static void testList()
               << "index: 1, element: " << list[1] << std::endl;
 
     std::cout << "Mapped List: ";
-    auto mapped = list->map<std::string>([](const int &value) { //
+    auto mapped = list->template map<std::string>([](const int &value) { //
         return std::to_string(value + 1);
     });
     auto expect0 = {"2", "3", "3", "4"};
@@ -44,11 +34,10 @@ static void testList()
               << std::endl;
 }
 
-static void testSet()
+static void testSet(ref<Set<int>> set)
 {
     std::cout << "set test" << std::endl;
 
-    ref<Set<int>> set = {1, 2, 2, 3};
     assert(set->size() == 3);
     for (const auto &element : {1, 2, 3})
         assert(set->contains(element));
@@ -70,4 +59,21 @@ static void testSet()
 
     std::cout << mapped << std::endl
               << std::endl;
+}
+
+int main()
+{
+    auto init = {1, 2, 2, 3};
+    auto deque = Object::create<DequeList<int>>(init);
+    auto linked = Object::create<LinkedList<int>>(init);
+    auto vector = Object::create<VectorList<int>>(init);
+    testList(deque);
+    testList(linked);
+    testList(vector);
+
+    auto hash = Object::create<HashSet<int>>(init);
+    auto tree = Object::create<TreeSet<int>>(init);
+    testSet(hash);
+    testSet(tree);
+    return EXIT_SUCCESS;
 }

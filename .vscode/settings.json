@@ -125,5 +125,9 @@
         "variant": "cpp",
         "fcntl.h": "c",
         "xmemory0": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "finalref",
+        "lateref"
+    ]
 }

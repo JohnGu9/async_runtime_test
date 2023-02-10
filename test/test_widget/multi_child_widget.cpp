@@ -48,7 +48,8 @@ class _MyWidgetState : public State<MyWidget>
         super::initState();
         _children = {
             Object::create<Child>(0),
-            Object::create<Child>(1)};
+            Object::create<Child>(1),
+        };
         _count = 1;
         _timer = Timer::periodic(Duration::fromSeconds(1), [this] { //
             if (++_count > 5)
